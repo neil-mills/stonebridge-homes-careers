@@ -32,7 +32,7 @@ const VacancyPage: FC = (): JSX.Element => {
   return (
     <div>
       <Section as={'div'} marginTop={false}>
-        <ArticleHeaderLinks backLink={'/community'} />
+        <ArticleHeaderLinks backLink={'/our-community'} />
         <ArticleTitle keyline={false}>
           <div>
             <Heading

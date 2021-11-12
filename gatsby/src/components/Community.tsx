@@ -21,7 +21,7 @@ const articles: ArticleItemType[] = [
     subTitle: 'Date',
     subTitleDate: true,
     title: 'News title',
-    link: '/',
+    link: '/article',
     src: Tn1,
     srcLarge: Tn1,
   },
@@ -29,7 +29,7 @@ const articles: ArticleItemType[] = [
     subTitle: 'Date',
     subTitleDate: true,
     title: 'News title',
-    link: '/',
+    link: '/article',
     src: Tn2,
     srcLarge: Tn2,
   },
@@ -37,7 +37,7 @@ const articles: ArticleItemType[] = [
     subTitle: 'Date',
     subTitleDate: true,
     title: 'News title',
-    link: '/',
+    link: '/article',
     src: Tn3,
     srcLarge: Tn3,
   },
@@ -45,7 +45,7 @@ const articles: ArticleItemType[] = [
     subTitle: 'Date',
     subTitleDate: true,
     title: 'News title',
-    link: '/',
+    link: '/article',
     src: Tn1,
     srcLarge: Tn1,
   },
@@ -53,7 +53,7 @@ const articles: ArticleItemType[] = [
     subTitle: 'Date',
     subTitleDate: true,
     title: 'News title',
-    link: '/',
+    link: '/article',
     src: Tn2,
     srcLarge: Tn2,
   },
@@ -61,7 +61,7 @@ const articles: ArticleItemType[] = [
     subTitle: 'Date',
     subTitleDate: true,
     title: 'News title',
-    link: '/',
+    link: '/article',
     src: Tn3,
     srcLarge: Tn3,
   },
@@ -77,7 +77,7 @@ const Community: FC<CommunityProps> = ({ title }): JSX.Element => {
       <Section tint={true}>
         <h2>{title}</h2>
         <Articles carousel={true} articles={articles} />
-        <Button label={'View all news'} link={'/community'} />
+        <Button label={'View all news'} link={'/our-community'} />
       </Section>
     </CommunityStyles>
   )

@@ -25,7 +25,7 @@ const articles: ArticleItemType[] = [
     src: Tn1,
     srcLarge: Tn1,
     srcAlt: 'Person 1',
-    link: '/',
+    link: '/article',
   },
   {
     subTitle: 'Title of role',
@@ -33,7 +33,7 @@ const articles: ArticleItemType[] = [
     src: Tn2,
     srcLarge: Tn2,
     srcAlt: 'Person 2',
-    link: '/',
+    link: '/article',
   },
   {
     subTitle: 'Title of role',
@@ -41,7 +41,7 @@ const articles: ArticleItemType[] = [
     src: Tn3,
     srcLarge: Tn3,
     srcAlt: 'Person 3',
-    link: '/',
+    link: '/article',
   },
   {
     subTitle: 'Title of role',
@@ -49,7 +49,7 @@ const articles: ArticleItemType[] = [
     src: Tn1,
     srcLarge: Tn1,
     srcAlt: 'Person 4',
-    link: '/',
+    link: '/article',
   },
   {
     subTitle: 'Title of role',
@@ -57,7 +57,7 @@ const articles: ArticleItemType[] = [
     src: Tn2,
     srcLarge: Tn2,
     srcAlt: 'Person 5',
-    link: '/',
+    link: '/article',
   },
   {
     subTitle: 'Title of role',
@@ -65,7 +65,7 @@ const articles: ArticleItemType[] = [
     src: Tn3,
     srcLarge: Tn3,
     srcAlt: 'Person 6',
-    link: '/',
+    link: '/article',
   },
   {
     subTitle: 'Title of role',
@@ -73,7 +73,7 @@ const articles: ArticleItemType[] = [
     src: Tn1,
     srcLarge: Tn1,
     srcAlt: 'Person 7',
-    link: '/',
+    link: '/article',
   },
   {
     subTitle: 'Title of role',
@@ -81,7 +81,7 @@ const articles: ArticleItemType[] = [
     src: Tn2,
     srcLarge: Tn2,
     srcAlt: 'Person 8',
-    link: '/',
+    link: '/article',
   },
 ]
 
