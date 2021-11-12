@@ -54,11 +54,12 @@ const HomeBannerStyles = styled.section`
   }
   @media screen and (min-width: 768px) {
     height: calc(60vw - 7.6rem);
-    max-height: 68rem;
+    max-height: 60rem;
   }
 
   @media screen and (min-width: 1400px) {
     height: 68rem;
+    max-height: 68rem;
   }
 `
 const HomeBannerInner = styled.div`
