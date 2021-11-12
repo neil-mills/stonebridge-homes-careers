@@ -83,11 +83,11 @@ const GlobalStyles = createGlobalStyle`
     outline: 3px solid transparent;
     display: block;
   }
-  a, button {
+  /* a, button {
     &:focus {
       outline: 3px solid var(--black);
     }
-  }
+  } */
   * {
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
