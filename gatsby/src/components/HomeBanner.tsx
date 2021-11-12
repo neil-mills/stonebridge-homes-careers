@@ -42,7 +42,7 @@ const HomeBannerStyles = styled.section`
   p {
     color: var(--gold);
     margin: 2rem 0 0;
-    width: 90%;
+    width: 85%;
     @media screen and (min-width: 500px) {
       width: 100%;
     }
@@ -133,7 +133,7 @@ const HomeBanner: FC<HomeBannerProps> = (props): JSX.Element => {
 }
 
 HomeBanner.defaultProps = {
-  breakpoint: 500,
+  breakpoint: 499,
 }
 
 export default HomeBanner
