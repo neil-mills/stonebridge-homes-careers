@@ -30,15 +30,6 @@ const QuoteStyles = styled.div`
     display: flex;
     justify-content: flex-start;
     align-items: center;
-    div {
-      border-radius: 50%;
-      height: 4rem;
-      width: 4rem;
-      display: block;
-      background-color: var(--keyline-grey);
-      margin-right: 1rem;
-      overflow: hidden;
-    }
   }
 `
 
@@ -56,7 +47,7 @@ const Quote = ({ title, quote, name, avatar }: QuoteProps): JSX.Element => {
         <blockquote>{quote}</blockquote>
       </div>
       <footer>
-        <MetaList meta={[name]} avatar={avatar} />
+        <MetaList meta={[name]} avatar={avatar} author={true} />
       </footer>
     </QuoteStyles>
   )
