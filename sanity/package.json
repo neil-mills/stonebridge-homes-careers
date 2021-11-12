@@ -1,0 +1,50 @@
+{
+  "name": "stonebridgehomeshr",
+  "private": true,
+  "version": "1.0.0",
+  "description": "",
+  "main": "package.json",
+  "author": "Neil Mills <mail@neil-mills.co.uk>",
+  "license": "UNLICENSED",
+  "scripts": {
+    "lint": "eslint .",
+    "start": "sanity start",
+    "build": "sanity build"
+  },
+  "keywords": [
+    "sanity"
+  ],
+  "eslintConfig": {
+    "extends": [
+      "wesbos"
+    ]
+  },
+  "dependencies": {
+    "@sanity/base": "^2.12.2",
+    "@sanity/components": "^2.2.6",
+    "@sanity/core": "^2.12.2",
+    "@sanity/default-layout": "^2.12.2",
+    "@sanity/default-login": "^2.11.1",
+    "@sanity/desk-tool": "^2.12.2",
+    "@sanity/vision": "^2.11.2",
+    "prop-types": "^15.7",
+    "react": "^17.0",
+    "react-dom": "^17.0",
+    "react-icons": "^3.11.0",
+    "sanity-plugin-conditional-field": "^0.0.2"
+  },
+  "devDependencies": {
+    "babel-eslint": "^10.1.0",
+    "eslint": "^7.8.1",
+    "eslint-config-airbnb": "^18.2.0",
+    "eslint-config-prettier": "^6.11.0",
+    "eslint-config-wesbos": "^1.0.1",
+    "eslint-plugin-html": "^6.1.0",
+    "eslint-plugin-import": "^2.22.0",
+    "eslint-plugin-jsx-a11y": "^6.3.1",
+    "eslint-plugin-prettier": "^3.1.4",
+    "eslint-plugin-react": "^7.20.6",
+    "eslint-plugin-react-hooks": "^4.1.2",
+    "prettier": "^2.1.1"
+  }
+}
