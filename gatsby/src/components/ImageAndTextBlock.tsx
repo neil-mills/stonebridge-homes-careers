@@ -1,10 +1,10 @@
-import React from 'react'
+import React, { Dispatch, SetStateAction } from 'react'
 import styled from 'styled-components'
 import PlayIcon from '../assets/svg/play.svg'
-import { SectionGutter, MarginBottomNone } from '../assets/styles/Utils'
+import { MarginBottomNone } from '../assets/styles/Utils'
 import Button from './Button'
 import { HeadingLarge } from '../assets/styles/Typography'
-import Section, { SectionInner } from './Section'
+import Section from './Section'
 
 const SectionStyles = styled.section`
   display: grid;
@@ -69,6 +69,7 @@ interface ImageAndTextBlockProps {
   srcAlt?: string
   buttonLabel?: string
   buttonLink?: string
+  buttonCallback?: () => void
   heading: string
   text: string
   tint?: boolean
@@ -83,6 +84,7 @@ const ImageAndTextBlock = ({
   srcAlt = '',
   buttonLabel = '',
   buttonLink = '',
+  buttonCallback,
   tint = false,
 }: ImageAndTextBlockProps): JSX.Element => {
   return (
@@ -104,8 +106,12 @@ const ImageAndTextBlock = ({
         <aside>
           <h3>{heading}</h3>
           <p>{text}</p>
-          {buttonLabel && buttonLink && (
-            <Button label={buttonLabel} link={buttonLink} />
+          {buttonLabel && (
+            <Button
+              label={buttonLabel}
+              link={buttonLink}
+              callback={buttonCallback}
+            />
           )}
         </aside>
       </SectionStyles>

@@ -1,4 +1,4 @@
-import React, { MouseEvent } from 'react'
+import React, { MouseEvent, Dispatch, SetStateAction } from 'react'
 import styled from 'styled-components'
 import { navigate } from 'gatsby'
 import { FontBold } from '../assets/styles/Typography'
@@ -9,7 +9,7 @@ interface Props {
 const ButtonStyles = styled.button<Props>`
   ${FontBold}
   display: block;
-  margin-top: 4rem;
+  margin-top: 3rem;
   @media screen and (min-width: 768px) {
     margin-top: 4.3vw;
   }
@@ -35,18 +35,25 @@ const ButtonStyles = styled.button<Props>`
 
 interface ButtonProps {
   label: string
-  link: string
+  link?: string
+  callback?: () => void
   secondary?: boolean
 }
 
 const Button = ({
   label,
   link,
+  callback,
   secondary = false,
 }: ButtonProps): JSX.Element => {
   const handleClick = (e: MouseEvent) => {
     e.preventDefault()
-    navigate(link)
+    if (callback) {
+      callback()
+    }
+    if (link) {
+      navigate(link)
+    }
   }
 
   return (

@@ -7,7 +7,7 @@ const GlobalStyles = createGlobalStyle`
     --gold: #BC9F5F;
     --gold-hover: #a38646;
     --grey: #666666;
-    --light-grey: #FAFAFA;
+    --light-grey: #F5F5F5;
     --mid-grey: #BFBFBF;
     --dark-grey: #262626;
     --keyline-grey: #E8E8E8;

@@ -1,4 +1,4 @@
-import React, { FC } from 'react'
+import React, { FC, useContext } from 'react'
 import ImageBanner from '../components/ImageBanner'
 import ParallaxImage from '../components/ParallaxImage'
 import ImageAndTextBlock from '../components/ImageAndTextBlock'
@@ -13,6 +13,9 @@ import Benefits, { benefitsData } from '../components/Benefits'
 import Values from '../components/Values'
 import TimelineList from '../components/TimelineList'
 import Section from '../components/Section'
+import Dialog from '../components/Dialog'
+import SubContractor from '../components/SubContractor'
+import AppContext from '../context/AppContext'
 
 const journeyTimeline = [
   {
@@ -51,6 +54,14 @@ const growthTimeline = [
 ]
 
 const WorkingWithUsPage: FC = (): JSX.Element => {
+  const [dialogActive, setDialogActive] = useContext(AppContext)
+
+  const openDialog = () => {
+    console.log('Open dialog')
+    if (setDialogActive) {
+      setDialogActive(true)
+    }
+  }
   return (
     <>
       <ImageBanner
@@ -85,8 +96,12 @@ const WorkingWithUsPage: FC = (): JSX.Element => {
         heading={'Become a subcontractor'}
         text={'Be a part of our amazing team at Stonebridge Homes'}
         buttonLabel={'Register your details'}
-        buttonLink={'/'}
+        buttonCallback={openDialog}
       />
+      <Dialog>
+        <h3 id={'dialogTitle'}>Register as a subcontractor</h3>
+        <SubContractor />
+      </Dialog>
     </>
   )
 }

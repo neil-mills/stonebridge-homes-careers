@@ -30,9 +30,9 @@ interface StyledCheckboxInputProps {
   last: boolean
 }
 
-const StyledInput = styled.input`
+export const StyledInput = styled.input`
   width: 100%;
-  height: 44px;
+  height: 40px;
   position: relative;
   display: block;
   border: 1px solid var(--keyline-grey);
@@ -41,6 +41,9 @@ const StyledInput = styled.input`
   text-align: left;
   font-size: var(--font-xsmall);
   color: var(--grey);
+  @media screen and (min-width: 768px) {
+    height: 44px;
+  }
 `
 const StyledForm = styled.form`
   fieldset {
@@ -49,7 +52,10 @@ const StyledForm = styled.form`
     padding: 0;
     display: grid;
     grid-auto-rows: auto;
-    gap: 2rem;
+    gap: 1rem;
+    @media screen and (min-width: 768px) {
+      gap: 2rem;
+    }
   }
   legend {
     ${HeadingStyle}
@@ -82,6 +88,9 @@ const StyledFileInput = styled.div`
     top: 0;
     left: 0;
     height: 100%;
+    &[type='file'] {
+      cursor: pointer;
+    }
   }
 `
 
