@@ -42,18 +42,6 @@ export const GoldLink = css`
   }
 `
 
-export const SectionGutter = css`
-  padding: 4rem 2rem;
-  @media screen and (min-width: 768px) {
-    padding: calc(var(--gutter-h) * 1.5) var(--gutter-h);
-  }
-  @media screen and (min-width: 1024px) {
-    padding: calc(var(--gutter-h) * 1.5);
-  }
-  @media screen and (min-width: 1400px) {
-    padding: 11rem;
-  }
-`
 export const GutterPaddingTop = css`
   padding-top: 4rem;
   @media screen and (min-width: 768px) {
@@ -145,6 +133,14 @@ export const GutterMarginBottom = css`
     margin-bottom: 11rem;
   }
 `
+
+export const SectionGutter = css`
+  ${GutterPaddingTop}
+  ${GutterPaddingRight}
+  ${GutterPaddingBottom}
+  ${GutterPaddingLeft}
+`
+
 export const ScrollableArea = css`
   overflow-x: scroll;
   overflow-y: hidden;
