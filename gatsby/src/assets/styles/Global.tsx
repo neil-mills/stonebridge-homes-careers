@@ -99,5 +99,8 @@ const GlobalStyles = createGlobalStyle`
       padding: 7.6rem 0 3vw;
     }
   }
+  address {
+    font-style: normal;
+  }
 `
 export default GlobalStyles

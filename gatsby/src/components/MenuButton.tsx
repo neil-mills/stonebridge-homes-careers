@@ -1,6 +1,6 @@
-import React, { useState } from 'react'
+import React, { useState, useContext } from 'react'
 import styled from 'styled-components'
-
+import MenuContext from '../context/MenuContext'
 const MenuButtonStyles = styled.button`
   padding: 0;
   background-color: transparent;
@@ -62,9 +62,12 @@ const MenuButtonStyles = styled.button`
 
 const MenuButton = (): JSX.Element => {
   const [expanded, setExpanded] = useState<boolean>(false)
-
+  const [menuActive, setMenuActive] = useContext(MenuContext)
   const handleClick = () => {
     setExpanded(prevState => !prevState)
+    if (setMenuActive) {
+      setMenuActive(prevState => !prevState)
+    }
   }
 
   return (

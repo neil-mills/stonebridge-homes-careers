@@ -5,6 +5,7 @@ import Typography from '../assets/styles/Typography'
 import 'normalize.css'
 import Helmet from 'react-helmet'
 import Header from './Header'
+import MobileNav from './MobileNav'
 import Footer from './Footer'
 
 const Layout: FC = ({ children }) => (
@@ -13,6 +14,7 @@ const Layout: FC = ({ children }) => (
     <Typography />
     <Helmet bodyAttributes={{ 'data-scroll': true }} />
     <Header />
+    <MobileNav />
     <main id="main">
       <div id="content">{children}</div>
     </main>
