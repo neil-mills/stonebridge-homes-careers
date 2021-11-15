@@ -1,7 +1,7 @@
 import React, { FC, useContext, useEffect } from 'react'
 import styled from 'styled-components'
 import CloseIcon from '../assets/svg/close.svg'
-import AppContext from '../context/AppContext'
+import DialogContext from '../context/DialogContext'
 
 interface DialogProps {
   children: React.ReactElement[]
@@ -11,7 +11,7 @@ const StyledDialog = styled.div<{ active: boolean }>`
   position: fixed;
   overflow-y: auto;
   background-color: transparent;
-  transition: transform 500ms ease;
+  transition: transform 200ms ease;
   top: 0;
   bottom: 0;
   width: 100%;
@@ -59,7 +59,7 @@ const CloseButton = styled.button`
 `
 
 const Dialog: FC<DialogProps> = props => {
-  const [dialogActive = false, setDialogActive] = useContext(AppContext)
+  const [dialogActive = false, setDialogActive] = useContext(DialogContext)
 
   const handleClick = () => {
     if (setDialogActive) {

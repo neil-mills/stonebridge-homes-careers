@@ -15,7 +15,7 @@ import TimelineList from '../components/TimelineList'
 import Section from '../components/Section'
 import Dialog from '../components/Dialog'
 import SubContractor from '../components/SubContractor'
-import AppContext from '../context/AppContext'
+import AppContext from '../context/DialogContext'
 
 const journeyTimeline = [
   {
