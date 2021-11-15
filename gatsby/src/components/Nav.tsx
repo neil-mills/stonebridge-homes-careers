@@ -35,9 +35,7 @@ const Nav: FC = () => {
       <NavStyles>
         <ul>
           <li>
-            <Link to="/working-with-us" aria-current>
-              Working with us
-            </Link>
+            <Link to="/working-with-us">Working with us</Link>
           </li>
           <li>
             <Link to="/vacancies">Vacancies</Link>
