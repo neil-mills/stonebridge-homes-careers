@@ -1,6 +1,6 @@
 import React, { useContext } from 'react'
 import styled from 'styled-components'
-import MenuContext from '../context/MenuContext'
+import AppContext from '../context/AppContext'
 const MenuButtonStyles = styled.button`
   padding: 0;
   background-color: transparent;
@@ -61,10 +61,13 @@ const MenuButtonStyles = styled.button`
 `
 
 const MenuButton = (): JSX.Element => {
-  const [menuActive, setMenuActive] = useContext(MenuContext)
+  const { menuActive, setMenuActive, setBodyNoScroll } = useContext(AppContext)
   const handleClick = () => {
     if (setMenuActive) {
       setMenuActive(prevState => !prevState)
+    }
+    if (setBodyNoScroll) {
+      setBodyNoScroll(prevState => !prevState)
     }
   }
 

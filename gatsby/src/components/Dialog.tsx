@@ -1,7 +1,7 @@
 import React, { FC, useContext, useEffect } from 'react'
 import styled from 'styled-components'
 import CloseIcon from '../assets/svg/close.svg'
-import DialogContext from '../context/DialogContext'
+import AppContext from '../context/AppContext'
 
 interface DialogProps {
   children: React.ReactElement[]
@@ -59,11 +59,18 @@ const CloseButton = styled.button`
 `
 
 const Dialog: FC<DialogProps> = props => {
-  const [dialogActive = false, setDialogActive] = useContext(DialogContext)
+  const {
+    dialogActive = false,
+    setDialogActive,
+    setBodyNoScroll,
+  } = useContext(AppContext)
 
   const handleClick = () => {
     if (setDialogActive) {
       setDialogActive(false)
+    }
+    if (setBodyNoScroll) {
+      setBodyNoScroll(true)
     }
   }
 

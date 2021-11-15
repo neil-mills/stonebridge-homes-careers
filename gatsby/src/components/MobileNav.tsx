@@ -2,7 +2,7 @@ import React, { FC, useContext, MouseEvent } from 'react'
 import { navigate } from 'gatsby'
 import styled from 'styled-components'
 import SocialNav from './SocialNav'
-import MenuContext from '../context/MenuContext'
+import AppContext from '../context/AppContext'
 import {
   GutterPaddingLeft,
   GutterPaddingRight,
@@ -54,7 +54,7 @@ const StyledMobileNav = styled.div<{ active: boolean | undefined }>`
 `
 
 const MobileNav: FC = () => {
-  const [menuActive, setMenuActive] = useContext(MenuContext)
+  const { menuActive, setMenuActive } = useContext(AppContext)
 
   const handleClick = (e: MouseEvent, url: string) => {
     e.preventDefault()

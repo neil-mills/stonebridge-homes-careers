@@ -46,7 +46,7 @@ const GlobalStyles = createGlobalStyle`
     }
     line-height: 1.4;
     color: var(--grey);
-    &[data-scroll="false"] {
+    &[data-noscroll="true"] {
       overflow-y: hidden;
       position: fixed;
     }

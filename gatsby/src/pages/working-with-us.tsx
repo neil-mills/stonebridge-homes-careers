@@ -15,7 +15,7 @@ import TimelineList from '../components/TimelineList'
 import Section from '../components/Section'
 import Dialog from '../components/Dialog'
 import SubContractor from '../components/SubContractor'
-import AppContext from '../context/DialogContext'
+import AppContext from '../context/AppContext'
 
 const journeyTimeline = [
   {
@@ -54,12 +54,14 @@ const growthTimeline = [
 ]
 
 const WorkingWithUsPage: FC = (): JSX.Element => {
-  const [dialogActive, setDialogActive] = useContext(AppContext)
+  const { setDialogActive, setBodyNoScroll } = useContext(AppContext)
 
   const openDialog = () => {
-    console.log('Open dialog')
     if (setDialogActive) {
       setDialogActive(true)
+    }
+    if (setBodyNoScroll) {
+      setBodyNoScroll(true)
     }
   }
   return (
