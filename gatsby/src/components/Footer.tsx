@@ -3,6 +3,7 @@ import styled from 'styled-components'
 import { Link } from 'gatsby'
 import SocialNav from './SocialNav'
 import { WhiteHover, SectionGutter } from '../assets/styles/Utils'
+import { NavigationLink } from '../types/navigation'
 
 const FooterStyles = styled.footer`
   ${SectionGutter}
@@ -75,7 +76,11 @@ const SecondaryNav = styled.nav`
   }
 `
 
-const Footer: FC = (): JSX.Element => {
+interface FooterProps {
+  navOptions: NavigationLink[]
+}
+
+const Footer: FC<FooterProps> = ({ navOptions }): JSX.Element => {
   return (
     <FooterStyles>
       <div>

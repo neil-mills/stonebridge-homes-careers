@@ -4,6 +4,7 @@ import styled from 'styled-components'
 import { FontBold } from '../assets/styles/Typography'
 import { WhiteHover } from '../assets/styles/Utils'
 import MenuButton from './MenuButton'
+import { NavigationLink } from '../types/navigation'
 
 const NavStyles = styled.nav`
   display: none;
@@ -28,21 +29,20 @@ const NavStyles = styled.nav`
   }
 `
 
-const Nav: FC = () => {
+interface NavProps {
+  options: NavigationLink[]
+}
+const Nav: FC<NavProps> = ({ options }) => {
   return (
     <>
       <MenuButton />
       <NavStyles>
         <ul>
-          <li>
-            <Link to="/working-with-us">Working with us</Link>
-          </li>
-          <li>
-            <Link to="/vacancies">Vacancies</Link>
-          </li>
-          <li>
-            <Link to="/our-community">Our Community</Link>
-          </li>
+          {options.map((option: NavigationLink) => (
+            <li key={option.slug.current}>
+              <Link to={`/${option.slug.current}`}>{option.title}</Link>
+            </li>
+          ))}
         </ul>
       </NavStyles>
     </>

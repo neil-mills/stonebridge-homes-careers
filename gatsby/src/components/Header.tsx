@@ -4,6 +4,7 @@ import styled from 'styled-components'
 import Nav from './Nav'
 import Logo from '../assets/images/stonebridge.png'
 import { GutterPaddingLeft, GutterPaddingRight } from '../assets/styles/Utils'
+import { NavigationLink } from '../types/navigation'
 
 const HeaderStyles = styled.header`
   display: flex;
@@ -44,14 +45,14 @@ const SkipLink = styled.a`
   }
 `
 
-const Header: FC = () => {
+const Header: FC = ({ navOptions }: { navOptions: NavigationLink[] }) => {
   return (
     <HeaderStyles>
       <SkipLink href="#content">Skip to main content</SkipLink>
       <LogoStyles to="/">
         <img src={Logo} alt="Stonebridge" />
       </LogoStyles>
-      <Nav />
+      <Nav options={navOptions} />
     </HeaderStyles>
   )
 }
