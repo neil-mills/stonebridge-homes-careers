@@ -7,7 +7,7 @@ import MenuButton from './MenuButton'
 
 const NavStyles = styled.nav`
   display: none;
-  @media screen and (min-width: 1024px) {
+  @media screen and (min-width: 768px) {
     display: block;
   }
   ul {

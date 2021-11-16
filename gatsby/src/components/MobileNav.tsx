@@ -1,4 +1,4 @@
-import React, { FC, useContext, MouseEvent } from 'react'
+import React, { FC, useContext, useEffect, MouseEvent } from 'react'
 import { navigate } from 'gatsby'
 import styled from 'styled-components'
 import SocialNav from './SocialNav'
@@ -27,13 +27,18 @@ const StyledMobileNav = styled.div<{ active: boolean | undefined }>`
     justify-content: flex-start;
     height: 100%;
   }
+  nav {
+    flex-basis: 100%;
+  }
   width: 100%;
   height: 100%;
   overflow: scroll;
   background-color: var(--green);
   color: var(--white);
   footer {
+    flex-basis: 100%;
     align-self: flex-end;
+    justify-self: flex-start;
     display: grid;
     gap: 1.5rem;
     grid-auto-rows: auto;
@@ -54,7 +59,7 @@ const StyledMobileNav = styled.div<{ active: boolean | undefined }>`
 `
 
 const MobileNav: FC = () => {
-  const { menuActive, setMenuActive } = useContext(AppContext)
+  const { menuActive, setMenuActive, setBodyNoScroll } = useContext(AppContext)
 
   const handleClick = (e: MouseEvent, url: string) => {
     e.preventDefault()
@@ -63,6 +68,29 @@ const MobileNav: FC = () => {
     }
     navigate(url)
   }
+  const handleResize = () => {
+    if (
+      menuActive &&
+      setMenuActive &&
+      setBodyNoScroll &&
+      window.innerWidth >= 768
+    ) {
+      setMenuActive(false)
+      setBodyNoScroll(false)
+    }
+  }
+
+  useEffect(() => {
+    if (menuActive) {
+      window.addEventListener('resize', handleResize)
+    } else {
+      window.removeEventListener('resize', handleResize)
+    }
+    return () => {
+      window.removeEventListener('resize', handleResize)
+    }
+  }, [menuActive])
+
   return (
     <StyledMobileNav active={menuActive}>
       <div>
