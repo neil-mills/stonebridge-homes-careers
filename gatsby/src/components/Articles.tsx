@@ -10,7 +10,10 @@ const Track = styled.div`
     grid-auto-rows: auto;
     grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
     @media screen and (min-width: 1024px) {
-      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(290px, 1fr));
+    }
+    @media screen and (min-width: 1400px) {
+      grid-template-columns: repeat(3, 1fr);
     }
     width: 100%;
   }

@@ -1,7 +1,7 @@
 import React, { ReactNode, forwardRef } from 'react'
 import styled from 'styled-components'
 import { Link } from 'gatsby'
-import { HeadingStyle } from '../assets/styles/Typography'
+import { HeadingStyle, HeadingMedium } from '../assets/styles/Typography'
 import PlayIcon from '../assets/svg/play.svg'
 
 const ArticleItemStyles = styled.article`
@@ -18,20 +18,24 @@ const ArticleItemStyles = styled.article`
     }
   }
   div {
-    padding: 2rem 1rem;
+    padding: 2rem;
   }
-  h3,
-  h4 {
+  time,
+  span {
     ${HeadingStyle}
-  }
-  h3 {
     font-size: var(--font-xsmall);
     color: var(--gold);
     margin-bottom: 0.5rem;
+    display: block;
+    line-height: 1;
   }
-  h4 {
+  h3 {
+    ${HeadingMedium}
     color: var(--green);
     margin-bottom: 0;
+    @media screen and (min-width: 768px) {
+      margin-bottom: 0;
+    }
   }
   [data-carousel='true'] & {
     display: inline-block;
@@ -86,16 +90,13 @@ const ArticleItem = forwardRef<HTMLElement, ArticleItemType>((props, ref) => {
           <img src={src} alt={srcAlt} />
         </picture>
         <div>
-          {subTitle && (
-            <h3>
-              {subTitleDate ? (
-                <time dateTime="{subTitle}">{subTitle}</time>
-              ) : (
-                subTitle
-              )}
-            </h3>
-          )}
-          <h4>{title}</h4>
+          {subTitle &&
+            (subTitleDate ? (
+              <time dateTime="{subTitle}">{subTitle}</time>
+            ) : (
+              <span>{subTitle}</span>
+            ))}
+          <h3>{title}</h3>
         </div>
       </ArticleLink>
     </ArticleItemStyles>

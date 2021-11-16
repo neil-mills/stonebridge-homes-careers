@@ -1,7 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
 import { Categories } from '../assets/components/Articles'
-import { FontMedium } from '../assets/styles/Typography'
+import { GutterPaddingRight } from '../assets/styles/Utils'
 import { Link } from 'gatsby'
 import { SecondaryButton } from '../assets/styles/Buttons'
 import { ScrollableArea } from '../assets/styles/Utils'
@@ -18,6 +18,13 @@ const NavStyles = styled.nav`
     display: flex;
     gap: 2rem;
     justify-content: flex-start;
+  }
+  @media screen and (min-width: 768px) {
+    ${GutterPaddingRight}
+    ul {
+      max-width: 1180px;
+      margin: 0 auto;
+    }
   }
 `
 const CategoryButton = styled(Link)`

@@ -10,6 +10,7 @@ import Tn3 from '../assets/images/community-tn-3.jpg'
 import Articles, { Categories } from '../components/Articles'
 import Button from '../components/Button'
 import ImageAndTextBlock from '../components/ImageAndTextBlock'
+import { SectionInner } from '../components/Section'
 import { ArticleItemType } from '../components/ArticleItem'
 import {
   GutterPaddingTop,
@@ -114,6 +115,7 @@ const CommunityPage: FC = (): JSX.Element => {
         src={Banner}
         srcLarge={BannerLg}
         heading={'Our Community'}
+        tint={true}
         text={
           'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Egestas sodales aliquam justo, ut molestie elit Lorem ipsum dolor '
         }
@@ -123,7 +125,9 @@ const CommunityPage: FC = (): JSX.Element => {
       <ArticlesStyle>
         {categories.length && <ArticleCategoryMenu categories={categories} />}
         <ArticlesWrapper>
-          <Articles carousel={false} articles={articles} />
+          <SectionInner>
+            <Articles carousel={false} articles={articles} />
+          </SectionInner>
         </ArticlesWrapper>
         <ButtonWrapper>
           <Button label={'Load more articles'} link={'/'} secondary={true} />
