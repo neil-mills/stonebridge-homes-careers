@@ -1,11 +1,6 @@
 import React, { FC } from 'react'
 import styled from 'styled-components'
-import {
-  GutterMarginTop,
-  GutterMarginRight,
-  GutterMarginBottom,
-  GutterMarginLeft,
-} from '../assets/styles/Utils'
+import { GutterMarginTop, GutterMarginBottom } from '../assets/styles/Utils'
 
 interface SpacerProps {
   marginTop?: boolean
@@ -16,9 +11,7 @@ interface SpacerProps {
 
 const SpacerStyles = styled.div<SpacerProps>`
   margin-top: ${({ marginTop }) => (marginTop ? GutterMarginTop : 'none')};
-  margin-right: ${({ marginRight }) =>
-    marginRight ? GutterMarginRight : 'none'};
-  margin-right: ${({ marginLeft }) => (marginLeft ? GutterMarginLeft : 'none')};
+
   margin-bottom: ${({ marginBottom }) =>
     marginBottom ? GutterMarginBottom : 'none'};
 `

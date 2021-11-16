@@ -23,7 +23,7 @@ const GlobalStyles = createGlobalStyle`
     --font-base: 1.6rem;
     --font-base-desktop: 2rem;
     --font-medium: 1.8rem;
-    --font-medium-desktop: 2.4rem;
+    --font-medium-desktop: 2.2rem;
     --font-small: 1.6rem;
     --font-xsmall: 1.4rem;
     --gutter-v: 5vw;

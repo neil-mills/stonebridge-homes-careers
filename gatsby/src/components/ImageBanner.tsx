@@ -38,7 +38,6 @@ const ImageBannerStyles = styled.section<Props>`
   @media screen and (min-width: 768px) {
     ${GutterPaddingRight}
     ${GutterPaddingLeft}
-    ${GutterMarginBottom}
     &:before {
       content: '';
       display: block;
@@ -47,18 +46,15 @@ const ImageBannerStyles = styled.section<Props>`
       max-height: 406px;
     }
     &[data-position='top'] {
-      margin-bottom: 2vw;
+      padding-bottom: 2vw;
       @media screen and (min-width: 1024px) {
-        margin-bottom: 0;
+        padding-bottom: 0;
       }
       &:before {
         height: 16vw;
         max-height: 208px;
       }
     }
-  }
-  @media screen and (min-width: 1400px) {
-    margin-bottom: 10vw;
   }
 `
 
@@ -97,6 +93,7 @@ const InsetBox = styled.div`
 const BgImage = styled.picture`
   img {
     object-fit: cover;
+    object-position: right top;
     width: 100%;
     height: 100%;
   }
@@ -106,12 +103,9 @@ const BgImage = styled.picture`
     position: absolute;
     top: 0;
     right: 0;
-    bottom: var(--gutter-h);
+    bottom: calc(var(--gutter-h) * 1.5);
     left: 0;
     height: auto;
-  }
-  @media screen and (min-width: 1024px) {
-    bottom: calc(var(--gutter-h) * 2);
   }
   @media screen and (min-width: 1400px) {
     bottom: 11rem;
@@ -137,7 +131,7 @@ const ImageBanner: FC<ImageBannerProps> = ({
       data-text-align={alignText}
     >
       <BgImage>
-        <source media="(min-width: 768px)" srcSet={srcLarge} />
+        <source media="(min-width: 500px)" srcSet={srcLarge} />
         <img src={src} alt={srcAlt} />
       </BgImage>
       <SectionInner>

@@ -5,17 +5,14 @@ import KeylineGrid, { KeylineGridItem } from './KeylineGrid'
 import Section from './Section'
 import Heading from './Heading'
 import MetaList from './MetaList'
+import { HeadingMedium } from '../assets/styles/Typography'
 
 const QuoteStyles = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   h3 {
-    font-size: var(--font-medium);
-    margin-bottom: 3rem;
-    @media screen and (min-width: 768px) {
-      margin-bottom: 3vw;
-    }
+    ${HeadingMedium}
   }
   blockquote {
     padding: 0;
