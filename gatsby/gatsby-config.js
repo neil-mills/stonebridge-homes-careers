@@ -3,7 +3,7 @@ dotenv.config({ path: '.env' })
 
 const defaultConfig = {
   siteMetadata: {
-    title: 'Stonebridge Homes HR',
+    title: 'Stonebridge Homes Careers',
     siteUrl: 'http://careers.stonebridgehomes.co.uk',
     description: 'Careers',
     author: 'Neil Mills',
@@ -12,7 +12,6 @@ const defaultConfig = {
     'gatsby-plugin-typescript',
     'gatsby-plugin-react-svg',
     'gatsby-plugin-react-helmet',
-    //'gatsby-plugin-ts-config',
     'gatsby-plugin-styled-components',
     {
       resolve: 'gatsby-source-sanity',

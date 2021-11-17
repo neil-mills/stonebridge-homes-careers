@@ -1,107 +1,101 @@
 import React, { FC } from 'react'
 import { graphql } from 'gatsby'
+import HomeBanner from '../components/HomeBanner'
 
-const Page: FC = ({ data, pageContext }) => {
-  const contentBlocks = data.page.content
+interface Props {
+  pageContext: { id: string; title: string; slug: string }
+}
+const PageTemplate: FC<Props> = ({ data, pageContext }) => {
+  console.log('DATA=', data)
+  const { title } = pageContext
   return (
     <>
-      Page
-      {/* <h1>{data.page.title}</h1>
-    {contentBlocks.map(block => (
-      
-    ))} */}
+      {data.pages.nodes[0].content.map(({ contentType }) => {
+        console.log(contentType)
+        switch (contentType[0]._type) {
+          case 'homeBanner':
+            return (
+              <HomeBanner
+                title={contentType[0].heading}
+                text={contentType[0].text}
+                bgSrc={contentType[0].image.asset.fluid.srcWebp}
+                bgSrcLg={contentType[0].imageDesktop.asset.fluid.srcWebp}
+                btnLabel={contentType[0].buttonLabel}
+                btnLink={contentType[0].buttonLink[0].slug.current}
+              />
+            )
+          default:
+            return null
+        }
+      })}
     </>
   )
-
-  return <div></div>
 }
 
 export const query = graphql`
-  query ($id: String!) {
-    page: sanityPage(_id: { eq: $id }) {
-      id
-      title
-      slug {
-        current
-      }
-      content {
-        name
-        contentType {
-          ... on SanityHeroBanner {
-            _type
-            heading
-            text
-            textPosition
-            image {
-              asset {
-                fluid(maxWidth: 400) {
-                  ...GatsbySanityImageFluid
+  query pageQuery($title: String) {
+    pages: allSanityPage(filter: { title: { eq: $title } }) {
+      nodes {
+        id
+        title
+        content {
+          contentType {
+            ... on SanityHomeBanner {
+              _key
+              _type
+              heading
+              buttonLabel
+              buttonLink {
+                slug {
+                  current
+                }
+              }
+              text
+              image {
+                asset {
+                  id
+                  fluid(maxWidth: 375) {
+                    srcWebp
+                    src
+                  }
+                  originalFilename
+                }
+              }
+              imageDesktop {
+                asset {
+                  id
+                  fluid(maxWidth: 1395) {
+                    srcWebp
+                    src
+                  }
+                  originalFilename
                 }
               }
             }
-            textBox
-          }
-          ... on SanityImageAndTextBlock {
-            _type
-            heading
-            text
-            image {
-              asset {
-                fluid(maxWidth: 400) {
-                  ...GatsbySanityImageFluid
-                }
-              }
+            ... on SanityImageAndTextBlock {
+              _key
+              _type
             }
-            backgroundImage
-            paralaxImage
-            textBox
-            textPosition
-            buttonLabel
-            pageLink {
-              id
-              title
+            ... on SanityNewsListBlock {
+              _key
+              _type
             }
-            externalUrl
-          }
-          ... on SanityNewsListBlock {
-            _type
-            heading
-            articles
-            archiveButton
-          }
-          ... on SanityPeopleListBlock {
-            _type
-            heading
-            people
-            archiveButton
-          }
-          ... on SanityQuoteListBlock {
-            _type
-            aboveHeading
-            heading
-            belowHeading
-            quotes
-            archiveButton
-          }
-          ... on SanityVacanciesListBlock {
-            _type
-            heading
-            vacancies
-            filter
-            archiveButton
-          }
-          ... on SanityVideoAndTextBlock {
-            _type
-            heading
-            text
-            url
-            textBox
-            textPosition
-            buttonLabel
-            pageLink {
-              id
+            ... on SanityPeopleListBlock {
+              _key
+              _type
             }
-            externalUrl
+            ... on SanityQuoteListBlock {
+              _key
+              _type
+            }
+            ... on SanityVacanciesListBlock {
+              _key
+              _type
+            }
+            ... on SanityVideoAndTextBlock {
+              _key
+              _type
+            }
           }
         }
       }
@@ -109,4 +103,4 @@ export const query = graphql`
   }
 `
 
-export default Page
+export default PageTemplate
