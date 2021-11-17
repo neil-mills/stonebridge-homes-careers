@@ -45,7 +45,14 @@ const SkipLink = styled.a`
   }
 `
 
-const Header: FC = ({ navOptions }: { navOptions: NavigationLink[] }) => {
+interface HeaderProps {
+  navOptions: NavigationLink[]
+}
+const Header: FC<HeaderProps> = ({
+  navOptions,
+}: {
+  navOptions: NavigationLink[]
+}) => {
   return (
     <HeaderStyles>
       <SkipLink href="#content">Skip to main content</SkipLink>
