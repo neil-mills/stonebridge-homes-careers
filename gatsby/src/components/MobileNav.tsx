@@ -59,7 +59,8 @@ const StyledMobileNav = styled.div<{ active: boolean | undefined }>`
 `
 
 const MobileNav: FC = () => {
-  const { menuActive, setMenuActive, setBodyNoScroll } = useContext(AppContext)
+  const { menuActive, setMenuActive, setBodyNoScroll, address } =
+    useContext(AppContext)
 
   const handleClick = (e: MouseEvent, url: string) => {
     e.preventDefault()
@@ -118,13 +119,7 @@ const MobileNav: FC = () => {
           </ul>
         </nav>
         <footer>
-          <address>
-            Stonebridge Homes
-            <br />
-            Featherbank Court, Horsforth,
-            <br />
-            LS18 4QF, United Kingdon
-          </address>
+          <address>{address}</address>
           <SocialNav />
         </footer>
       </div>

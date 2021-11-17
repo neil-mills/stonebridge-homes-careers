@@ -101,6 +101,7 @@ const GlobalStyles = createGlobalStyle`
   }
   address {
     font-style: normal;
+    white-space: pre-wrap;
   }
 `
 export default GlobalStyles

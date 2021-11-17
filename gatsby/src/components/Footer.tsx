@@ -1,9 +1,10 @@
-import React, { FC } from 'react'
+import React, { FC, useContext } from 'react'
 import styled from 'styled-components'
 import { Link } from 'gatsby'
 import SocialNav from './SocialNav'
 import { WhiteHover, SectionGutter } from '../assets/styles/Utils'
 import { NavigationLink } from '../types/navigation'
+import AppContext from '../context/AppContext'
 
 const FooterStyles = styled.footer`
   ${SectionGutter}
@@ -81,39 +82,35 @@ interface FooterProps {
 }
 
 const Footer: FC<FooterProps> = ({ navOptions }): JSX.Element => {
+  const { address } = useContext(AppContext)
+  const list1: NavigationLink[] = navOptions.filter(
+    (option, i) => i < navOptions.length / 2
+  )
+  const list2: NavigationLink[] = navOptions.filter(
+    (option, i) => i >= navOptions.length / 2
+  )
   return (
     <FooterStyles>
       <div>
         <SecondaryNav>
           <ul>
-            <li>
-              <Link to={'/'}>Working with us</Link>
-            </li>
-            <li>
-              <Link to={'/'}>Vacancies</Link>
-            </li>
-            <li>
-              <Link to={'/'}>Our community</Link>
-            </li>
+            {list1.map(option => (
+              <li key={option.slug.current}>
+                <Link to={`/${option.slug.current}`}>{option.title}</Link>
+              </li>
+            ))}
           </ul>
           <ul>
-            <li>
-              <Link to={'/'}>Terms and conditions</Link>
-            </li>
-            <li>
-              <Link to={'/'}>Privacy policy</Link>
-            </li>
+            {list2.map(option => (
+              <li key={option.slug.current}>
+                <Link to={`/${option.slug.current}`}>{option.title}</Link>
+              </li>
+            ))}
           </ul>
         </SecondaryNav>
       </div>
       <aside>
-        <address>
-          Stonebridge Homes
-          <br />
-          Featherback Court, Horsforth,
-          <br />
-          LS18 4QF, United Kingdom
-        </address>
+        <address>{address}</address>
         <SocialNav />
       </aside>
     </FooterStyles>

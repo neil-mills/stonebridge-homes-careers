@@ -1,9 +1,10 @@
-import React, { FC } from 'react'
+import React, { FC, useContext } from 'react'
 import styled, { css } from 'styled-components'
 import Instagram from '../assets/svg/instagram.svg'
 import Facebook from '../assets/svg/facebook.svg'
 import Linkedin from '../assets/svg/linkedin.svg'
 import Twitter from '../assets/svg/twitter.svg'
+import AppContext from '../context/AppContext'
 
 interface SocialNavProps {
   color?: string
@@ -36,29 +37,38 @@ const SocialNavStyles = styled.nav<SocialNavProps>`
 `
 
 const SocialNav: FC<SocialNavProps> = ({ color = 'white' }): JSX.Element => {
+  const { instagram, facebook, linkedin, twitter } = useContext(AppContext)
   return (
     <SocialNavStyles color={color}>
       <ul>
-        <li>
-          <a href="">
-            <Instagram />
-          </a>
-        </li>
-        <li>
-          <a href="">
-            <Facebook />
-          </a>
-        </li>
-        <li>
-          <a href="">
-            <Linkedin />
-          </a>
-        </li>
-        <li>
-          <a href="">
-            <Twitter />
-          </a>
-        </li>
+        {instagram && (
+          <li>
+            <a href={instagram} target="_blank" rel="noreferrer">
+              <Instagram />
+            </a>
+          </li>
+        )}
+        {facebook && (
+          <li>
+            <a href={facebook} target="_blank" rel="noreferrer">
+              <Facebook />
+            </a>
+          </li>
+        )}
+        {linkedin && (
+          <li>
+            <a href={linkedin} target="_blank" rel="noreferrer">
+              <Linkedin />
+            </a>
+          </li>
+        )}
+        {twitter && (
+          <li>
+            <a href={twitter} target="_blank" rel="noreferrer">
+              <Twitter />
+            </a>
+          </li>
+        )}
       </ul>
     </SocialNavStyles>
   )
