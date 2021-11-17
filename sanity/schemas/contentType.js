@@ -7,9 +7,9 @@ export default {
   icon,
   of: [
     {
-      title: 'Hero banner',
-      name: 'heroBanner',
-      type: 'heroBanner',
+      title: 'Home Banner',
+      name: 'homeBanner',
+      type: 'homeBanner',
     },
     {
       title: 'Image and text',

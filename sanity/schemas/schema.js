@@ -12,13 +12,14 @@ import contentBlock from './contentBlock';
 import navigationLink from './navigationLink';
 import externalLink from './externalLink';
 import contentType from './contentType';
-import heroBanner from './heroBanner';
 import imageAndTextBlock from './imageAndTextBlock';
 import videoAndTextBlock from './videoAndTextBlock';
 import newsListBlock from './newsListBlock';
 import vacanciesListBlock from './vacanciesListBlock';
 import peopleListBlock from './peopleListBlock';
 import quoteListBlock from './quoteListBlock';
+import settings from './settings';
+import homeBanner from './homeBanner';
 // Then we give our schema to the builder and provide the result to Sanity
 export default createSchema({
   // We name our schema
@@ -26,6 +27,7 @@ export default createSchema({
   // Then proceed to concatenate our document type
   // to the ones provided by any plugins that are installed
   types: schemaTypes.concat([
+    homeBanner,
     article,
     newsCategory,
     person,
@@ -35,12 +37,12 @@ export default createSchema({
     navigationLink,
     externalLink,
     contentType,
-    heroBanner,
     imageAndTextBlock,
     videoAndTextBlock,
     newsListBlock,
     vacanciesListBlock,
     peopleListBlock,
     quoteListBlock,
+    settings,
   ]),
 });
