@@ -2,14 +2,22 @@ import React, { FC } from 'react'
 import styled from 'styled-components'
 import { HeadingStyle } from '../assets/styles/Typography'
 import { VerticalSpacingBottom } from '../assets/styles/Utils'
+import Section from '../components/Section'
 
-interface TimelineItemProps {
+interface TimelineItem {
+  _key: string
   year: string
   text: string
   highlighted?: boolean
 }
+interface TimelineSection {
+  _key: string
+  title: string
+  items: TimelineItem[]
+}
+
 interface Props {
-  items: TimelineItemProps[]
+  sections: TimelineSection[]
 }
 const StyledTimelineList = styled.dl`
   display: flex;
@@ -75,7 +83,20 @@ const StyledTimelineItem = styled.div<{ highlighted: boolean }>`
     }
   }
 `
-const TimelineItem: FC<TimelineItemProps> = ({
+
+const TimelineSection: FC<TimelineSection> = ({ title, items }) => {
+  return (
+    <>
+      <h2>{title}</h2>
+      <StyledTimelineList>
+        {items.map(item => (
+          <TimelineItem key={item._key} {...item} />
+        ))}
+      </StyledTimelineList>
+    </>
+  )
+}
+const TimelineItem: FC<TimelineItem> = ({
   year,
   text,
   highlighted = false,
@@ -87,13 +108,13 @@ const TimelineItem: FC<TimelineItemProps> = ({
     </StyledTimelineItem>
   )
 }
-const TimelineList: FC<Props> = ({ items }) => {
+const TimelineList: FC<Props> = ({ sections }) => {
   return (
-    <StyledTimelineList>
-      {items.map((props, i) => (
-        <TimelineItem key={i} {...props} />
+    <Section>
+      {sections.map(section => (
+        <TimelineSection key={section._key} {...section} />
       ))}
-    </StyledTimelineList>
+    </Section>
   )
 }
 

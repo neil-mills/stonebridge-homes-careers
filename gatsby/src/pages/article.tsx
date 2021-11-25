@@ -20,7 +20,8 @@ import ArticleTitle from '../components/ArticleTitle'
 import ArticleSubSection from '../components/ArticleSubSection'
 import ImageAndTextBlock from '../components/ImageAndTextBlock'
 import ParallaxImage from '../components/ParallaxImage'
-import Community from '../components/Community'
+import Articles from '../components/Articles'
+import articlesData from '../data/articles'
 
 const StyledPicture = styled.picture`
   ${VerticalSpacingTop}
@@ -63,7 +64,7 @@ const VacancyPage: FC = (): JSX.Element => {
 
       <ImageAndTextBlock
         src={ArticleImage2}
-        srcLarge={ArticleImage2Lg}
+        srcSet={ArticleImage2Lg}
         heading={'Title'}
         tint={true}
         text={
@@ -72,7 +73,7 @@ const VacancyPage: FC = (): JSX.Element => {
       />
       <ImageAndTextBlock
         src={ArticleImage3}
-        srcLarge={ArticleImage3Lg}
+        srcSet={ArticleImage3Lg}
         heading={'Title'}
         alignText={'right'}
         text={
@@ -103,7 +104,13 @@ const VacancyPage: FC = (): JSX.Element => {
           </p>
         </ArticleSubSection>
       </Section>
-      <Community title={'More articles'} />
+      <Articles
+        heading={'Our community'}
+        carousel={true}
+        articles={articlesData}
+        buttonLabel={'More articles'}
+        buttonLink={'/our-community'}
+      />
       <ImageAndTextBlock
         heading={'Vacancies'}
         text={'Be a part of our amazing team at Stonebridge Homes'}

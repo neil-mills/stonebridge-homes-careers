@@ -1,7 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
-import Articles from './Articles'
-import { ArticleItemType } from './ArticleItem'
+import Articles from './ArticlesGrid'
+import { ArticleItemType } from '../types'
 import { SectionGutter } from '../assets/styles/Utils'
 import { HeadingLarge } from '../assets/styles/Typography'
 import Section from './Section'
@@ -18,58 +18,106 @@ const articles: ArticleItemType[] = [
   {
     subTitle: 'Title of role',
     title: 'Name fo person',
-    src: Person1,
-    srcLarge: Person1,
-    srcAlt: 'Person 1',
+    image: {
+      asset: {
+        fluid: {
+          src: Person1,
+          srcSet: Person1,
+        },
+      },
+    },
+    imageAlt: 'Person 1',
   },
   {
     subTitle: 'Title of role',
     title: 'Name fo person',
-    src: Person2,
-    srcLarge: Person2,
-    srcAlt: 'Person 2',
+    image: {
+      asset: {
+        fluid: {
+          src: Person2,
+          srcSet: Person2,
+        },
+      },
+    },
+    imageAlt: 'Person 2',
   },
   {
     subTitle: 'Title of role',
     title: 'Name fo person',
-    src: Person3,
-    srcLarge: Person3,
-    srcAlt: 'Person 3',
+    image: {
+      asset: {
+        fluid: {
+          src: Person3,
+          srcSet: Person3,
+        },
+      },
+    },
+    imageAlt: 'Person 3',
   },
   {
     subTitle: 'Title of role',
     title: 'Name fo person',
-    src: Person4,
-    srcLarge: Person4,
-    srcAlt: 'Person 4',
+    image: {
+      asset: {
+        fluid: {
+          src: Person4,
+          srcSet: Person4,
+        },
+      },
+    },
+    imageAlt: 'Person 4',
   },
   {
     subTitle: 'Title of role',
     title: 'Name fo person',
-    src: Person5,
-    srcLarge: Person5,
-    srcAlt: 'Person 5',
+    image: {
+      asset: {
+        fluid: {
+          src: Person5,
+          srcSet: Person5,
+        },
+      },
+    },
+    imageAlt: 'Person 5',
   },
   {
     subTitle: 'Title of role',
     title: 'Name fo person',
-    src: Person6,
-    srcLarge: Person6,
-    srcAlt: 'Person 6',
+    image: {
+      asset: {
+        fluid: {
+          src: Person6,
+          srcSet: Person6,
+        },
+      },
+    },
+    imageAlt: 'Person 6',
   },
   {
     subTitle: 'Title of role',
     title: 'Name fo person',
-    src: Person7,
-    srcLarge: Person7,
-    srcAlt: 'Person 7',
+    image: {
+      asset: {
+        fluid: {
+          src: Person7,
+          srcSet: Person7,
+        },
+      },
+    },
+    imageAlt: 'Person 7',
   },
   {
     subTitle: 'Title of role',
     title: 'Name fo person',
-    src: Person8,
-    srcLarge: Person8,
-    srcAlt: 'Person 8',
+    image: {
+      asset: {
+        fluid: {
+          src: Person8,
+          srcSet: Person8,
+        },
+      },
+    },
+    imageAlt: 'Person 8',
   },
 ]
 

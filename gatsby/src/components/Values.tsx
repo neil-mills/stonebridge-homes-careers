@@ -43,28 +43,36 @@ const ValuesList = styled.ul`
     grid-template-rows: auto;
   }
 `
-const Values: FC = (): JSX.Element => {
+
+interface Item {
+  _key: string
+  title: string
+  icon: { asset: { url: string } }
+}
+interface Props {
+  items: Item[]
+  heading: string
+  subHeading?: string
+  headingLevel?: string
+  text?: string
+  tint?: boolean
+}
+const Values: FC<Props> = (props): JSX.Element => {
   return (
-    <Section tint={true}>
+    <Section tint={props.tint}>
       <Heading
-        heading={'Our values'}
-        text={'Lorem ipsum dolor sit amet, consectetur adipiscing'}
+        heading={props.heading}
+        subHeading={props.subHeading}
+        text={props.text}
         marginBottom
       />
       <Spacer marginTop={true}>
         <ValuesList>
-          <li>
-            <IconTitle icon={<TeamworkIcon />} title={'Teamwork'} />
-          </li>
-          <li>
-            <IconTitle icon={<ExcellenceIcon />} title={'Excellence'} />
-          </li>
-          <li>
-            <IconTitle icon={<PrideIcon />} title={'Pride'} />
-          </li>
-          <li>
-            <IconTitle icon={<PassionIcon />} title={'Passion'} />
-          </li>
+          {props.items.map((item: Item) => (
+            <li key={item._key}>
+              <IconTitle icon={item.icon.asset.url} title={item.title} />
+            </li>
+          ))}
         </ValuesList>
       </Spacer>
     </Section>

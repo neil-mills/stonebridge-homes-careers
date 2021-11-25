@@ -3,6 +3,7 @@ import styled from 'styled-components'
 import { Link } from 'gatsby'
 import { HeadingStyle, HeadingMedium } from '../assets/styles/Typography'
 import PlayIcon from '../assets/svg/play.svg'
+import { ArticleItemType } from '../types'
 
 const ArticleItemStyles = styled.article`
   background-color: var(--white);
@@ -46,19 +47,6 @@ const ArticleItemStyles = styled.article`
   }
 `
 
-export interface ArticleItemType {
-  children?: ReactNode
-  subTitle?: string
-  subTitleDate?: boolean
-  title: string
-  link?: string
-  video?: boolean
-  src: string
-  srcLarge: string
-  srcAlt?: string
-  width?: string
-}
-
 const ArticleLink = ({
   link,
   children,
@@ -72,30 +60,29 @@ const ArticleLink = ({
 const ArticleItem = forwardRef<HTMLElement, ArticleItemType>((props, ref) => {
   const {
     subTitle = '',
-    subTitleDate = false,
+    date = '',
     title,
     link,
     video = false,
-    src,
-    srcLarge,
-    srcAlt = '',
+    image,
+    imageAlt = '',
     width = 'auto',
   } = props
+
   return (
     <ArticleItemStyles ref={ref} style={{ width: `${width}` }}>
       <ArticleLink link={link}>
         <picture>
-          <source media="(min-width: 768px)" srcSet={srcLarge} />
+          <source
+            media="(min-width: 500px)"
+            srcSet={image.asset.fluid.srcSet}
+          />
           {video && <PlayIcon />}
-          <img src={src} alt={srcAlt} />
+          <img src={image.asset.fluid.src} alt={imageAlt} />
         </picture>
         <div>
-          {subTitle &&
-            (subTitleDate ? (
-              <time dateTime="{subTitle}">{subTitle}</time>
-            ) : (
-              <span>{subTitle}</span>
-            ))}
+          {date && <time dateTime="{date}">{date}</time>}
+          {subTitle && <span>{subTitle}</span>}
           <h3>{title}</h3>
         </div>
       </ArticleLink>

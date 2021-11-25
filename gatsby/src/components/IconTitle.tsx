@@ -3,7 +3,7 @@ import styled from 'styled-components'
 import { HeadingMedium } from '../assets/styles/Typography'
 
 interface Props {
-  icon: React.ReactNode
+  icon: string
   title: string
   align?: string
 }
@@ -19,10 +19,11 @@ const IconTitleStyles = styled.div<StyleProps>`
       margin-bottom: 0;
     }
   }
-  svg {
+  img {
     height: 40px;
     width: auto;
     margin-bottom: 2rem;
+    display: inline-block;
   }
   @media screen and (min-width: 768px) {
     max-width: 215px;
@@ -40,7 +41,7 @@ const IconTitleStyles = styled.div<StyleProps>`
 const IconTitle: FC<Props> = ({ icon, title, align = 'center' }) => {
   return (
     <IconTitleStyles align={align}>
-      {icon}
+      <img src={icon} />
       <h3>{title}</h3>
     </IconTitleStyles>
   )

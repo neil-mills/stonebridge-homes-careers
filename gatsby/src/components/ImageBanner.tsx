@@ -7,19 +7,18 @@ import {
   SectionGutter,
   GutterPaddingLeft,
   GutterPaddingRight,
-  GutterMarginBottom,
 } from '../assets/styles/Utils'
 
 interface ImageBannerProps {
-  top?: boolean
-  src: string
-  srcLarge: string
-  srcAlt?: string
   heading: string
   text: string
+  src: string
+  srcSet: string
+  srcAlt?: string
   buttonLabel?: string
   buttonLink?: string
   alignText?: string
+  top?: boolean
   tint?: boolean
 }
 
@@ -93,7 +92,7 @@ const InsetBox = styled.div`
 const BgImage = styled.picture`
   img {
     object-fit: cover;
-    object-position: right top;
+    object-position: center top;
     width: 100%;
     height: 100%;
   }
@@ -115,7 +114,7 @@ const BgImage = styled.picture`
 const ImageBanner: FC<ImageBannerProps> = ({
   top = false,
   src,
-  srcLarge,
+  srcSet,
   srcAlt = '',
   heading,
   text,
@@ -131,7 +130,7 @@ const ImageBanner: FC<ImageBannerProps> = ({
       data-text-align={alignText}
     >
       <BgImage>
-        <source media="(min-width: 500px)" srcSet={srcLarge} />
+        <source media="(min-width: 500px)" srcSet={srcSet} />
         <img src={src} alt={srcAlt} />
       </BgImage>
       <SectionInner>

@@ -62,44 +62,44 @@ const Picture = styled.picture`
 `
 
 interface ImageAndTextBlockProps {
+  heading: string
+  text: string
   alignText?: string
-  video?: boolean
   src?: string
-  srcLarge?: string
+  srcSet?: string
   srcAlt?: string
   buttonLabel?: string
   buttonLink?: string
+  videoSrc?: string
   buttonCallback?: () => void
-  heading: string
-  text: string
   tint?: boolean
 }
 const ImageAndTextBlock = ({
-  alignText = 'left',
   heading,
   text,
-  video = false,
+  alignText = 'left',
   src = '',
-  srcLarge = '',
+  srcSet = '',
   srcAlt = '',
   buttonLabel = '',
   buttonLink = '',
+  videoSrc = '',
   buttonCallback,
   tint = false,
 }: ImageAndTextBlockProps): JSX.Element => {
   return (
     <Section tint={tint}>
       <SectionStyles data-text-align={alignText}>
-        {src && video && (
+        {src && videoSrc && (
           <Picture>
-            <source media="(min-width: 500px)" srcSet={srcLarge} />
+            <source media="(min-width: 500px)" srcSet={srcSet} />
             <PlayIcon />
             <img src={src} alt={srcAlt} />
           </Picture>
         )}
-        {src && !video && (
+        {src && !videoSrc && (
           <Picture>
-            <source media="(min-width: 500px)" srcSet={srcLarge} />
+            <source media="(min-width: 500px)" srcSet={srcSet} />
             <img src={src} />
           </Picture>
         )}

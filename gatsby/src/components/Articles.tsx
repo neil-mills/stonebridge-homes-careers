@@ -1,112 +1,140 @@
-import React, { useState, useEffect, useRef } from 'react'
-import styled from 'styled-components'
-import ArticleItem from './ArticleItem'
+import React, { FC } from 'react'
+import styled, { css } from 'styled-components'
+import {
+  GutterPaddingTop,
+  GutterPaddingBottom,
+  GutterPaddingRight,
+  GutterPaddingLeft,
+} from '../assets/styles/Utils'
+import { SectionInner } from '../components/Section'
+import ArticleCategoryMenu from '../components/ArticleCategoryMenu'
+import Heading from '../components/Heading'
+import ArticlesGrid from '../components/ArticlesGrid'
+import Button from './Button'
+import { ArticleItemType } from '../types'
+import categoriesData from '../data/categories'
 
-const Track = styled.div`
-  [data-carousel='false'] & {
-    display: grid;
-    gap: 2rem;
-    row-gap: 2rem;
-    grid-auto-rows: auto;
-    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-    @media screen and (min-width: 1024px) {
-      grid-template-columns: repeat(auto-fit, minmax(290px, 1fr));
-    }
-    @media screen and (min-width: 1400px) {
-      grid-template-columns: repeat(3, 1fr);
-    }
-    width: 100%;
-  }
-  [data-carousel='true'] & {
-    display: block;
-    overflow-x: scroll;
-    overflow-y: hidden;
-    white-space: nowrap;
-    scroll-snap-type: x mandatory;
-    scroll-behavior: smooth;
-    &::-webkit-scrollbar {
-      display: none;
-    }
-    --ms-overflow-style: none;
-    scrollbar-width: none;
-  }
+const StyledArticles = styled.section<{ showCategories: boolean }>`
+  ${GutterPaddingTop}
+  ${GutterPaddingBottom}
+  ${GutterPaddingLeft}
+  ${({ showCategories }) =>
+    !showCategories
+      ? GutterPaddingRight
+      : css`
+          margin-right: 0;
+        `}
+  background-color: var(--light-grey);
 `
-interface Article {
-  subTitle?: string
-  subTitleDate?: boolean
-  title: string
-  link?: string
-  video?: boolean
-  src: string
-  srcLarge: string
-}
 
-export interface Categories {
-  slug: string
-  title: string
+const StyledArticlesWrapper = styled.div<{ showCategories: boolean }>`
+  ${({ showCategories }) => showCategories && GutterPaddingRight}
+`
+const StyledButtonWrapper = styled.div<{ showCategories: boolean }>`
+  display: flex;
+  justify-content: center;
+  ${({ showCategories }) =>
+    showCategories
+      ? GutterPaddingRight
+      : css`
+          margin-right: 0;
+        `}
+`
+
+interface WrapperProps {
+  showCategories: boolean
 }
+const ArticlesWrapper: FC<WrapperProps> = ({ children, showCategories }) => (
+  <StyledArticlesWrapper showCategories={showCategories}>
+    {children}
+  </StyledArticlesWrapper>
+)
+const ButtonWrapper: FC<WrapperProps> = ({ children, showCategories }) => (
+  <StyledButtonWrapper showCategories={showCategories}>
+    {children}
+  </StyledButtonWrapper>
+)
+
 interface ArticlesProps {
+  subHeading?: string
+  heading?: string
+  text?: string
+  headingLevel?: number
+  showArticles?: string
+  selectedArticles?: ArticleItemType[]
+  articles: ArticleItemType[]
+  showCategories?: boolean
+  buttonLabel?: string
+  buttonLink?: string
   carousel?: boolean
-  articles: Article[]
-  categories?: Categories[]
+  currentPage?: number
+  className?: string
+  perPage?: string
 }
 
-const Articles = ({
-  carousel = false,
+const Articles: FC<ArticlesProps> = ({
+  subHeading = '',
+  heading = '',
+  text = '',
+  headingLevel = 2,
+  showArticles = 'latest',
+  selectedArticles = [],
   articles = [],
-}: ArticlesProps): JSX.Element => {
-  const trackRef = useRef<HTMLDivElement | null>(null)
-  const articleRefs = useRef<HTMLElement[]>([])
-  const [articleWidth, setArticleWidth] = useState(0)
-
-  const handleResize = () => {
-    const width = window.innerWidth
-    let visibleArticles = 1
-    if (width > 499) {
-      visibleArticles = 2
-    }
-    if (width > 767) {
-      visibleArticles = 3
-    }
-
-    if (trackRef.current) {
-      const trackWidth: number = trackRef.current.clientWidth
-      const articleMargin: number = parseFloat(
-        getComputedStyle(articleRefs.current[0]).getPropertyValue(
-          'margin-right'
-        )
-      )
-      setArticleWidth(
-        (trackWidth - articleMargin * (visibleArticles - 1)) / visibleArticles
-      )
-    }
-  }
-
-  useEffect(() => {
-    if (carousel) {
-      window.addEventListener('resize', handleResize)
-      handleResize()
-      return () => {
-        window.removeEventListener('resize', handleResize)
-      }
-    }
-  }, [])
-
+  showCategories = false,
+  buttonLabel = '',
+  buttonLink = '',
+  carousel = false,
+  currentPage = 1,
+  perPage = 'all',
+  className = '',
+}) => {
+  const categories = categoriesData
+  let filteredArticles: ArticleItemType[] =
+    showArticles === 'selected' ? selectedArticles : articles
+  const totalPages =
+    perPage !== 'all'
+      ? Math.ceil(filteredArticles.length / parseInt(perPage))
+      : 1
+  const articlesPerPage =
+    perPage === 'all' ? filteredArticles.length : parseInt(perPage)
+  console.log('length=', articles.length)
+  console.log('per page=', articlesPerPage)
+  const start = (currentPage - 1) * articlesPerPage
+  filteredArticles = filteredArticles.filter(
+    (article, i) => i >= start && i < start + articlesPerPage
+  )
   return (
-    <>
-      <div data-carousel={carousel}>
-        <Track ref={trackRef}>
-          {articles.map((article, i) => (
-            <ArticleItem
-              key={i}
-              ref={(element: HTMLElement) => (articleRefs.current[i] = element)}
-              {...article}
-              width={carousel ? `${articleWidth}px` : 'auto'}
-            />
-          ))}
-        </Track>
-      </div>
-    </>
+    <StyledArticles className={className} showCategories={showCategories}>
+      <SectionInner>
+        {heading && (
+          <Heading
+            heading={heading}
+            subHeading={subHeading}
+            level={headingLevel}
+            text={text}
+            marginBottom={true}
+          />
+        )}
+      </SectionInner>
+      {showCategories && categories.length && (
+        <ArticleCategoryMenu categories={categories} />
+      )}
+      <ArticlesWrapper showCategories={showCategories}>
+        <SectionInner>
+          <ArticlesGrid carousel={carousel} articles={filteredArticles} />
+        </SectionInner>
+      </ArticlesWrapper>
+      {currentPage !== totalPages && (
+        <ButtonWrapper showCategories={showCategories}>
+          <Button label={'Load more'} link={'/'} secondary={true} />
+        </ButtonWrapper>
+      )}
+      {buttonLabel && buttonLink && (
+        <SectionInner>
+          <Button label={buttonLabel} link={buttonLink} />
+        </SectionInner>
+      )}
+    </StyledArticles>
   )
 }
 

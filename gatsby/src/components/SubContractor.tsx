@@ -1,59 +1,46 @@
-import React, { FC } from 'react'
-import Form, { TextInput, FileInput, CheckboxInput } from './Form'
-import Select from './Select'
-import Button from './Button'
+import React, { FC, useContext } from 'react'
+import ImageAndTextBlock from './ImageAndTextBlock'
+import AppContext from '../context/AppContext'
+import Dialog from '../components/Dialog'
+import SubContractorForm from './SubContractorForm'
 
-const SubContractor: FC = () => {
+interface Props {
+  heading: string
+  text: string
+  buttonLabel?: string
+}
+const SubContractor: FC<Props> = ({ heading, text, buttonLabel }) => {
+  const { setDialogActive, setBodyNoScroll } = useContext(AppContext)
+
+  const openDialog = () => {
+    if (setDialogActive) {
+      setDialogActive(true)
+    }
+    if (setBodyNoScroll) {
+      setBodyNoScroll(true)
+    }
+  }
+
   return (
-    <Form method={'post'} action={'/'}>
-      <fieldset>
-        <div>
-          <label htmlFor={'title'}>Title</label>
-          <Select size={'sm'} />
-        </div>
-        <div>
-          <label htmlFor={'firstName'}>First name</label>
-          <TextInput
-            type={'text'}
-            id={'firstName'}
-            name={'firstName'}
-            value={''}
-          />
-        </div>
-        <div>
-          <label htmlFor={'lastName'}>Last name</label>
-          <TextInput
-            type={'text'}
-            id={'lastName'}
-            name={'lastName'}
-            value={''}
-          />
-        </div>
-        <div>
-          <label htmlFor={'email'}>Email</label>
-          <TextInput type={'text'} id={'email'} name={'email'} value={''} />
-        </div>
-        <div>
-          <label htmlFor={'phone'}>Phone</label>
-          <TextInput type={'text'} id={'phone'} name={'phone'} value={''} />
-        </div>
-        <div>
-          <label htmlFor={'cv'}>CV</label>
-          <FileInput id={'cv'} name={'cv'} value={''} />
-        </div>
-        <div>
-          <CheckboxInput
-            label={'I accept the terms and conditions'}
-            name={'accept'}
-            id={'accept'}
-            checked={true}
-            last={true}
-          />
-        </div>
-      </fieldset>
-      <Button label={'Register details'} link={'/'} />
-    </Form>
+    <>
+      <ImageAndTextBlock
+        heading={heading}
+        text={text}
+        buttonLabel={buttonLabel}
+        buttonCallback={openDialog}
+      />
+      <Dialog>
+        <h3 id={'dialogTitle'}>Register as a subcontractor</h3>
+        <SubContractorForm />
+      </Dialog>
+    </>
   )
+}
+
+SubContractor.defaultProps = {
+  heading: '',
+  text: '',
+  buttonLabel: '',
 }
 
 export default SubContractor

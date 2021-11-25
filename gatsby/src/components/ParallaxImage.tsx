@@ -1,5 +1,6 @@
 import React, { useEffect, useState, useRef } from 'react'
 import styled from 'styled-components'
+import { ImageType } from '../types'
 
 const SectionStyles = styled.section`
   display: block;
@@ -16,22 +17,16 @@ const SectionStyles = styled.section`
 `
 
 interface ParallaxImageProps {
-  src: string
-  srcLg: string
-  breakpoint?: number
+  src: ImageType
+  srcLg: ImageType
 }
-const ParallaxImage = ({
-  src,
-  srcLg,
-  breakpoint = 767,
-}: ParallaxImageProps): JSX.Element => {
+const ParallaxImage = ({ src, srcLg }: ParallaxImageProps): JSX.Element => {
   const sectionRef = useRef<HTMLElement | null>(null)
   const [loaded, setLoaded] = useState<number>(0)
   const [bgSrc, setBgSrc] = useState<string>('')
 
   const preloadImages = () => {
-    console.log('preload')
-    const images: string[] = [src, srcLg]
+    const images: string[] = [src.asset.fluid.src, srcLg.asset.fluid.src]
     images.forEach(src => {
       const img = new Image()
       img.src = src
@@ -42,7 +37,9 @@ const ParallaxImage = ({
   }
 
   const handleResize = () => {
-    setBgSrc(window.innerWidth <= breakpoint ? src : srcLg)
+    setBgSrc(
+      window.innerWidth <= 767 ? src.asset.fluid.src : srcLg.asset.fluid.src
+    )
   }
 
   useEffect(() => {

@@ -1,28 +1,44 @@
 const path = require('path')
-import fetch from 'isomorphic-fetch'
+const fetch = require('isomorphic-fetch')
+const dotenv = require('dotenv')
+dotenv.config({ path: '.env' })
 
-async function fetchVacanciesAndTurnIntoNodes({
+const fetchVacanciesAndTurnIntoNodes = async ({
   actions,
   createNodeId,
   createContentDigest,
-}) {
+}) => {
   //turn vacancies into nodes
-  console.log('fetch vacancies!')
   const jsonData = {
-    APIKey: '63070fff-b064-42a9-a231-58f1a0dda087',
+    APIKey: process.env.API_KEY,
     Action: 'GetAllVacancies',
   }
   try {
-    const res = await fetch('https://api.peoplehr.net/Vacancy', {
-      type: 'POST',
+    const res = await fetch('https://api.peoplehr.net/Vacancy/', {
+      method: 'POST',
       headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
+        'Content-Type': 'text/json',
       },
       body: JSON.stringify(jsonData),
     })
     const vacancies = await res.json()
     console.log(vacancies)
+    for (const vacancy of vacancies.Result) {
+      const nodeMeta = {
+        id: createNodeId(vacancy.Reference),
+        parent: null,
+        children: [],
+        internal: {
+          type: 'Vacancy',
+          mediaType: 'application/json',
+          contentDigest: createContentDigest(vacancy),
+        },
+      }
+      actions.createNode({
+        ...vacancy,
+        ...nodeMeta,
+      })
+    }
   } catch (err) {
     console.log('ERROR=', err)
   }
@@ -113,6 +129,45 @@ const sitePages = async ({ graphql, actions }) => {
   })
 }
 
+const vacancyPages = async ({ graphql, actions }) => {
+  const pageTemplate = path.resolve('./src/templates/Vacancy.tsx')
+  const { data } = await graphql(`
+    query {
+      vacancies: allVacancy {
+        nodes {
+          City
+          ClosingDate(fromNow: false)
+          Company
+          Country
+          Department
+          Experience
+          IsHideSalary
+          JobBordUrl
+          JobDescription
+          JobTitle
+          Location
+          Reference
+          SalaryRange
+          Status
+          VacancyDescription
+          VacancyName
+          VacancyType
+          id
+        }
+      }
+    }
+  `)
+  data.vacancies.nodes.forEach(vacancy => {
+    actions.createPage({
+      path: `/vacancy/${vacancy.id}`,
+      component: pageTemplate,
+      context: {
+        id: vacancy.id,
+      },
+    })
+  })
+}
+
 export const createPages = async params => {
-  await Promise.all([sitePages(params)])
+  await Promise.all([sitePages(params), vacancyPages(params)])
 }

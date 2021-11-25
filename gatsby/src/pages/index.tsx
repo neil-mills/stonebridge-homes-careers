@@ -1,8 +1,7 @@
-import React, { FC, useState, useEffect } from 'react'
+import React, { FC } from 'react'
 import HomeBanner from '../components/HomeBanner'
 import ImageAndTextBlock from '../components/ImageAndTextBlock'
 import ImageBanner from '../components/ImageBanner'
-import Community from '../components/Community'
 import ParallaxImage from '../components/ParallaxImage'
 import VideoPoster from '../assets/images/video-poster-md.jpg'
 import WorkingWithUsSrc from '../assets/images/working-with-us.jpg'
@@ -11,12 +10,10 @@ import ParallaxSrc from '../assets/images/parallax-image.jpg'
 import ParallaxSrcLg from '../assets/images/parallax-image-lg.jpg'
 import BannerImg from '../assets/images/home-banner-bg.jpg'
 import BannerImgLg from '../assets/images/home-banner-bg-lg.jpg'
+import Articles from '../components/Articles'
+import articlesData from '../data/articles'
 
 const HomePage: FC = () => {
-
-  useEffect(() => {
-    
-  }, [])
   return (
     <>
       <HomeBanner
@@ -34,12 +31,12 @@ const HomePage: FC = () => {
           'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Egestas sodales aliquam justo, ut molestie elit nisl risus. Dignissim turpis neque eget in ante pulvinar risus donec. Venenatis pulvinar dolor arcu arcu, lorem adipiscing sed. Volutpat, vitae fusce facilisi tempus'
         }
         src={VideoPoster}
-        video={true}
+        videoSrc={'/'}
         alignText={'right'}
       />
       <ImageBanner
         src={WorkingWithUsSrc}
-        srcLarge={WorkingWithUsSrcLg}
+        srcSet={WorkingWithUsSrcLg}
         srcAlt={''}
         heading={'Working with us'}
         text={
@@ -48,13 +45,34 @@ const HomePage: FC = () => {
         buttonLabel={'Find out more'}
         buttonLink={'/working-with-us'}
       />
-      <Community title={'Our community'} />
-      <ParallaxImage src={ParallaxSrc} srcLg={ParallaxSrcLg} />
+      <Articles
+        heading={'Our community'}
+        carousel={true}
+        articles={articlesData}
+        buttonLabel={'View all news'}
+        buttonLink={'/our-community'}
+      />
+      <ParallaxImage
+        src={{
+          asset: {
+            fluid: {
+              src: ParallaxSrc,
+            },
+          },
+        }}
+        srcLg={{
+          asset: {
+            fluid: {
+              src: ParallaxSrcLg,
+            },
+          },
+        }}
+      />
       <ImageAndTextBlock
         heading={'Vacancies'}
         text={'Be a part of our amazing team at Stonebridge Homes'}
         buttonLabel={'View job vacancies'}
-        buttonLink={'/'}
+        buttonLink={'/vacancies'}
       />
     </>
   )
