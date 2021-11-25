@@ -7,7 +7,7 @@ export default {
   icon,
   of: [
     {
-      title: 'Home Banner',
+      title: 'Home banner',
       name: 'homeBanner',
       type: 'homeBanner',
     },
@@ -17,9 +17,9 @@ export default {
       type: 'imageAndTextBlock',
     },
     {
-      title: 'Video and text',
-      name: 'videoAndTextBlock',
-      type: 'videoAndTextBlock',
+      title: 'Image banner',
+      name: 'imageBanner',
+      type: 'imageBanner',
     },
     {
       title: 'Vacancies list',
@@ -27,14 +27,34 @@ export default {
       type: 'vacanciesListBlock',
     },
     {
-      title: 'News list',
-      name: 'newsListBlock',
-      type: 'newsListBlock',
+      title: 'Articles list',
+      name: 'articlesBlock',
+      type: 'articlesBlock',
     },
     {
-      title: 'People list',
-      name: 'peopleListBlock',
-      type: 'peopleListBlock',
+      title: 'Parallax image',
+      name: 'parallaxImageBlock',
+      type: 'parallaxImageBlock',
+    },
+    {
+      title: 'Timeline block',
+      name: 'timelineBlock',
+      type: 'timelineBlock',
+    },
+    {
+      title: 'Keyline grid block',
+      name: 'keylineGridBlock',
+      type: 'keylineGridBlock',
+    },
+    {
+      title: 'Values block',
+      name: 'valuesBlock',
+      type: 'valuesBlock',
+    },
+    {
+      title: 'Subcontactor block',
+      name: 'subContractorBlock',
+      type: 'subContractorBlock',
     },
     {
       title: 'Quote list',

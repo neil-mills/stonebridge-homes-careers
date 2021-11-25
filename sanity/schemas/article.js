@@ -2,7 +2,7 @@ import { MdPerson as icon } from 'react-icons/md';
 
 export default {
   name: 'article',
-  title: 'News',
+  title: 'Articles',
   type: 'document',
   icon,
   fields: [
@@ -50,6 +50,11 @@ export default {
       options: {
         hotspot: true,
       },
+    },
+    {
+      name: 'imageAlt',
+      title: 'Image description',
+      type: 'string',
     },
     {
       name: 'categories',

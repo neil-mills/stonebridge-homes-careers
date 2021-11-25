@@ -7,8 +7,14 @@ export default {
   icon,
   fields: [
     {
-      name: 'name',
+      name: 'title',
       title: 'Name',
+      type: 'string',
+      description: '',
+    },
+    {
+      name: 'subTitle',
+      title: 'Job title',
       type: 'string',
       description: '',
     },
@@ -22,12 +28,6 @@ export default {
       },
     },
     {
-      name: 'jobTitle',
-      title: 'Job Title',
-      type: 'string',
-      description: '',
-    },
-    {
       name: 'image',
       title: 'Image',
       type: 'image',
@@ -36,4 +36,4 @@ export default {
       },
     },
   ],
-}
+};

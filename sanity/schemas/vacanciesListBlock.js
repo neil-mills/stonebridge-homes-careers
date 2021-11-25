@@ -9,8 +9,18 @@ export default {
       type: 'string',
     },
     {
-      title: 'Vacancies',
-      name: 'vacancies',
+      title: 'Sub heading',
+      name: 'subHeading',
+      type: 'string',
+    },
+    {
+      title: 'Text',
+      name: 'text',
+      type: 'string',
+    },
+    {
+      title: 'Limit',
+      name: 'limit',
       description: 'Number of vacancies displayed in list',
       type: 'string',
       options: {
@@ -29,10 +39,10 @@ export default {
       description: 'Display filter menu',
     },
     {
-      title: 'Archive button',
-      name: 'archiveButton',
-      type: 'boolean',
-      description: 'Display link to archive page',
+      title: 'Button label',
+      name: 'buttonLabel',
+      type: 'string',
+      description: 'Visible label of button',
     },
   ],
 };

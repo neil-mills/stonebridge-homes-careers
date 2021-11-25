@@ -1,6 +1,6 @@
 export default {
-  title: 'Image and text',
-  name: 'imageAndTextBlock',
+  title: 'Image banner',
+  name: 'imageBanner',
   type: 'object',
   fields: [
     {
@@ -14,19 +14,6 @@ export default {
       name: 'text',
       type: 'text',
       description: 'Visible text',
-    },
-    {
-      title: 'Text alignment',
-      name: 'alignText',
-      description: 'Position of text',
-      type: 'string',
-      options: {
-        list: [
-          { title: 'Left', value: 'left' },
-          { title: 'Right', value: 'right' },
-        ],
-        layout: 'dropdown',
-      },
     },
     {
       title: 'Image',
@@ -55,22 +42,29 @@ export default {
       of: [{ type: 'reference', to: [{ type: 'page' }] }],
     },
     {
-      title: 'Video URL',
-      name: 'videoSrc',
+      title: 'Text alignment',
+      name: 'alignText',
+      description: 'Position of text',
       type: 'string',
-      description: 'Embed url of video',
+      options: {
+        list: [
+          { title: 'Left', value: 'left' },
+          { title: 'Right', value: 'right' },
+        ],
+        layout: 'dropdown',
+      },
+    },
+    {
+      title: 'Top of page',
+      name: 'top',
+      type: 'boolean',
+      description: 'Is the section at the top of the page',
     },
     {
       title: 'Tint',
       name: 'tint',
       type: 'boolean',
       description: 'Does the section have a tinted background',
-    },
-    {
-      title: 'Button callback',
-      name: 'buttonCallback',
-      type: 'string',
-      description: 'Callback action of button',
     },
   ],
 };
