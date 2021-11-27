@@ -3,24 +3,25 @@ import { graphql } from 'gatsby'
 import HomeBanner from '../components/HomeBanner'
 import ImageAndTextBlock from '../components/ImageAndTextBlock'
 import ImageBanner from '../components/ImageBanner'
-import Articles from '../components/Articles'
+import ArticlesBlock from '../components/ArticlesBlock'
 import ParallaxImage from '../components/ParallaxImage'
 import TimelineList from '../components/TimelineList'
 import KeylineGridBlock from '../components/KeylineGridBlock'
 import Values from '../components/Values'
 import SubContractor from '../components/SubContractor'
 import VacancyList from '../components/VacancyList'
+import Quotes from '../components/Quotes'
 
 interface Props {
   pageContext: { id: string; title: string; slug: string }
 }
 const PageTemplate: FC<Props> = ({ data, pageContext }) => {
-  console.log('DATA=', data)
+  //  console.log('DATA=', data)
   const { title } = pageContext
   return (
     <>
       {data.pages.nodes[0].content.map(({ contentType }) => {
-        console.log(contentType)
+        //console.log(contentType)
         switch (contentType[0]._type) {
           case 'homeBanner':
             return (
@@ -37,15 +38,15 @@ const PageTemplate: FC<Props> = ({ data, pageContext }) => {
             return (
               <ImageAndTextBlock
                 heading={contentType[0].heading}
-                text={contentType[0].text}
-                src={contentType[0]?.src?.asset.fluid.src}
-                srcSet={contentType[0]?.src?.asset.fluid.srcSet}
+                sectionText={contentType[0].text}
+                src={contentType[0].src}
                 srcAlt={contentType[0].srcAlt}
                 videoSrc={contentType[0].videoSrc}
                 alignText={contentType[0].alignText}
                 buttonLabel={contentType[0].buttonLabel}
                 buttonLink={contentType[0].buttonLink}
                 buttonCallback={contentType[0].buttonCallback}
+                tint={contentType[0].tint}
               />
             )
           case 'imageBanner':
@@ -59,11 +60,12 @@ const PageTemplate: FC<Props> = ({ data, pageContext }) => {
                 top={contentType[0].top}
                 buttonLabel={contentType[0].buttonLabel}
                 buttonLink={contentType[0].buttonLink}
+                tint={contentType[0].tint}
               />
             )
           case 'articlesBlock':
             return (
-              <Articles
+              <ArticlesBlock
                 subHeading={contentType[0].subHeading}
                 heading={contentType[0].heading}
                 text={contentType[0].text}
@@ -98,8 +100,10 @@ const PageTemplate: FC<Props> = ({ data, pageContext }) => {
             return <Values {...contentType[0]} />
           case 'subContractorBlock':
             return <SubContractor {...contentType[0]} />
-          case 'vacancyListBlock':
+          case 'vacanciesListBlock':
             return <VacancyList {...contentType[0]} />
+          case 'quoteListBlock':
+            return <Quotes {...contentType[0]} />
           default:
             return null
         }
@@ -152,7 +156,7 @@ export const query = graphql`
               _key
               _type
               heading
-              text
+              sectionText: text
               alignText
               src {
                 asset {
@@ -284,6 +288,36 @@ export const query = graphql`
               heading
               text
             }
+            ... on SanityVacanciesListBlock {
+              _type
+              buttonLabel
+              filter
+              heading
+              limit
+              subHeading
+              text
+            }
+            ... on SanityQuoteListBlock {
+              _key
+              _type
+              headingLevel
+              heading
+              subHeading
+              text
+              quotes {
+                quote
+                id
+                heading
+                author
+                image {
+                  asset {
+                    fixed {
+                      src
+                    }
+                  }
+                }
+              }
+            }
           }
         }
       }
@@ -294,7 +328,6 @@ export const query = graphql`
         date
         author
         title
-        text
         slug {
           current
         }

@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react'
 import styled from 'styled-components'
-import ArticleItem from './ArticleItem'
-import { ArticleItemType } from '../types'
+import ArticlesGridItem from './ArticlesGridItem'
+import { ArticleType } from '../types'
 
 const Track = styled.div`
   [data-carousel='false'] & {
@@ -32,21 +32,16 @@ const Track = styled.div`
     scrollbar-width: none;
   }
 `
-
-export interface CategoriesType {
-  slug: string
-  title: string
-}
-interface ArticlesProps {
+interface ArticlesBlockProps {
   carousel?: boolean
-  articles: ArticleItemType[]
+  articles: ArticleType[]
   perPage?: number
 }
 
-const Articles = ({
+const ArticlesBlock = ({
   carousel = false,
   articles = [],
-}: ArticlesProps): JSX.Element => {
+}: ArticlesBlockProps): JSX.Element => {
   const trackRef = useRef<HTMLDivElement | null>(null)
   const articleRefs = useRef<HTMLElement[]>([])
   const [articleWidth, setArticleWidth] = useState(0)
@@ -88,13 +83,14 @@ const Articles = ({
     <>
       <div data-carousel={carousel}>
         <Track ref={trackRef}>
-          {articles.map((article: ArticleItemType, i: number) => (
-            <ArticleItem
+          {articles.map((article: ArticleType, i: number) => (
+            <ArticlesGridItem
               key={i}
               ref={(element: HTMLElement) => (articleRefs.current[i] = element)}
               {...article}
               image={article.image}
               imageAlt={article.imageAlt}
+              slug={article.slug}
               width={carousel ? `${articleWidth}px` : 'auto'}
             />
           ))}
@@ -104,4 +100,4 @@ const Articles = ({
   )
 }
 
-export default Articles
+export default ArticlesBlock

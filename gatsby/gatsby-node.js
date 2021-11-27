@@ -168,6 +168,33 @@ const vacancyPages = async ({ graphql, actions }) => {
   })
 }
 
+const articlePages = async ({ graphql, actions }) => {
+  const pageTemplate = path.resolve('./src/templates/Article.tsx')
+  const { data } = await graphql(`
+    query {
+      articles: allSanityArticle {
+        nodes {
+          id
+          title
+        }
+      }
+    }
+  `)
+  data.articles.nodes.forEach(article => {
+    actions.createPage({
+      path: `/articles/${article.id}`,
+      component: pageTemplate,
+      context: {
+        id: article.id,
+      },
+    })
+  })
+}
+
 export const createPages = async params => {
-  await Promise.all([sitePages(params), vacancyPages(params)])
+  await Promise.all([
+    sitePages(params),
+    vacancyPages(params),
+    articlePages(params),
+  ])
 }

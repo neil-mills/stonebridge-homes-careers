@@ -70,6 +70,7 @@ const InsetBox = styled.div`
   h3 {
     ${HeadingLarge}
     color: var(--gold);
+    margin-top: 0;
   }
   p {
     color: var(--white);
@@ -123,6 +124,7 @@ const ImageBanner: FC<ImageBannerProps> = ({
   alignText = 'right',
   tint = false,
 }): JSX.Element => {
+  console.log('Tint=', tint)
   return (
     <ImageBannerStyles
       tint={tint}

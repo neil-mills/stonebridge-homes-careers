@@ -1,9 +1,9 @@
-import React, { ReactNode, forwardRef } from 'react'
+import React, { FC, forwardRef } from 'react'
 import styled from 'styled-components'
 import { Link } from 'gatsby'
 import { HeadingStyle, HeadingMedium } from '../assets/styles/Typography'
 import PlayIcon from '../assets/svg/play.svg'
-import { ArticleItemType } from '../types'
+import { ArticleType, SlugType } from '../types'
 
 const ArticleItemStyles = styled.article`
   background-color: var(--white);
@@ -33,9 +33,9 @@ const ArticleItemStyles = styled.article`
   h3 {
     ${HeadingMedium}
     color: var(--green);
-    margin-bottom: 0;
+    margin: 0;
     @media screen and (min-width: 768px) {
-      margin-bottom: 0;
+      margin: 0;
     }
   }
   [data-carousel='true'] & {
@@ -47,37 +47,34 @@ const ArticleItemStyles = styled.article`
   }
 `
 
-const ArticleLink = ({
-  link,
-  children,
-}: {
+interface ArticleLinkType {
   link?: string
-  children: ReactNode
-}) => {
+}
+
+const ArticleLink: FC<ArticleLinkType> = ({ link, children }) => {
   return <>{link ? <Link to={link}>{children}</Link> : children}</>
 }
 
-const ArticleItem = forwardRef<HTMLElement, ArticleItemType>((props, ref) => {
+const ArticleGridItem = forwardRef<HTMLElement, ArticleType>((props, ref) => {
   const {
+    id,
     subTitle = '',
     date = '',
     title,
-    link,
-    video = false,
+    videoSrc = '',
     image,
     imageAlt = '',
     width = 'auto',
   } = props
-
   return (
     <ArticleItemStyles ref={ref} style={{ width: `${width}` }}>
-      <ArticleLink link={link}>
+      <ArticleLink link={`/articles/${id}`}>
         <picture>
           <source
             media="(min-width: 500px)"
             srcSet={image.asset.fluid.srcSet}
           />
-          {video && <PlayIcon />}
+          {videoSrc && <PlayIcon />}
           <img src={image.asset.fluid.src} alt={imageAlt} />
         </picture>
         <div>
@@ -89,5 +86,6 @@ const ArticleItem = forwardRef<HTMLElement, ArticleItemType>((props, ref) => {
     </ArticleItemStyles>
   )
 })
-ArticleItem.displayName = 'ArticleItem'
-export default ArticleItem
+
+ArticleGridItem.displayName = 'ArticleItem'
+export default ArticleGridItem

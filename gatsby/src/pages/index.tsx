@@ -10,7 +10,7 @@ import ParallaxSrc from '../assets/images/parallax-image.jpg'
 import ParallaxSrcLg from '../assets/images/parallax-image-lg.jpg'
 import BannerImg from '../assets/images/home-banner-bg.jpg'
 import BannerImgLg from '../assets/images/home-banner-bg-lg.jpg'
-import Articles from '../components/Articles'
+import ArticlesBlock from '../components/ArticlesBlock'
 import articlesData from '../data/articles'
 
 const HomePage: FC = () => {
@@ -45,7 +45,7 @@ const HomePage: FC = () => {
         buttonLabel={'Find out more'}
         buttonLink={'/working-with-us'}
       />
-      <Articles
+      <ArticlesBlock
         heading={'Our community'}
         carousel={true}
         articles={articlesData}

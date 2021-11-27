@@ -1,10 +1,11 @@
-import React, { Dispatch, SetStateAction } from 'react'
+import React from 'react'
 import styled from 'styled-components'
 import PlayIcon from '../assets/svg/play.svg'
 import { MarginBottomNone } from '../assets/styles/Utils'
 import Button from './Button'
 import { HeadingLarge } from '../assets/styles/Typography'
 import Section from './Section'
+import { ImageAndTextBlockType } from '../types'
 
 const SectionStyles = styled.section`
   display: grid;
@@ -61,51 +62,43 @@ const Picture = styled.picture`
   }
 `
 
-interface ImageAndTextBlockProps {
-  heading: string
-  text: string
-  alignText?: string
-  src?: string
-  srcSet?: string
-  srcAlt?: string
-  buttonLabel?: string
-  buttonLink?: string
-  videoSrc?: string
-  buttonCallback?: () => void
-  tint?: boolean
-}
 const ImageAndTextBlock = ({
   heading,
-  text,
+  sectionText,
   alignText = 'left',
-  src = '',
-  srcSet = '',
+  src,
   srcAlt = '',
   buttonLabel = '',
   buttonLink = '',
   videoSrc = '',
   buttonCallback,
   tint = false,
-}: ImageAndTextBlockProps): JSX.Element => {
+}: ImageAndTextBlockType): JSX.Element => {
   return (
     <Section tint={tint}>
       <SectionStyles data-text-align={alignText}>
         {src && videoSrc && (
           <Picture>
-            <source media="(min-width: 500px)" srcSet={srcSet} />
+            <source
+              media="(min-width: 500px)"
+              srcSet={src.asset.fluid.srcSet}
+            />
             <PlayIcon />
-            <img src={src} alt={srcAlt} />
+            <img src={src.asset.fluid.src} alt={srcAlt} />
           </Picture>
         )}
         {src && !videoSrc && (
           <Picture>
-            <source media="(min-width: 500px)" srcSet={srcSet} />
-            <img src={src} />
+            <source
+              media="(min-width: 500px)"
+              srcSet={src.asset.fluid.srcSet}
+            />
+            <img src={src.asset.fluid.src} />
           </Picture>
         )}
         <aside>
           <h3>{heading}</h3>
-          <p>{text}</p>
+          <p>{sectionText}</p>
           {buttonLabel && (
             <Button
               label={buttonLabel}

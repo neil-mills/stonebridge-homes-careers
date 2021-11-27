@@ -93,10 +93,10 @@ const GlobalStyles = createGlobalStyle`
     -moz-osx-font-smoothing: grayscale;
   }
   main {
-    background-color: var(--white);
-    padding: 7.6rem 0 4rem;
+    background-color: var(--light-grey);
+    padding: 7.6rem 0 0;
     @media screen and (min-width: 768px) {
-      padding: 7.6rem 0 3vw;
+      padding: 7.6rem 0 0;
     }
   }
   address {

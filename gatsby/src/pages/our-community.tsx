@@ -4,7 +4,7 @@ import Banner from '../assets/images/community-banner.jpg'
 import BannerLg from '../assets/images/community-banner-lg.jpg'
 import ImageAndTextBlock from '../components/ImageAndTextBlock'
 import articlesData from '../data/articles'
-import Articles from '../components/Articles'
+import ArticlesBlock from '../components/ArticlesBlock'
 
 const CommunityPage: FC = (): JSX.Element => {
   return (
@@ -20,7 +20,7 @@ const CommunityPage: FC = (): JSX.Element => {
         alignText={'left'}
         top={true}
       />
-      <Articles articles={articlesData} showCategories={true} />
+      <ArticlesBlock articles={articlesData} showCategories={true} />
       {/* <ArticlesStyle>
         {categories.length && <ArticleCategoryMenu categories={categories} />}
         <ArticlesWrapper>

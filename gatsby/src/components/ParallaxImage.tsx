@@ -1,6 +1,6 @@
-import React, { useEffect, useState, useRef } from 'react'
+import React, { FC, useEffect, useState, useRef } from 'react'
 import styled from 'styled-components'
-import { ImageType } from '../types'
+import { ParallaxImageBlockType } from '../types'
 
 const SectionStyles = styled.section`
   display: block;
@@ -16,17 +16,16 @@ const SectionStyles = styled.section`
   }
 `
 
-interface ParallaxImageProps {
-  src: ImageType
-  srcLg: ImageType
-}
-const ParallaxImage = ({ src, srcLg }: ParallaxImageProps): JSX.Element => {
+const ParallaxImage: FC<ParallaxImageBlockType> = ({
+  src,
+  srcLarge,
+}): JSX.Element => {
   const sectionRef = useRef<HTMLElement | null>(null)
   const [loaded, setLoaded] = useState<number>(0)
   const [bgSrc, setBgSrc] = useState<string>('')
 
   const preloadImages = () => {
-    const images: string[] = [src.asset.fluid.src, srcLg.asset.fluid.src]
+    const images: string[] = [src.asset.fluid.src, srcLarge.asset.fluid.src]
     images.forEach(src => {
       const img = new Image()
       img.src = src
@@ -38,7 +37,7 @@ const ParallaxImage = ({ src, srcLg }: ParallaxImageProps): JSX.Element => {
 
   const handleResize = () => {
     setBgSrc(
-      window.innerWidth <= 767 ? src.asset.fluid.src : srcLg.asset.fluid.src
+      window.innerWidth <= 767 ? src.asset.fluid.src : srcLarge.asset.fluid.src
     )
   }
 

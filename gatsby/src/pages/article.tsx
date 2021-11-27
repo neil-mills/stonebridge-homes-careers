@@ -20,7 +20,7 @@ import ArticleTitle from '../components/ArticleTitle'
 import ArticleSubSection from '../components/ArticleSubSection'
 import ImageAndTextBlock from '../components/ImageAndTextBlock'
 import ParallaxImage from '../components/ParallaxImage'
-import Articles from '../components/Articles'
+import ArticlesBlock from '../components/ArticlesBlock'
 import articlesData from '../data/articles'
 
 const StyledPicture = styled.picture`
@@ -104,7 +104,7 @@ const VacancyPage: FC = (): JSX.Element => {
           </p>
         </ArticleSubSection>
       </Section>
-      <Articles
+      <ArticlesBlock
         heading={'Our community'}
         carousel={true}
         articles={articlesData}

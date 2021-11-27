@@ -10,6 +10,7 @@ import { GoldLink } from '../assets/styles/Utils'
 import ArrowIcon from '../assets/svg/arrow-icon.svg'
 import Select from '../components/Select'
 import Quotes from '../components/Quotes'
+import quotesData from '../data/quotes'
 
 const TableStyles = styled.table`
   border-collapse: collapse;
@@ -198,7 +199,11 @@ const VacanciesPage: FC = (): JSX.Element => {
           </tbody>
         </TableStyles>
       </Section>
-      <Quotes />
+      <Quotes
+        subHeading={'Did you know?'}
+        heading={'Employees love it here'}
+        quotes={quotesData}
+      />
     </>
   )
 }

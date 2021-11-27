@@ -60,15 +60,29 @@ export const HeadingLarge = css`
 export const HeadingMedium = css`
   font-size: var(--font-medium);
   line-height: 1.1;
-  margin-bottom: 2rem;
+  /* margin-bottom: 2rem; */
+  margin: 3rem 0;
+  &:first-child {
+    margin-top: 0;
+  }
   @media screen and (min-width: 768px) {
-    margin-bottom: 4rem;
+    margin: 4rem 0;
+    /* margin-bottom: 4rem; */
     font-size: var(--font-medium-desktop);
     font-size: clamp(var(--font-medium), 1.7vw, var(--font-medium-desktop));
   }
   @media screen and (min-width: 1400px) {
     /* margin-bottom: 4rem; */
     font-size: var(--font-medium-desktop);
+  }
+`
+
+export const HeadingMediumKeyline = css`
+  ${HeadingMedium}
+  padding-top: 3rem;
+  border-top: 1px solid var(--keyline-grey);
+  @media screen and (min-width: 768px) {
+    padding-top: 4rem;
   }
 `
 
@@ -114,6 +128,13 @@ const Typography = createGlobalStyle`
     ${HeadingMedium}
   }
   p {
+    margin: 1rem 0;
+    @media screen and (min-width: 768px) {
+      margin: 2rem 0;
+    }
+    &:first-child {
+      margin-top: 0;
+    }
     &:last-child {
       margin-bottom: 0;
     }

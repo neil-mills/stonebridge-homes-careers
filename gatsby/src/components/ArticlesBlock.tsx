@@ -6,12 +6,12 @@ import {
   GutterPaddingRight,
   GutterPaddingLeft,
 } from '../assets/styles/Utils'
-import { SectionInner } from '../components/Section'
-import ArticleCategoryMenu from '../components/ArticleCategoryMenu'
-import Heading from '../components/Heading'
-import ArticlesGrid from '../components/ArticlesGrid'
+import { SectionInner } from './Section'
+import ArticleCategoryMenu from './ArticleCategoryMenu'
+import Heading from './Heading'
+import ArticlesGrid from './ArticlesGrid'
 import Button from './Button'
-import { ArticleItemType } from '../types'
+import { ArticleType } from '../types'
 import categoriesData from '../data/categories'
 
 const StyledArticles = styled.section<{ showCategories: boolean }>`
@@ -61,8 +61,8 @@ interface ArticlesProps {
   text?: string
   headingLevel?: number
   showArticles?: string
-  selectedArticles?: ArticleItemType[]
-  articles: ArticleItemType[]
+  selectedArticles?: ArticleType[]
+  articles: ArticleType[]
   showCategories?: boolean
   buttonLabel?: string
   buttonLink?: string
@@ -89,7 +89,7 @@ const Articles: FC<ArticlesProps> = ({
   className = '',
 }) => {
   const categories = categoriesData
-  let filteredArticles: ArticleItemType[] =
+  let filteredArticles: ArticleType[] =
     showArticles === 'selected' ? selectedArticles : articles
   const totalPages =
     perPage !== 'all'
@@ -97,8 +97,6 @@ const Articles: FC<ArticlesProps> = ({
       : 1
   const articlesPerPage =
     perPage === 'all' ? filteredArticles.length : parseInt(perPage)
-  console.log('length=', articles.length)
-  console.log('per page=', articlesPerPage)
   const start = (currentPage - 1) * articlesPerPage
   filteredArticles = filteredArticles.filter(
     (article, i) => i >= start && i < start + articlesPerPage

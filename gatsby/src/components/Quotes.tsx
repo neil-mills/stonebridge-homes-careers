@@ -1,6 +1,6 @@
-import React from 'react'
+import React, { FC } from 'react'
+import { useStaticQuery, graphql } from 'gatsby'
 import styled from 'styled-components'
-import Avatar from '../assets/images/avatar.jpg'
 import KeylineGrid, { KeylineGridItem } from './KeylineGrid'
 import Section from './Section'
 import Heading from './Heading'
@@ -30,21 +30,40 @@ const QuoteStyles = styled.div`
   }
 `
 
-interface QuoteProps {
-  title: string
+interface Quote {
+  id?: string
+  heading: string
   quote: string
-  name: string
-  avatar: string
+  author: string
+  image?: {
+    asset: {
+      fixed: {
+        src: string
+      }
+    }
+  }
 }
-const Quote = ({ title, quote, name, avatar }: QuoteProps): JSX.Element => {
+
+interface Props {
+  subHeading?: string
+  heading?: string
+  text?: string
+  headingLevel?: number
+  quotes: Quote[]
+}
+const Quote = ({ heading, quote, author, image }: Quote): JSX.Element => {
   return (
     <QuoteStyles>
       <div>
-        <h3>{title}</h3>
+        <h3>{heading}</h3>
         <blockquote>{quote}</blockquote>
       </div>
       <footer>
-        <MetaList meta={[name]} avatar={avatar} author={true} />
+        <MetaList
+          meta={[author]}
+          avatar={image?.asset.fixed.src}
+          author={true}
+        />
       </footer>
     </QuoteStyles>
   )
@@ -58,77 +77,50 @@ const GridWrapper = styled.div`
   }
 `
 
-const Quotes = (): JSX.Element => {
+const Quotes: FC<Props> = props => {
+  const { quotes } = useStaticQuery(graphql`
+    query {
+      quotes: allSanityQuoteItem {
+        nodes {
+          heading
+          id
+          quote
+          author
+          image {
+            asset {
+              fixed {
+                src
+              }
+            }
+          }
+        }
+      }
+    }
+  `)
+  const selectedQuotes: Quote[] = props.quotes || quotes.nodes
+  if (!selectedQuotes.length) return null
   return (
     <Section marginBottom={false}>
-      <Heading
-        subHeading={'Did you know?'}
-        heading={'Employees love it here'}
-      />
+      {props.heading && (
+        <Heading
+          subHeading={props.subHeading}
+          heading={props.heading}
+          text={props.text}
+          level={props.headingLevel}
+        />
+      )}
       <GridWrapper>
         <KeylineGrid columns={2}>
-          <KeylineGridItem>
-            <Quote
-              title={'Really nice people'}
-              quote={`Lorem ipsum dolor sit amet, consectetur adipiscing elit. Egestas sodales
-        aliquam justo, ut molestie elit nisl risus. Dignissim turpis neque eget
-        in ante pulvinar risus donec. Venenatis pulvinar dolor arcu arcu, lorem
-        adipiscing sed. Volutpat, vitae fusce facilisi tempus donec alique`}
-              name={'Sarah Jones, Leeds'}
-              avatar={Avatar}
-            />
-          </KeylineGridItem>
-          <KeylineGridItem>
-            <Quote
-              title={'Really nice people'}
-              quote={`Lorem ipsum dolor sit amet, consectetur adipiscing elit. Egestas sodales
-        aliquam justo, ut molestie elit nisl risus. `}
-              name={'Sarah Jones, Leeds'}
-              avatar={Avatar}
-            />
-          </KeylineGridItem>
-          <KeylineGridItem>
-            <Quote
-              title={'Really nice people'}
-              quote={`Lorem ipsum dolor sit amet, consectetur adipiscing elit. Egestas sodales
-        aliquam justo, ut molestie elit nisl risus. Dignissim turpis neque eget
-        in ante pulvinar risus donec. Venenatis pulvinar dolor arcu arcu, lorem
-        adipiscing sed. Volutpat, vitae fusce facilisi tempus donec alique`}
-              name={'Sarah Jones, Leeds'}
-              avatar={Avatar}
-            />
-          </KeylineGridItem>
-          <KeylineGridItem>
-            <Quote
-              title={'Really nice people'}
-              quote={`Lorem ipsum dolor sit amet, consectetur adipiscing elit. Egestas sodales
-        aliquam justo, ut molestie elit nisl risus. Dignissim turpis neque eget
-        in ante pulvinar risus donec. Venenatis pulvinar dolor arcu arcu, lorem
-        adipiscing sed. Volutpat, vitae fusce facilisi tempus donec alique`}
-              name={'Sarah Jones, Leeds'}
-              avatar={Avatar}
-            />
-          </KeylineGridItem>
-          <KeylineGridItem>
-            <Quote
-              title={'Really nice people'}
-              quote={`Lorem ipsum dolor sit amet, consectetur adipiscing elit. Egestas sodales
-        aliquam justo, ut molestie elit nisl risus.`}
-              name={'Sarah Jones, Leeds'}
-              avatar={Avatar}
-            />
-          </KeylineGridItem>
-          <KeylineGridItem>
-            <Quote
-              title={'Really nice people'}
-              quote={`Lorem ipsum dolor sit amet, consectetur adipiscing elit. Egestas sodales
-        aliquam justo, ut molestie elit nisl risus. Dignissim turpis neque eget
-        in ante pulvinar risus donec. Venenatis pulvinar dolor arcu arcu, lorem
-        adipiscing sed. Volutpat, vitae fusce facilisi tempus donec alique`}
-              name={'Sarah Jones, Leeds'}
-              avatar={Avatar}
-            />
-          </KeylineGridItem>
+          {selectedQuotes.map((quote: Quote) => (
+            <KeylineGridItem key={quote.id}>
+              <Quote
+                heading={quote.heading}
+                quote={quote.quote}
+                author={quote.author}
+                image={quote.image}
+              />
+            </KeylineGridItem>
+          ))}
         </KeylineGrid>
       </GridWrapper>
     </Section>

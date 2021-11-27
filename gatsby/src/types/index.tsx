@@ -1,4 +1,4 @@
-export interface CategoriesType {
+export interface CategoryType {
   slug: string
   title: string
 }
@@ -12,15 +12,59 @@ export interface ImageType {
   }
 }
 
-export interface ArticleItemType {
-  subTitle?: string
-  date?: string
+export interface TextBlockType {
+  _key?: string
+  _type?: string
+  heading: string
+  subHeading?: string
+  text: {
+    list: null
+    style: string
+    children: { text: string; _type: string }[]
+  }[]
+}
+
+export interface ImageAndTextBlockType {
+  _key?: string
+  _type?: string
+  heading: string
+  sectionText: string
+  alignText: string
+  buttonLabel: string
+  buttonLink?: string
+  tint: boolean
+  videoSrc?: string
+  srcAlt?: string
+  src: ImageType
+  buttonCallback?: () => void
+}
+
+export interface ParallaxImageBlockType {
+  _key?: string
+  _type?: string
+  src: ImageType
+  srcLarge: ImageType
+}
+
+export interface ArticleType {
+  id: string
   title: string
-  link?: string
-  video?: boolean
+  slug: SlugType
+  date?: string
+  subTitle?: string
+  author?: string
   image: ImageType
+  videoSrc?: string
   imageAlt?: string
+  categories?: CategoryType[]
+  articleSectionType?: [
+    TextBlockType | ImageAndTextBlockType | ParallaxImageBlockType
+  ]
   width?: string
+}
+
+export interface SlugType {
+  current: string
 }
 
 export interface VacancyType {
@@ -38,6 +82,7 @@ export interface VacancyType {
   SalaryRange: string
   Status: number
   VacancyDescription: string
+  JobDescription: string
   VacancyName: string
   VacancyType: string
 }

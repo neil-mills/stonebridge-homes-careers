@@ -1,4 +1,4 @@
-import React, { FC } from 'react'
+import React, { FC, ReactElement } from 'react'
 import styled, { css } from 'styled-components'
 import {
   VerticalSpacingTop,
@@ -6,8 +6,8 @@ import {
 } from '../assets/styles/Utils'
 
 interface ArticleTitleProps {
-  children: React.ReactElement[]
   keyline?: boolean
+  children?: ReactElement<Element>[]
 }
 const StyledArticleTitle = styled.div<ArticleTitleProps>`
   display: flex;
@@ -38,10 +38,11 @@ const StyledArticleTitle = styled.div<ArticleTitleProps>`
   }
 `
 const ArticleTitle: FC<ArticleTitleProps> = ({ children, keyline = true }) => {
+  console.log(children)
   return (
     <StyledArticleTitle keyline={keyline}>
-      {children.length > 1
-        ? children.map((child: React.ReactElement) => child)
+      {children && children.length > 1
+        ? children.map(child => child)
         : children}
     </StyledArticleTitle>
   )

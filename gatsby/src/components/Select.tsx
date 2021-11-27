@@ -1,10 +1,10 @@
-import React, { FC } from 'react'
+import React, { FC, useState, useEffect, ChangeEvent } from 'react'
 import ArrowIcon from '../assets/svg/select-arrow.svg'
 import styled, { css } from 'styled-components'
 import { HeadingStyle } from '../assets/styles/Typography'
 import { StyledInput } from './Form'
 
-const SelectStyles = styled.div<SelectProps>`
+const SelectStyles = styled.div<{ size: string }>`
   display: block;
   ${({ size }) =>
     size === 'sm'
@@ -58,21 +58,58 @@ const SelectStyles = styled.div<SelectProps>`
     }
   }
 `
+interface Option {
+  label: string
+  value: string
+}
 interface SelectProps {
   label?: string
+  name: string
   size?: string
+  disabled?: boolean
+  options: Option[]
+  value?: string
+  callback?: (value: { [key: string]: string }) => void
 }
-const Select: FC<SelectProps> = ({ label, size = 'lg' }): JSX.Element => {
+
+const Select: FC<SelectProps> = ({
+  label,
+  name = '',
+  size = 'lg',
+  disabled = false,
+  options = [],
+  value = '',
+  callback,
+}): JSX.Element => {
+  const [selectedValue, setSelectedValue] = useState(value)
+  const [selectLabel, setSelectLabel] = useState(label)
+
+  useEffect(() => {
+    setSelectLabel(`${label}${selectedValue && `: ${selectedValue}`}`)
+    if (callback) callback({ [name]: selectedValue })
+  }, [selectedValue])
+
   return (
     <SelectStyles size={size}>
       <p id="location">{label}</p>
       <StyledInput as={'button'} type="button" aria-labelledby="location">
-        <span>{label}: Leeds</span>
+        <span>{selectLabel}</span>
         <ArrowIcon />
       </StyledInput>
-      <select>
-        <option>Leeds</option>
-        <option>Manchester</option>
+      <select
+        onChange={(e: ChangeEvent<HTMLSelectElement>) =>
+          setSelectedValue(e.target.value)
+        }
+        name={name}
+        disabled={disabled}
+        value={selectedValue}
+      >
+        <option value={''}>{label}</option>
+        {options.map((option: Option, i: number) => (
+          <option key={i} value={option.value}>
+            {option.label}
+          </option>
+        ))}
       </select>
     </SelectStyles>
   )

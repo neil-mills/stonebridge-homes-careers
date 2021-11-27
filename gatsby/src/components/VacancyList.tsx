@@ -1,4 +1,4 @@
-import React, { FC } from 'react'
+import React, { FC, useState, useEffect } from 'react'
 import Section from './Section'
 import { Link, useStaticQuery, graphql } from 'gatsby'
 import styled from 'styled-components'
@@ -128,11 +128,16 @@ interface Props {
   buttonLabel?: string
 }
 
+interface Filter {
+  [key: string]: string
+}
+
 const VacancyList: FC<Props> = props => {
   const { vacancies } = useStaticQuery(graphql`
     query {
       vacancies: allVacancy {
         nodes {
+          id
           City
           ClosingDate
           Company
@@ -155,12 +160,64 @@ const VacancyList: FC<Props> = props => {
     }
   `)
 
-  const filteredVacancies: VacancyType[] =
+  interface Option {
+    label: string
+    value: string
+  }
+
+  const [filteredVacancies, setFilteredVacancies] = useState<VacancyType[]>(
     props.limit !== 'all'
       ? vacancies.nodes.filter(
           (vacancy: VacancyType, i: number) => i < parseInt(props.limit)
         )
       : vacancies.nodes
+  )
+
+  const locations: Option[] = [
+    ...new Set(
+      filteredVacancies.map(({ Location }: VacancyType) => ({
+        label: Location,
+        value: Location,
+      }))
+    ),
+  ]
+
+  const departments: Option[] = [
+    ...new Set(
+      filteredVacancies.map(({ Department }: VacancyType) => ({
+        label: Department,
+        value: Department,
+      }))
+    ),
+  ]
+
+  const [selectedFilters, setSelectedFilters] = useState({
+    location: '',
+    department: '',
+  })
+
+  const handleFilter = (filter: Filter) => {
+    setSelectedFilters({
+      ...selectedFilters,
+      ...filter,
+    })
+  }
+
+  useEffect(() => {
+    const { location: selectedLocation, department: selectedDepartment } =
+      selectedFilters
+
+    let filteredResults = filteredVacancies
+    if (selectedLocation)
+      filteredResults = filteredResults.filter(
+        ({ Location }: VacancyType) => Location === selectedLocation
+      )
+    if (selectedDepartment)
+      filteredResults = filteredResults.filter(
+        ({ Department }: VacancyType) => Department === selectedDepartment
+      )
+    setFilteredVacancies(filteredResults)
+  }, [selectedFilters])
 
   return (
     <Section tint={true}>
@@ -180,8 +237,18 @@ const VacancyList: FC<Props> = props => {
                 {filteredVacancies.length === 1 ? ' Vacancy' : ' Vacancies'}
               </h3>
               <form>
-                <Select label={'Location'} />
-                <Select label={'Sector'} />
+                <Select
+                  name={'location'}
+                  label={'Location'}
+                  options={locations}
+                  callback={handleFilter}
+                />
+                <Select
+                  name={'department'}
+                  label={'Department'}
+                  options={departments}
+                  callback={handleFilter}
+                />
               </form>
             </Filters>
           )}
