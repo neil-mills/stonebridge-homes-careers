@@ -13,10 +13,13 @@ import navigationLink from './navigationLink';
 import externalLink from './externalLink';
 import contentType from './contentType';
 import articlesBlock from './articlesBlock';
+import articleSectionContentType from './articleSectionContentType';
+import textBlock from './textBlock';
 import imageAndTextBlock from './imageAndTextBlock';
 import vacanciesListBlock from './vacanciesListBlock';
 import peopleListBlock from './peopleListBlock';
 import quoteListBlock from './quoteListBlock';
+import quoteItem from './quoteItem';
 import settings from './settings';
 import homeBanner from './homeBanner';
 import imageBanner from './imageBanner';
@@ -29,7 +32,6 @@ import keylineGridItem from './keylineGridItem';
 import valuesBlock from './valuesBlock';
 import valuesItem from './valuesItem';
 import subContractorBlock from './subContractorBlock';
-
 // Then we give our schema to the builder and provide the result to Sanity
 export default createSchema({
   // We name our schema
@@ -50,9 +52,12 @@ export default createSchema({
     contentType,
     imageAndTextBlock,
     articlesBlock,
+    articleSectionContentType,
+    textBlock,
     vacanciesListBlock,
     peopleListBlock,
     quoteListBlock,
+    quoteItem,
     settings,
     parallaxImageBlock,
     timelineBlock,

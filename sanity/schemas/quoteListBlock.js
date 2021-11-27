@@ -4,41 +4,39 @@ export default {
   type: 'object',
   fields: [
     {
-      title: 'Above heading',
-      name: 'aboveHeading',
-      description: 'Text above the heading',
+      name: 'subHeading',
+      title: 'Sub heading',
       type: 'string',
+      description: 'Secondary title (optional)',
     },
     {
-      title: 'Heading',
       name: 'heading',
+      title: 'Heading',
       type: 'string',
+      description: 'Name of content block',
     },
     {
-      title: 'Below heading',
-      name: 'belowHeading',
-      description: 'Text below the heading',
-      type: 'string',
+      name: 'text',
+      title: 'Text',
+      type: 'text',
+      description: 'Text that appears below the heading (optional)',
+    },
+    {
+      name: 'headingLevel',
+      title: 'Heading level',
+      type: 'number',
+      initialValue: 2,
     },
     {
       title: 'Quotes',
       name: 'quotes',
-      description: 'Number of quotes in list',
-      type: 'string',
-      options: {
-        list: [
-          { title: '2', value: '2' },
-          { title: '4', value: '4' },
-          { title: 'All', value: 'all' },
-        ], // <-- predefined values
-        layout: 'dropdown', // <-- defaults to 'dropdown'
-      },
-    },
-    {
-      title: 'Archive button',
-      name: 'archiveButton',
-      type: 'boolean',
-      description: 'Display link to archive page',
+      type: 'array',
+      of: [
+        {
+          type: 'reference',
+          to: [{ type: 'quoteItem' }],
+        },
+      ],
     },
   ],
 };

@@ -86,10 +86,15 @@ export default {
         parent?.showArticles === 'selected' || parent.carousel,
     },
     {
-      name: 'selectedArticles',
       title: 'Articles',
-      type: 'reference',
-      to: [{ type: 'article' }, { type: 'person' }],
+      name: 'selectedArticles',
+      type: 'array',
+      of: [
+        {
+          type: 'reference',
+          to: [{ type: 'article' }, { type: 'person' }],
+        },
+      ],
       description: 'Select items to display in list',
       hidden: ({ parent }) => parent.showArticles === 'latest',
     },

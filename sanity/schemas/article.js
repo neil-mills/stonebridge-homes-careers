@@ -38,12 +38,6 @@ export default {
       description: 'Author of the article',
     },
     {
-      name: 'text',
-      title: 'Text',
-      type: 'text',
-      description: 'Article text',
-    },
-    {
       name: 'image',
       title: 'Image',
       type: 'image',
@@ -61,6 +55,11 @@ export default {
       title: 'Categories',
       type: 'array',
       of: [{ type: 'reference', to: [{ type: 'newsCategory' }] }],
+    },
+    {
+      type: 'articleSectionContentType',
+      name: 'articleSectionType',
+      title: 'Article sections',
     },
   ],
   preview: {
