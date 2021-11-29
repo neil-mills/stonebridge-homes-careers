@@ -60,7 +60,7 @@ const HomePage: FC = () => {
             },
           },
         }}
-        srcLg={{
+        srcLarge={{
           asset: {
             fluid: {
               src: ParallaxSrcLg,

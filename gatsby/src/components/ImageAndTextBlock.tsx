@@ -73,9 +73,11 @@ const ImageAndTextBlock = ({
   videoSrc = '',
   buttonCallback,
   tint = false,
+  marginTop = true,
+  marginBottom = true,
 }: ImageAndTextBlockType): JSX.Element => {
   return (
-    <Section tint={tint}>
+    <Section tint={tint} marginTop={marginTop} marginBottom={marginBottom}>
       <SectionStyles data-text-align={alignText}>
         {src && videoSrc && (
           <Picture>
@@ -97,7 +99,7 @@ const ImageAndTextBlock = ({
           </Picture>
         )}
         <aside>
-          <h3>{heading}</h3>
+          <h2>{heading}</h2>
           <p>{sectionText}</p>
           {buttonLabel && (
             <Button

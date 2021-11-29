@@ -13,6 +13,7 @@ interface SectionProps {
   marginTop?: boolean
   marginBottom?: boolean
   as?: React.ElementType
+  className?: string
 }
 
 export const SectionInner = styled.div`
@@ -40,6 +41,7 @@ const Section: FC<SectionProps> = ({
   marginBottom = true,
   as = 'section',
   children,
+  className,
 }): JSX.Element => {
   return (
     <SectionStyled
@@ -47,6 +49,7 @@ const Section: FC<SectionProps> = ({
       marginBottom={marginBottom}
       tint={tint}
       as={as}
+      className={className}
     >
       <SectionInner>{children}</SectionInner>
     </SectionStyled>

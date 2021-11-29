@@ -22,7 +22,6 @@ const fetchVacanciesAndTurnIntoNodes = async ({
       body: JSON.stringify(jsonData),
     })
     const vacancies = await res.json()
-    console.log(vacancies)
     for (const vacancy of vacancies.Result) {
       const nodeMeta = {
         id: createNodeId(vacancy.Reference),
@@ -118,7 +117,7 @@ const sitePages = async ({ graphql, actions }) => {
   `)
   data.pages.nodes.forEach(page => {
     actions.createPage({
-      path: `/${page.slug.current}`,
+      path: page.slug.current === 'home' ? '/' : `/${page.slug.current}`,
       component: pageTemplate,
       context: {
         id: page.id,

@@ -20,6 +20,7 @@ const ParallaxImage: FC<ParallaxImageBlockType> = ({
   src,
   srcLarge,
 }): JSX.Element => {
+  console.log('src=', src, 'srcLarge', srcLarge)
   const sectionRef = useRef<HTMLElement | null>(null)
   const [loaded, setLoaded] = useState<number>(0)
   const [bgSrc, setBgSrc] = useState<string>('')

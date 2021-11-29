@@ -15,35 +15,40 @@ export interface ImageType {
 export interface TextBlockType {
   _key?: string
   _type?: string
-  heading: string
+  heading?: string
   subHeading?: string
-  text: {
+  text?: {
     list: null
     style: string
     children: { text: string; _type: string }[]
   }[]
+  marginTop?: boolean
+  marginBottom?: boolean
+  className?: string
 }
 
 export interface ImageAndTextBlockType {
   _key?: string
   _type?: string
-  heading: string
-  sectionText: string
-  alignText: string
-  buttonLabel: string
+  heading?: string
+  sectionText?: string
+  alignText?: string
+  buttonLabel?: string
   buttonLink?: string
-  tint: boolean
+  tint?: boolean
   videoSrc?: string
   srcAlt?: string
-  src: ImageType
+  src?: ImageType
+  marginTop?: boolean
+  marginBottom?: boolean
   buttonCallback?: () => void
 }
 
 export interface ParallaxImageBlockType {
   _key?: string
   _type?: string
-  src: ImageType
-  srcLarge: ImageType
+  src?: ImageType
+  srcLarge?: ImageType
 }
 
 export interface ArticleType {
@@ -57,9 +62,9 @@ export interface ArticleType {
   videoSrc?: string
   imageAlt?: string
   categories?: CategoryType[]
-  articleSectionType?: [
+  articleSectionType?: Array<
     TextBlockType | ImageAndTextBlockType | ParallaxImageBlockType
-  ]
+  >
   width?: string
 }
 

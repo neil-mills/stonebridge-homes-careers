@@ -57,6 +57,10 @@ const ImageBannerStyles = styled.section<Props>`
   }
 `
 
+const ImageBannerInner = styled.div`
+  display: grid;
+`
+
 const InsetBox = styled.div`
   display: block;
   background-color: var(--green);
@@ -65,6 +69,9 @@ const InsetBox = styled.div`
   justify-self: end;
   [data-text-align='left'] & {
     justify-self: start;
+  }
+  [data-text-align='right'] & {
+    justify-self: end;
   }
   z-index: 1;
   h3 {
@@ -124,7 +131,7 @@ const ImageBanner: FC<ImageBannerProps> = ({
   alignText = 'right',
   tint = false,
 }): JSX.Element => {
-  console.log('Tint=', tint)
+  console.log('Align text=', alignText)
   return (
     <ImageBannerStyles
       tint={tint}
@@ -136,13 +143,15 @@ const ImageBanner: FC<ImageBannerProps> = ({
         <img src={src} alt={srcAlt} />
       </BgImage>
       <SectionInner>
-        <InsetBox>
-          <h3>{heading}</h3>
-          <p>{text}</p>
-          {buttonLabel && buttonLink && (
-            <Button label={buttonLabel} link={buttonLink} />
-          )}
-        </InsetBox>
+        <ImageBannerInner>
+          <InsetBox>
+            <h3>{heading}</h3>
+            <p>{text}</p>
+            {buttonLabel && buttonLink && (
+              <Button label={buttonLabel} link={buttonLink} />
+            )}
+          </InsetBox>
+        </ImageBannerInner>
       </SectionInner>
     </ImageBannerStyles>
   )

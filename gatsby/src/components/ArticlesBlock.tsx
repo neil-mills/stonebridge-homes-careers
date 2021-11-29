@@ -62,7 +62,7 @@ interface ArticlesProps {
   headingLevel?: number
   showArticles?: string
   selectedArticles?: ArticleType[]
-  articles: ArticleType[]
+  articles?: ArticleType[]
   showCategories?: boolean
   buttonLabel?: string
   buttonLink?: string

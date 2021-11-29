@@ -9,32 +9,50 @@ import ImageAndTextBlock from '../components/ImageAndTextBlock'
 import MetaList from '../components/MetaList'
 import ArticlesBlock from '../components/ArticlesBlock'
 import TextBlock from '../components/TextBlock'
-import { ArticleType, TextBlockType, Art } from '../types'
+import { ArticleType } from '../types'
 import {
   VerticalSpacingTop,
   VerticalSpacingBottom,
 } from '../assets/styles/Utils'
 import ParallaxImage from '../components/ParallaxImage'
 
-const StyledPicture = styled.picture`
-  ${VerticalSpacingTop}
-  ${VerticalSpacingBottom}
-  display: block;
-  width: 100%;
-`
-
 interface Props {
   data: {
     article: ArticleType
+    relatedArticles: {
+      nodes: ArticleType[]
+    }
   }
   className: string
 }
 
+const StyledPicture = styled.picture`
+  ${VerticalSpacingTop}
+  ${VerticalSpacingBottom}
+  position: relative;
+  display: block;
+  max-height: 650px;
+  height: auto;
+  width: 100%;
+  &:before {
+    content: '';
+    padding-top: 56%;
+    display: block;
+  }
+  img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center center;
+  }
+`
 const SingleArticlePage: FC<Props> = ({ data, className }): JSX.Element => {
-  console.log(data)
   return (
     <div className={className}>
-      <Section as={'div'} marginTop={false}>
+      <Section as={'div'} marginTop={false} marginBottom={false}>
         <ArticleHeaderLinks backLink={'/our-community'} />
         <ArticleTitle keyline={false}>
           <div>
@@ -52,104 +70,74 @@ const SingleArticlePage: FC<Props> = ({ data, className }): JSX.Element => {
             />
           </div>
         </ArticleTitle>
-        <StyledPicture>
-          <source
-            media="(min-width: 500px)"
-            srcSet={data.article.image.asset.fluid.srcSet}
-          />
-          <img src={data.article.image.asset.fluid.src} />
-        </StyledPicture>
+        {data.article.image && (
+          <StyledPicture>
+            <source
+              media="(min-width: 500px)"
+              srcSet={data.article.image.asset.fluid.srcSet}
+            />
+            <img src={data.article.image.asset.fluid.src} />
+          </StyledPicture>
+        )}
       </Section>
-      {data.article.articleSectionType?.map(section => {
-        console.log(section)
-
-        switch (section._type) {
-          case 'textBlock':
-            return <TextBlock key={section._key} {...section} />
-          case 'imageAndTextBlock':
-            return <ImageAndTextBlock key={section._key} {...section} />
-          case 'parallaxImageBlock':
-            return <ParallaxImage key={section._key} {...section} />
-          default:
-            return null
-        }
-      })}
-      {/*
-        <h2>Title</h2>
-        <p>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Egestas
-          sodales aliquam justo, ut molestie elit nisl risus. Dignissim turpis
-          neque eget in ante pulvinar risus donec. Venenatis pulvinar dolor arcu
-          arcu, lorem adipiscing sed. Volutpat, vitae fusce facilisi tempus
-          donec alique
-        </p>
-      </Section>
-
-      <ImageAndTextBlock
-        src={ArticleImage2}
-        srcSet={ArticleImage2Lg}
-        heading={'Title'}
-        tint={true}
-        text={
-          'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Egestas sodales aliquam justo, ut molestie elit nisl risus. Dignissim turpis neque eget in ante pulvinar risus donec. Venenatis pulvinar dolor arcu arcu, lorem adipiscing sed. Volutpat, vitae fusce facilisi tempus donec aliquet.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Egestas sodales aliquam justo, ut molestie'
-        }
-      />
-      <ImageAndTextBlock
-        src={ArticleImage3}
-        srcSet={ArticleImage3Lg}
-        heading={'Title'}
-        alignText={'right'}
-        text={
-          'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Egestas sodales aliquam justo, ut molestie elit nisl risus. Dignissim turpis neque eget in ante pulvinar risus donec. Venenatis pulvinar dolor arcu arcu, lorem adipiscing sed. Volutpat, vitae fusce facilisi tempus donec aliquet.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Egestas sodales aliquam justo, ut molestie'
-        }
-      />
-      <ParallaxImage src={ArticleImage4} srcLg={ArticleImage4Lg} />
-      <Section>
-        <h2>Title</h2>
-        <ArticleSubSection>
-          <h3>Subtitle</h3>
-          <p>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Egestas
-            sodales aliquam justo, ut molestie elit nisl risus. Dignissim turpis
-            neque eget in ante pulvinar risus donec. Venenatis pulvinar dolor
-            arcu arcu, lorem adipiscing sed. Volutpat, vitae fusce facilisi
-            tempus donec alique
-          </p>
-        </ArticleSubSection>
-        <ArticleSubSection>
-          <h3>Subtitle</h3>
-          <p>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Egestas
-            sodales aliquam justo, ut molestie elit nisl risus. Dignissim turpis
-            neque eget in ante pulvinar risus donec. Venenatis pulvinar dolor
-            arcu arcu, lorem adipiscing sed. Volutpat, vitae fusce facilisi
-            tempus donec alique
-          </p>
-        </ArticleSubSection> */}
-
-      {/* <ArticlesBlock
-        heading={'Our community'}
-        carousel={true}
-        articles={articlesData}
-        buttonLabel={'More articles'}
+      {data.article.articleSectionType &&
+        data.article.articleSectionType?.map((section, i) => {
+          switch (section._type) {
+            case 'textBlock':
+              return (
+                <TextBlock
+                  key={section._key}
+                  {...section}
+                  marginTop={i === 0 ? false : true}
+                />
+              )
+            case 'imageAndTextBlock':
+              return (
+                <ImageAndTextBlock
+                  key={section._key}
+                  {...section}
+                  marginTop={i === 0 ? false : true}
+                />
+              )
+            case 'parallaxImageBlock':
+              return <ParallaxImage key={section._key} {...section} />
+            default:
+              return null
+          }
+        })}
+      <ArticlesBlock
+        heading={'More articles'}
+        showArticles={'selected'}
+        selectedArticles={data.relatedArticles.nodes}
+        buttonLabel={'View all articles'}
         buttonLink={'/our-community'}
       />
-      <ImageAndTextBlock
-        heading={'Vacancies'}
-        text={'Be a part of our amazing team at Stonebridge Homes'}
-        buttonLabel={'View job vacancies'}
-        buttonLink={'/'}
-      /> */}
     </div>
   )
 }
 
 export const query = graphql`
   query ($id: String!) {
+    relatedArticles: allSanityArticle(limit: 3, filter: { _id: { ne: $id } }) {
+      nodes {
+        _id
+        imageAlt
+        date(formatString: "D MMM YYYY")
+        title
+        image {
+          asset {
+            fluid {
+              srcSet
+              src
+            }
+          }
+        }
+      }
+    }
     article: sanityArticle(id: { eq: $id }) {
       id
       title
-      date
+      date(formatString: "D MMM YYYY")
       slug {
         current
       }
@@ -226,4 +214,5 @@ export const query = graphql`
     }
   }
 `
+
 export default SingleArticlePage

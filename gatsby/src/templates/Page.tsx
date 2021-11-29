@@ -38,7 +38,7 @@ const PageTemplate: FC<Props> = ({ data, pageContext }) => {
             return (
               <ImageAndTextBlock
                 heading={contentType[0].heading}
-                sectionText={contentType[0].text}
+                sectionText={contentType[0].sectionText}
                 src={contentType[0].src}
                 srcAlt={contentType[0].srcAlt}
                 videoSrc={contentType[0].videoSrc}
@@ -58,6 +58,7 @@ const PageTemplate: FC<Props> = ({ data, pageContext }) => {
                 heading={contentType[0].heading}
                 text={contentType[0].text}
                 top={contentType[0].top}
+                alignText={contentType[0].alignText}
                 buttonLabel={contentType[0].buttonLabel}
                 buttonLink={contentType[0].buttonLink}
                 tint={contentType[0].tint}
@@ -89,7 +90,7 @@ const PageTemplate: FC<Props> = ({ data, pageContext }) => {
             return (
               <ParallaxImage
                 src={contentType[0].src}
-                srcLg={contentType[0].srcLarge}
+                srcLarge={contentType[0].srcLarge}
               />
             )
           case 'timelineBlock':
@@ -182,6 +183,9 @@ export const query = graphql`
               _type
               heading
               text
+              alignText
+              top
+              tint
               src {
                 asset {
                   fluid(maxWidth: 500) {
@@ -197,9 +201,6 @@ export const query = graphql`
                   current
                 }
               }
-              alignText
-              top
-              tint
             }
             ... on SanityArticlesBlock {
               _key
@@ -325,7 +326,7 @@ export const query = graphql`
     articles: allSanityArticle {
       nodes {
         id
-        date
+        date(formatString: "D MMM YYYY")
         author
         title
         slug {
