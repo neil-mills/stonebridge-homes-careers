@@ -19,7 +19,7 @@ const defaultConfig = {
         projectId: '3nbpuff1',
         dataset: 'production',
         watchMode: true,
-        token: process.env.SANITY_TOKEN,
+        token: process.env.SANITYTOKEN,
       },
     },
   ],

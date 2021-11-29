@@ -10,7 +10,7 @@ const fetchVacanciesAndTurnIntoNodes = async ({
 }) => {
   //turn vacancies into nodes
   const jsonData = {
-    APIKey: process.env.API_KEY,
+    APIKey: process.env.APIKEY,
     Action: 'GetAllVacancies',
   }
   try {
@@ -46,59 +46,6 @@ export const sourceNodes = async params => {
   //fetch list of beers and source them into gatsby api
   await Promise.all([fetchVacanciesAndTurnIntoNodes(params)])
 }
-// const newsPages = async ({ graphql, actions }) => {
-//   const articleTemplate = path.resolve('./src/templates/Article.tsx')
-//   const { data } = await graphql(`
-//     query {
-//       articles: allSanityArticle {
-//         nodes {
-//           id
-//           title
-//           text
-//           date
-//           slug {
-//             current
-//           }
-//         }
-//       }
-//     }
-//   `)
-//   data.articles.nodes.forEach(article => {
-//     actions.createPage({
-//       path: `news/${article.slug.current}`,
-//       component: articleTemplate,
-//       context: {
-//         slug: article.slug.current,
-//       },
-//     })
-//   })
-// }
-
-// const newsCategories = async ({ graphql, actions }) => {
-//   const newsCategoryTemplate = path.resolve('./src/pages/our-community.tsx')
-//   const { data } = await graphql(`
-//     query {
-//       categories: allSanityNewsCategory {
-//         nodes {
-//           id
-//           title
-//           slug {
-//             current
-//           }
-//         }
-//       }
-//     }
-//   `)
-//   data.categories.nodes.forEach(category => {
-//     actions.createPage({
-//       path: `category/${category.slug.current}`,
-//       component: newsCategoryTemplate,
-//       context: {
-//         category,
-//       },
-//     })
-//   })
-// }
 
 const sitePages = async ({ graphql, actions }) => {
   const pageTemplate = path.resolve('./src/templates/Page.tsx')
