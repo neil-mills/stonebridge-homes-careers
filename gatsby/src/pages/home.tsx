@@ -27,10 +27,17 @@ const HomePage: FC = () => {
       />
       <ImageAndTextBlock
         heading={'Intro from the MD'}
-        text={
+        sectionText={
           'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Egestas sodales aliquam justo, ut molestie elit nisl risus. Dignissim turpis neque eget in ante pulvinar risus donec. Venenatis pulvinar dolor arcu arcu, lorem adipiscing sed. Volutpat, vitae fusce facilisi tempus'
         }
-        src={VideoPoster}
+        src={{
+          asset: {
+            fluid: {
+              src: VideoPoster,
+              srcSet: VideoPoster,
+            },
+          },
+        }}
         videoSrc={'/'}
         alignText={'right'}
       />
