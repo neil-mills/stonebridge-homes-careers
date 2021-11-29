@@ -8,11 +8,16 @@ const SectionStyles = styled.section`
   width: 100%;
   height: 320px;
   background-position: top center;
+
   background-size: cover;
   @media screen and (min-width: 768px) {
-    height: 42vw;
-    max-height: 600px;
+    height: 50vw;
+    max-height: 500px;
+  }
+  @media screen and (min-width: 768px) and (orientation: landscape) {
     background-attachment: fixed;
+    background-size: auto 100vh;
+    background-repeat: no-repeat;
   }
 `
 
