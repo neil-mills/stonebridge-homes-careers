@@ -29,7 +29,7 @@ const StyledPicture = styled.picture`
   display: block;
   width: 100%;
 `
-const VacancyPage: FC = (): JSX.Element => {
+const ArticlePage: FC = (): JSX.Element => {
   return (
     <div>
       <Section as={'div'} marginTop={false}>
@@ -63,24 +63,51 @@ const VacancyPage: FC = (): JSX.Element => {
       </Section>
 
       <ImageAndTextBlock
-        src={ArticleImage2}
-        srcSet={ArticleImage2Lg}
+        src={{
+          asset: {
+            fluid: {
+              src: ArticleImage2,
+              srcSet: ArticleImage2Lg,
+            },
+          },
+        }}
         heading={'Title'}
         tint={true}
-        text={
+        sectionText={
           'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Egestas sodales aliquam justo, ut molestie elit nisl risus. Dignissim turpis neque eget in ante pulvinar risus donec. Venenatis pulvinar dolor arcu arcu, lorem adipiscing sed. Volutpat, vitae fusce facilisi tempus donec aliquet.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Egestas sodales aliquam justo, ut molestie'
         }
       />
       <ImageAndTextBlock
-        src={ArticleImage3}
-        srcSet={ArticleImage3Lg}
+        src={{
+          asset: {
+            fluid: {
+              src: ArticleImage3,
+              srcSet: ArticleImage3Lg,
+            },
+          },
+        }}
         heading={'Title'}
         alignText={'right'}
-        text={
+        sectionText={
           'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Egestas sodales aliquam justo, ut molestie elit nisl risus. Dignissim turpis neque eget in ante pulvinar risus donec. Venenatis pulvinar dolor arcu arcu, lorem adipiscing sed. Volutpat, vitae fusce facilisi tempus donec aliquet.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Egestas sodales aliquam justo, ut molestie'
         }
       />
-      <ParallaxImage src={ArticleImage4} srcLg={ArticleImage4Lg} />
+      <ParallaxImage
+        src={{
+          asset: {
+            fluid: {
+              src: ArticleImage4,
+            },
+          },
+        }}
+        srcLarge={{
+          asset: {
+            fluid: {
+              src: ArticleImage4Lg,
+            },
+          },
+        }}
+      />
       <Section>
         <h2>Title</h2>
         <ArticleSubSection>
@@ -113,7 +140,7 @@ const VacancyPage: FC = (): JSX.Element => {
       />
       <ImageAndTextBlock
         heading={'Vacancies'}
-        text={'Be a part of our amazing team at Stonebridge Homes'}
+        sectionText={'Be a part of our amazing team at Stonebridge Homes'}
         buttonLabel={'View job vacancies'}
         buttonLink={'/'}
       />
@@ -121,4 +148,4 @@ const VacancyPage: FC = (): JSX.Element => {
   )
 }
 
-export default VacancyPage
+export default ArticlePage

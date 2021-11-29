@@ -70,7 +70,7 @@ const HomePage: FC = () => {
       />
       <ImageAndTextBlock
         heading={'Vacancies'}
-        text={'Be a part of our amazing team at Stonebridge Homes'}
+        sectionText={'Be a part of our amazing team at Stonebridge Homes'}
         buttonLabel={'View job vacancies'}
         buttonLink={'/vacancies'}
       />

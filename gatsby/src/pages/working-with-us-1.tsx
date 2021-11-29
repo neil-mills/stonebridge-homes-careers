@@ -41,10 +41,16 @@ const WorkingWithUsPage: FC = (): JSX.Element => {
         top={true}
       />
       <ImageAndTextBlock
-        src={CultureImg}
-        srcSet={CultureImgLg}
+        src={{
+          asset: {
+            fluid: {
+              src: CultureImg,
+              srcSet: CultureImgLg,
+            },
+          },
+        }}
         heading={'Stonebridge Culture'}
-        text={
+        sectionText={
           'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Egestas sodales aliquam justo, ut molestie elit nisl risus. Dignissim turpis neque eget in ante pulvinar risus donec. Venenatis pulvinar dolor arcu arcu, lorem adipiscing sed. Volutpat, vitae fusce facilisi tempus donec aliquet.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Egestas sodales aliquam justo, ut molestie'
         }
       />
@@ -58,7 +64,7 @@ const WorkingWithUsPage: FC = (): JSX.Element => {
             },
           },
         }}
-        srcLg={{
+        srcLarge={{
           asset: {
             fluid: {
               src: ParallaxImg,
