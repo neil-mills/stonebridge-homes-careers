@@ -28,8 +28,8 @@ const PageTemplate: FC<Props> = ({ data, pageContext }) => {
               <HomeBanner
                 title={contentType[0].heading}
                 text={contentType[0].text}
-                bgSrc={contentType[0].image.asset.fluid.srcWebp}
-                bgSrcLg={contentType[0].imageDesktop.asset.fluid.srcWebp}
+                bgSrc={contentType[0].image.asset.fluid.src}
+                bgSrcLg={contentType[0].imageDesktop.asset.fluid.src}
                 btnLabel={contentType[0].buttonLabel}
                 btnLink={contentType[0].buttonLink[0].slug.current}
               />

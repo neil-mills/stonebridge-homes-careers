@@ -5,6 +5,25 @@ import { HeadingStyle, HeadingXLarge } from '../assets/styles/Typography'
 import { GutterPaddingLeft, GutterPaddingRight } from '../assets/styles/Utils'
 import { SectionInner } from './Section'
 
+const BgGradient = styled.div`
+  background-image: linear-gradient(
+    90deg,
+    rgba(0, 0, 0, 0.25) 0,
+    transparent 60%
+  );
+  position: absolute;
+  display: block;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  display: flex;
+  align-items: center;
+  ${GutterPaddingLeft}
+  ${GutterPaddingRight}
+`
 const HomeBannerInner = styled.div`
   width: 70%;
   @media screen and (min-width: 500px) {
@@ -53,6 +72,7 @@ const HomeBanner: FC<HomeBannerProps> = (props): JSX.Element => {
       window.addEventListener('resize', handleResize)
       sectionRef.current.style.opacity = '1'
     }
+    // linear-gradient(0deg, #171918, transparent 30%), linear-gradient(45deg, #000, transparent), url("https://uploads-ssl.webflow.com/6038e8aa530f4a83c5082401/60797a0c3347ee8959e18ea1_DSCF4827.jpg")
     if (bgSrc && sectionRef.current) {
       sectionRef.current.style.backgroundImage = `url(${bgSrc})`
     }
@@ -60,23 +80,21 @@ const HomeBanner: FC<HomeBannerProps> = (props): JSX.Element => {
 
   return (
     <section className={props.className} ref={sectionRef}>
-      <SectionInner>
-        <HomeBannerInner>
-          <h2>Take your career to the next level</h2>
-          <p>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit Lorem ipsum
-            dolor sit amet, consectetur adipiscing elit.
-          </p>
-          <Button label={'Find out more'} link={'/working-with-us'} />
-        </HomeBannerInner>
-      </SectionInner>
+      <BgGradient>
+        <SectionInner>
+          <HomeBannerInner>
+            <h2>{props.title}</h2>
+            <p>{props.text}</p>
+            <Button label={'Find out more'} link={'/working-with-us'} />
+          </HomeBannerInner>
+        </SectionInner>
+      </BgGradient>
     </section>
   )
 }
 
 const StyledHomeBanner = styled(HomeBanner)`
   background-color: var(--green);
-  display: block;
   height: auto;
   ${GutterPaddingLeft}
   ${GutterPaddingRight}
@@ -86,6 +104,7 @@ const StyledHomeBanner = styled(HomeBanner)`
   background-position: right top;
   transition: background-position 200ms ease;
   background-size: cover;
+  position: relative;
   height: auto;
   min-height: 35rem;
   @media screen and (min-width: 500px) and (max-width: 599px) {
