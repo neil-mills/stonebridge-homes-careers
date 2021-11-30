@@ -323,7 +323,7 @@ export const query = graphql`
         }
       }
     }
-    articles: allSanityArticle {
+    articles: allSanityArticle(sort: { fields: date, order: DESC }) {
       nodes {
         id
         date(formatString: "D MMM YYYY")
