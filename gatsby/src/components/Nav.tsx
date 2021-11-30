@@ -8,14 +8,34 @@ import { NavigationLink } from '../types/navigation'
 
 const NavStyles = styled.nav`
   display: none;
+  height: 100%;
   @media screen and (min-width: 768px) {
     display: block;
   }
   ul {
     display: flex;
     gap: 4rem;
+    height: 100%;
     justify-content: flex-end;
     align-items: center;
+  }
+  li {
+    height: 100%;
+    display: flex;
+    align-items: center;
+    position: relative;
+    &[data-active='true'] {
+      &:after {
+        content: '';
+        display: block;
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        height: 2px;
+        background-color: var(--gold);
+      }
+    }
   }
   a {
     ${FontBold}
@@ -33,13 +53,17 @@ interface NavProps {
   options: NavigationLink[]
 }
 const Nav: FC<NavProps> = ({ options }) => {
+  console.log(location)
   return (
     <>
       <MenuButton />
       <NavStyles>
         <ul>
           {options.map((option: NavigationLink) => (
-            <li key={option.slug.current}>
+            <li
+              key={option.slug.current}
+              data-active={location.pathname === `/${option.slug.current}`}
+            >
               <Link to={`/${option.slug.current}`}>{option.title}</Link>
             </li>
           ))}
