@@ -16,7 +16,9 @@ const SectionStyles = styled.section`
   }
   @media screen and (min-width: 768px) and (orientation: landscape) {
     background-attachment: fixed;
-    background-size: auto 100vh;
+    /* background-size: auto 100vh; */
+    background-size: cover, auto, cover;
+    /* background-position: 0px 0px, 0px 0px, 50% 42%; */
     background-repeat: no-repeat;
   }
 `
