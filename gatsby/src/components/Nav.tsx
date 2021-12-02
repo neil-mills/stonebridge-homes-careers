@@ -53,7 +53,6 @@ interface NavProps {
   options: NavigationLink[]
 }
 const Nav: FC<NavProps> = ({ options }) => {
-  console.log(location)
   return (
     <>
       <MenuButton />
