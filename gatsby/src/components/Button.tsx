@@ -1,4 +1,4 @@
-import React, { MouseEvent, Dispatch, SetStateAction } from 'react'
+import React, { MouseEvent } from 'react'
 import styled from 'styled-components'
 import { navigate } from 'gatsby'
 import { FontBold } from '../assets/styles/Typography'
@@ -6,7 +6,17 @@ import { FontBold } from '../assets/styles/Typography'
 interface Props {
   secondary?: boolean
 }
-const ButtonStyles = styled.button<Props>`
+
+interface ButtonProps {
+  label: string
+  link?: string
+  type?: 'button' | 'submit'
+  callback?: (e: MouseEvent) => void
+  secondary?: boolean
+  className?: string
+}
+
+const StyledButton = styled.button<Props>`
   ${FontBold}
   display: block;
   margin-top: 3rem;
@@ -19,6 +29,7 @@ const ButtonStyles = styled.button<Props>`
   color: ${props => (props.secondary ? 'var(--green)' : 'var(--white)')};
   font-size: var(--font-xsmall);
   text-transform: uppercase;
+  border-radius: 3px;
   padding: 1.2rem 1.6rem;
   text-align: center;
   transition: background-color 200ms ease;
@@ -33,23 +44,17 @@ const ButtonStyles = styled.button<Props>`
   }
 `
 
-interface ButtonProps {
-  label: string
-  link?: string
-  callback?: () => void
-  secondary?: boolean
-}
-
 const Button = ({
   label,
   link,
+  type = 'button',
   callback,
   secondary = false,
+  className = '',
 }: ButtonProps): JSX.Element => {
   const handleClick = (e: MouseEvent) => {
-    e.preventDefault()
     if (callback) {
-      callback()
+      callback(e)
     }
     if (link) {
       navigate(link)
@@ -57,10 +62,18 @@ const Button = ({
   }
 
   return (
-    <ButtonStyles secondary={secondary} onClick={handleClick}>
+    <StyledButton
+      className={className}
+      type={type}
+      secondary={secondary}
+      onClick={handleClick}
+    >
       {label}
-    </ButtonStyles>
+    </StyledButton>
   )
 }
 
+StyledButton.defaultProps = {
+  type: 'button',
+}
 export default Button

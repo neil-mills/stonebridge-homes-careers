@@ -2,7 +2,7 @@ import React, { FC, useState, useEffect, ChangeEvent } from 'react'
 import ArrowIcon from '../assets/svg/select-arrow.svg'
 import styled, { css } from 'styled-components'
 import { HeadingStyle } from '../assets/styles/Typography'
-import { StyledInput } from './Form'
+import { StyledTextInput } from './Form/TextInput'
 
 const SelectStyles = styled.div<{ size: string }>`
   display: block;
@@ -34,6 +34,9 @@ const SelectStyles = styled.div<{ size: string }>`
     span {
       display: block;
       padding-top: 3px;
+      color: var(--grey);
+      font-family: effraregular;
+      text-transform: capitalize;
     }
   }
   select {
@@ -43,12 +46,12 @@ const SelectStyles = styled.div<{ size: string }>`
     width: 100%;
     display: block;
     position: absolute;
-    outline: none;
     top: 0;
     left: 0;
     bottom: 0;
     height: 40px;
     color: transparent;
+    outline-color: var(--gold);
     -webkit-appearance: none;
     option {
       color: var(--grey);
@@ -69,7 +72,7 @@ interface SelectProps {
   disabled?: boolean
   options: Option[]
   value?: string
-  callback?: (value: { [key: string]: string }) => void
+  callback: (e: ChangeEvent<HTMLSelectElement>) => void
 }
 
 const Select: FC<SelectProps> = ({
@@ -81,28 +84,25 @@ const Select: FC<SelectProps> = ({
   value = '',
   callback,
 }): JSX.Element => {
-  const [selectedValue, setSelectedValue] = useState(value)
-  const [selectLabel, setSelectLabel] = useState(label)
+  // const [selectedValue, setSelectedValue] = useState(value)
+  const [selectLabel, setSelectLabel] = useState(label || '')
 
   useEffect(() => {
-    setSelectLabel(`${label}${selectedValue && `: ${selectedValue}`}`)
-    if (callback) callback({ [name]: selectedValue })
-  }, [selectedValue])
+    setSelectLabel(label ? `${label}${value && `: ${value}`}` : value)
+  }, [value])
 
   return (
     <SelectStyles size={size}>
       <p id="location">{label}</p>
-      <StyledInput as={'button'} type="button" aria-labelledby="location">
+      <StyledTextInput as={'button'} type="button" aria-labelledby="location">
         <span>{selectLabel}</span>
         <ArrowIcon />
-      </StyledInput>
+      </StyledTextInput>
       <select
-        onChange={(e: ChangeEvent<HTMLSelectElement>) =>
-          setSelectedValue(e.target.value)
-        }
+        onChange={(e: ChangeEvent<HTMLSelectElement>) => callback(e)}
         name={name}
         disabled={disabled}
-        value={selectedValue}
+        value={value}
       >
         <option value={''}>{label}</option>
         {options.map((option: Option, i: number) => (

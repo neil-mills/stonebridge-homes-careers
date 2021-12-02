@@ -1,4 +1,11 @@
-import React, { FC } from 'react'
+import React, {
+  ChangeEvent,
+  FC,
+  FormEvent,
+  MouseEvent,
+  useEffect,
+  useState,
+} from 'react'
 import { graphql } from 'gatsby'
 import { VacancyType } from '../types'
 import styled from 'styled-components'
@@ -11,6 +18,7 @@ import VacancyImg from '../assets/images/vacancy-image.jpg'
 import { GapMargin } from '../assets/styles/Utils'
 import Select from '../components/Select'
 import Form, { TextInput, FileInput, CheckboxInput } from '../components/Form'
+
 import ArticleTitle from '../components/ArticleTitle'
 import { HeadingMediumKeyline } from '../assets/styles/Typography'
 
@@ -56,10 +64,23 @@ interface Props {
 }
 
 const SingleVacancyPage: FC<Props> = ({ data, className }): JSX.Element => {
+  const defaultValues = {
+    title: '',
+    firstName: '',
+    lastName: '',
+    email: '',
+    phone: '',
+    cv: '',
+    terms: 'false',
+    vacancyName: '',
+  }
+
+  const [formValues, setFormValues] = useState(defaultValues)
   const meta = [
     `Reference: ${data.vacancy.Reference}`,
     `Closing date: ${data.vacancy.ClosingDate}`,
   ]
+
   const regex =
     /face="(.*?)"|style="(.*?)"|<font(.*?)>|<\/font>|&nbsp;|<p[^>]*><\/p[^>]*>/gi
   let description: string = data.vacancy.JobDescription.replaceAll(regex, '')
@@ -77,6 +98,22 @@ const SingleVacancyPage: FC<Props> = ({ data, className }): JSX.Element => {
       `<p class="bullet">${result[1]}</p>`
     )
   }
+
+  const handleSubmit = (e: FormEvent) => {
+    e.preventDefault()
+    console.log(formValues)
+  }
+
+  const handleChange = (
+    e: ChangeEvent<HTMLInputElement | HTMLSelectElement>
+  ): void => {
+    const { name, value, type } = e.target
+    setFormValues(prevState => ({ ...prevState, [name]: value }))
+  }
+
+  useEffect(() => {
+    console.log(formValues)
+  }, [formValues])
 
   return (
     <div className={className}>
@@ -106,20 +143,33 @@ const SingleVacancyPage: FC<Props> = ({ data, className }): JSX.Element => {
               <img src={VacancyImg} />
             </StyledPicture>
           </div>
-          <Form method={'post'} action={'/'}>
+          <Form callback={handleSubmit}>
             <fieldset>
               <legend>Apply now</legend>
               <div>
                 <label htmlFor={'title'}>Title</label>
-                <Select size={'sm'} />
+                <Select
+                  name={'title'}
+                  size={'sm'}
+                  options={[
+                    { label: 'Mr', value: 'Mr' },
+                    { label: 'Mrs', value: 'Mrs' },
+                    { label: 'Miss', value: 'Miss' },
+                    { label: 'Ms', value: 'Ms' },
+                    { label: 'Other', value: 'Other' },
+                  ]}
+                  value={formValues.title}
+                  callback={handleChange}
+                />
               </div>
               <div>
                 <label htmlFor={'firstName'}>First name</label>
                 <TextInput
                   type={'text'}
                   id={'firstName'}
-                  name={'firstName'}
-                  value={''}
+                  value={formValues.firstName}
+                  required={true}
+                  onChange={handleChange}
                 />
               </div>
               <div>
@@ -127,17 +177,19 @@ const SingleVacancyPage: FC<Props> = ({ data, className }): JSX.Element => {
                 <TextInput
                   type={'text'}
                   id={'lastName'}
-                  name={'lastName'}
-                  value={''}
+                  value={formValues.lastName}
+                  required={true}
+                  onChange={handleChange}
                 />
               </div>
               <div>
                 <label htmlFor={'email'}>Email</label>
                 <TextInput
-                  type={'text'}
+                  type={'email'}
                   id={'email'}
-                  name={'email'}
-                  value={''}
+                  value={formValues.email}
+                  required={true}
+                  onChange={handleChange}
                 />
               </div>
               <div>
@@ -145,25 +197,28 @@ const SingleVacancyPage: FC<Props> = ({ data, className }): JSX.Element => {
                 <TextInput
                   type={'text'}
                   id={'phone'}
-                  name={'phone'}
-                  value={''}
+                  value={formValues.phone}
+                  required={true}
+                  onChange={handleChange}
                 />
               </div>
               <div>
                 <label htmlFor={'cv'}>CV</label>
-                <FileInput id={'cv'} name={'cv'} value={''} />
+                <FileInput
+                  id={'cv'}
+                  value={formValues.cv}
+                  callback={handleChange}
+                />
               </div>
               <div>
                 <CheckboxInput
                   label={'I accept the terms and conditions'}
-                  name={'accept'}
-                  id={'accept'}
-                  checked={true}
-                  last={true}
+                  id={'terms'}
+                  callback={handleChange}
                 />
               </div>
             </fieldset>
-            <Button label={'Send application'} link={'/'} />
+            <Button type="submit" label={'Send application'} />
           </Form>
         </StyledForm>
       </Section>
