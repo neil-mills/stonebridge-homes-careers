@@ -14,6 +14,7 @@ interface ButtonProps {
   callback?: (e: MouseEvent) => void
   secondary?: boolean
   className?: string
+  disabled?: boolean
 }
 
 const StyledButton = styled.button<Props>`
@@ -51,6 +52,7 @@ const Button = ({
   callback,
   secondary = false,
   className = '',
+  disabled = false,
 }: ButtonProps): JSX.Element => {
   const handleClick = (e: MouseEvent) => {
     if (callback) {
@@ -67,6 +69,7 @@ const Button = ({
       type={type}
       secondary={secondary}
       onClick={handleClick}
+      disabled={disabled}
     >
       {label}
     </StyledButton>

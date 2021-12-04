@@ -70,6 +70,7 @@ interface SelectProps {
   name: string
   size?: string
   disabled?: boolean
+  required?: boolean
   options: Option[]
   value?: string
   callback: (e: ChangeEvent<HTMLSelectElement>) => void
@@ -80,6 +81,7 @@ const Select: FC<SelectProps> = ({
   name = '',
   size = 'lg',
   disabled = false,
+  required = false,
   options = [],
   value = '',
   callback,
@@ -102,6 +104,7 @@ const Select: FC<SelectProps> = ({
         onChange={(e: ChangeEvent<HTMLSelectElement>) => callback(e)}
         name={name}
         disabled={disabled}
+        required={required}
         value={value}
       >
         <option value={''}>{label}</option>

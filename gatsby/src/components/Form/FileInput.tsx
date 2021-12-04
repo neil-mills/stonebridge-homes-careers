@@ -6,6 +6,7 @@ interface Props {
   id: string
   value?: string
   className?: string
+  required?: boolean
   callback: (e: ChangeEvent<HTMLInputElement>) => void
 }
 
@@ -43,13 +44,8 @@ const StyledFileInput = styled.div`
 `
 
 export const FileInput: FC<Props> = props => {
-  const [label, setLabel] = useState<string>('No file chosen')
   const inputRef = useRef<HTMLInputElement>(null)
-  useEffect(() => {
-    if (inputRef?.current?.files?.item(0)?.name) {
-      setLabel(inputRef.current.files['0'].name)
-    }
-  }, [props.value])
+
   return (
     <StyledFileInput>
       <input
@@ -57,11 +53,11 @@ export const FileInput: FC<Props> = props => {
         name={props.id}
         id={props.id}
         type="file"
-        value={props.value}
+        required={props.required}
         onChange={e => props.callback(e)}
       />
       <Button secondary={true} label={'Choose file'} />
-      <span>{label}</span>
+      <span>{props.value || 'No file chosen'}</span>
     </StyledFileInput>
   )
 }

@@ -91,3 +91,38 @@ export interface VacancyType {
   VacancyName: string
   VacancyType: string
 }
+
+export interface CheckDuplicateApplicantResult {
+  IsDuplicate: string
+}
+
+export interface CreateNewApplicantResult {
+  IsDuplicate: string
+  ApplicantId: string
+}
+
+// export interface UploadApplicantDocumentResult {}
+
+export interface ResponseType<T> {
+  Message: string
+  Result: T
+  Status: number
+  isError: boolean
+}
+
+export interface ApplicantData {
+  ApplicantId?: string
+  Title?: string
+  FirstName?: string
+  LastName?: string
+  Email?: string
+  PhoneNumber?: string
+  Terms?: string
+  VacancyReference?: string
+  OtherContactDetails?: string
+  File?: string
+  Description?: string
+  DocumentName?: string
+  FileRef?: File | null
+  CV?: string
+}

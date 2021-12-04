@@ -5,10 +5,10 @@ import CheckIcon from '../../assets/svg/check.svg'
 interface Props {
   id: string
   value?: string
-  checked: boolean
   label: string
   className?: string
   callback: (e: ChangeEvent<HTMLInputElement>) => void
+  required?: boolean
 }
 
 const StyledCheckboxInput = styled.div`
@@ -56,20 +56,9 @@ const StyledCheckboxInput = styled.div`
 `
 
 export const CheckboxInput: FC<Props> = props => {
-  const [value, setValue] = useState('false')
-  const [event, setEvent] = useState<ChangeEvent<HTMLInputElement> | null>(null)
-
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
-    setValue(prevState => (prevState === 'false' ? 'true' : 'false'))
-    e.persist()
-    setEvent(e)
+    props.callback(e)
   }
-
-  useEffect(() => {
-    if (event?.target) {
-      props.callback(event)
-    }
-  }, [value, event])
 
   return (
     <StyledCheckboxInput className={props.className}>
@@ -77,9 +66,10 @@ export const CheckboxInput: FC<Props> = props => {
         id={props.id}
         name={props.id}
         type="checkbox"
-        value={value}
-        defaultChecked={value === 'true'}
+        value={props.value}
+        defaultChecked={props.value === 'true'}
         onChange={handleChange}
+        required={props.required}
       />
       <div>
         <CheckIcon />

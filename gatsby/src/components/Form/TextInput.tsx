@@ -4,9 +4,11 @@ import styled from 'styled-components'
 interface Props {
   id: string
   value?: string
-  type: string
+  type?: string
   required?: boolean
   minLength?: number
+  maxLength?: number
+  pattern?: string
   onChange: (e: ChangeEvent<HTMLInputElement>) => void
 }
 
@@ -31,19 +33,26 @@ export const StyledTextInput = styled.input`
 
 export const TextInput: FC<Props> = ({
   type = 'text',
-  minLength = 1,
+  minLength,
+  maxLength,
   required = false,
   id,
   onChange,
+  pattern,
+  value = '',
 }) => {
   return (
     <StyledTextInput
       type={type}
-      name={id}
       id={id}
+      name={id}
+      value={value}
       onChange={onChange}
       minLength={minLength}
+      maxLength={maxLength}
       required={required}
+      pattern={pattern}
+      autoComplete={'off'}
     />
   )
 }
