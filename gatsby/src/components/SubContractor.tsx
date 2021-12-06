@@ -2,7 +2,7 @@ import React, { FC, useContext } from 'react'
 import ImageAndTextBlock from './ImageAndTextBlock'
 import AppContext from '../context/AppContext'
 import Dialog from '../components/Dialog'
-import SubContractorForm from './SubContractorForm'
+import ApplicationForm from '../components/ApplicationForm'
 
 interface Props {
   heading: string
@@ -10,14 +10,15 @@ interface Props {
   buttonLabel?: string
 }
 const SubContractor: FC<Props> = ({ heading, text, buttonLabel }) => {
-  const { setDialogActive, setBodyNoScroll } = useContext(AppContext)
+  const { setDialogActive, stopBodyScroll } = useContext(AppContext)
 
-  const openDialog = () => {
+  const openDialog = (e: MouseEvent) => {
+    e.preventDefault()
     if (setDialogActive) {
       setDialogActive(true)
     }
-    if (setBodyNoScroll) {
-      setBodyNoScroll(true)
+    if (stopBodyScroll) {
+      stopBodyScroll(true)
     }
   }
 
@@ -25,13 +26,16 @@ const SubContractor: FC<Props> = ({ heading, text, buttonLabel }) => {
     <>
       <ImageAndTextBlock
         heading={heading}
-        text={text}
+        sectionText={text}
         buttonLabel={buttonLabel}
         buttonCallback={openDialog}
       />
       <Dialog>
-        <h3 id={'dialogTitle'}>Register as a subcontractor</h3>
-        <SubContractorForm />
+        <h3>Register as a subcontractor</h3>
+        <ApplicationForm
+          vacancyReference={'123'}
+          buttonLabel={'Register details'}
+        />
       </Dialog>
     </>
   )

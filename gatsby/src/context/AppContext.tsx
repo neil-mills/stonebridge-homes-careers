@@ -13,7 +13,7 @@ type ContextType = {
   menuActive: boolean
   setMenuActive: Dispatch<SetStateAction<boolean>> | null
   bodyNoScroll: boolean
-  setBodyNoScroll: Dispatch<SetStateAction<boolean>> | null
+  stopBodyScroll?: (state: boolean) => void
   address: string
   instagram?: string
   facebook?: string
@@ -27,7 +27,6 @@ const AppContext = createContext<ContextType>({
   menuActive: false,
   setMenuActive: null,
   bodyNoScroll: false,
-  setBodyNoScroll: null,
   address: '',
 })
 
@@ -36,6 +35,19 @@ export const AppContextProvider: FC = ({ children }): JSX.Element => {
   const [menuActive, setMenuActive] = useState<boolean>(false)
   const [bodyNoScroll, setBodyNoScroll] = useState<boolean>(false)
 
+  const stopBodyScroll = (state: boolean) => {
+    setBodyNoScroll(state)
+    if (state) {
+      const { scrollY } = window
+      document.body.style.position = 'fixed'
+      document.body.style.top = `-${scrollY}px`
+    } else {
+      const scrollY = document.body.style.top
+      document.body.style.position = ''
+      document.body.style.top = ''
+      window.scrollTo(0, parseInt(scrollY || '0') * -1)
+    }
+  }
   const { settings } = useStaticQuery(graphql`
     query {
       settings: allSanitySettings {
@@ -57,7 +69,7 @@ export const AppContextProvider: FC = ({ children }): JSX.Element => {
         menuActive,
         setMenuActive,
         bodyNoScroll,
-        setBodyNoScroll,
+        stopBodyScroll,
         ...settings.nodes[0],
       }}
     >
