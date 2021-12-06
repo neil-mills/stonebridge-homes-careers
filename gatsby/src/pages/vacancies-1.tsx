@@ -8,7 +8,7 @@ import Section from '../components/Section'
 import { HeadingStyle, FontMedium } from '../assets/styles/Typography'
 import { GoldLink } from '../assets/styles/Utils'
 import ArrowIcon from '../assets/svg/arrow-icon.svg'
-import Select from '../components/Select'
+import { Select } from '../components/Form/Select'
 import Quotes from '../components/Quotes'
 import quotesData from '../data/quotes'
 
