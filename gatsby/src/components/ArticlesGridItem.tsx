@@ -1,9 +1,10 @@
-import React, { FC, forwardRef } from 'react'
+import React, { FC, forwardRef, useRef, useEffect, useState } from 'react'
 import styled from 'styled-components'
 import { Link } from 'gatsby'
 import { HeadingStyle, HeadingMedium } from '../assets/styles/Typography'
 import PlayIcon from '../assets/svg/play.svg'
-import { ArticleType, SlugType } from '../types'
+import { ArticleType } from '../types'
+import { useLazyLoadImages } from '../hooks/useLazyLoadImages'
 
 const ArticleItemStyles = styled.article`
   background-color: var(--white);
@@ -66,16 +67,29 @@ const ArticleGridItem = forwardRef<HTMLElement, ArticleType>((props, ref) => {
     imageAlt = '',
     width = 'auto',
   } = props
+  const [src, setSrc] = useState('')
+  const [srcSet, setSrcSet] = useState('')
+  const imageRef = useRef<HTMLElement | null>(null)
+  const [isLoaded] = useLazyLoadImages(imageRef, image.asset.fluid.srcSet)
+
+  useEffect(() => {
+    if (isLoaded) {
+      console.log('loaded srcset, show image')
+      if (image.asset.fluid.srcSet) {
+        setSrcSet(image.asset.fluid.srcSet)
+      }
+      if (image.asset.fluid.src) {
+        setSrc(image.asset.fluid.src)
+      }
+    }
+  }, [isLoaded])
   return (
     <ArticleItemStyles ref={ref} style={{ width: `${width}` }}>
       <ArticleLink link={`/articles/${id}`}>
-        <picture>
-          <source
-            media="(min-width: 500px)"
-            srcSet={image.asset.fluid.srcSet}
-          />
+        <picture ref={imageRef}>
+          <source srcSet={srcSet} />
           {videoSrc && <PlayIcon />}
-          <img src={image.asset.fluid.src} alt={imageAlt} />
+          <img src={src} alt={imageAlt} />
         </picture>
         <div>
           {date && <time dateTime="{date}">{date}</time>}
