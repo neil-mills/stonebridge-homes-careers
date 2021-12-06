@@ -15,8 +15,9 @@ const IconTitleStyles = styled.div<StyleProps>`
   text-align: ${props => props.align};
   h3 {
     ${HeadingMedium}
+    margin-top: 0;
     @media screen and (min-width: 768px) {
-      margin-bottom: 0;
+      margin: 0;
     }
   }
   img {
