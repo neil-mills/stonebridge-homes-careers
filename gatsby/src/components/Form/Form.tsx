@@ -1,10 +1,6 @@
 import React, { FC, FormEvent } from 'react'
 import styled from 'styled-components'
-import {
-  HeadingStyle,
-  FontMedium,
-  HeadingLarge,
-} from '../../assets/styles/Typography'
+import { FontMedium } from '../../assets/styles/Typography'
 
 interface Props {
   method?: string
@@ -13,26 +9,26 @@ interface Props {
 }
 
 const StyledForm = styled.form`
-  fieldset {
-    border: none;
-    margin: 0;
-    padding: 0;
-    display: grid;
-    grid-auto-rows: auto;
-    gap: 1rem;
-    @media screen and (min-width: 768px) {
-      gap: 2rem;
-    }
-  }
-  legend {
-    ${HeadingStyle}
-    ${HeadingLarge}
+  border: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-auto-rows: auto;
+  grid-template-columns: 1fr;
+  justify-content: start;
+  gap: 1rem;
+  @media screen and (min-width: 768px) {
+    gap: 2rem;
   }
   label {
     font-size: var(--font-xsmall);
     display: block;
     color: var(--dark-grey);
     ${FontMedium}
+  }
+  button[type='submit'] {
+    justify-self: start;
+    margin-top: 2rem;
   }
 `
 

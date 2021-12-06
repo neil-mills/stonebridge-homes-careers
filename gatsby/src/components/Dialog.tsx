@@ -20,6 +20,11 @@ const StyledDialog = styled.div<{ active: boolean }>`
   left: 0;
   transform: ${({ active }) => (active ? 'translateX(0)' : 'translateX(100%)')};
   z-index: 10;
+  h3 {
+    padding-bottom: 2rem;
+    margin-bottom: 2rem;
+    border-bottom: 1px solid var(--keyline-grey);
+  }
 
   div[role='dialog'] {
     height: auto;
@@ -62,15 +67,15 @@ const Dialog: FC<DialogProps> = props => {
   const {
     dialogActive = false,
     setDialogActive,
-    setBodyNoScroll,
+    stopBodyScroll,
   } = useContext(AppContext)
 
   const handleClick = () => {
     if (setDialogActive) {
       setDialogActive(false)
     }
-    if (setBodyNoScroll) {
-      setBodyNoScroll(true)
+    if (stopBodyScroll) {
+      stopBodyScroll(false)
     }
   }
 

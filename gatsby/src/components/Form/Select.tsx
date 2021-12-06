@@ -1,8 +1,8 @@
 import React, { FC, useState, useEffect, ChangeEvent } from 'react'
-import ArrowIcon from '../assets/svg/select-arrow.svg'
+import ArrowIcon from '../../assets/svg/select-arrow.svg'
 import styled, { css } from 'styled-components'
-import { HeadingStyle } from '../assets/styles/Typography'
-import { StyledTextInput } from './Form/TextInput'
+import { HeadingStyle } from '../../assets/styles/Typography'
+import { StyledTextInput } from './TextInput'
 
 const SelectStyles = styled.div<{ size: string }>`
   display: block;
@@ -76,7 +76,7 @@ interface SelectProps {
   callback: (e: ChangeEvent<HTMLSelectElement>) => void
 }
 
-const Select: FC<SelectProps> = ({
+export const Select: FC<SelectProps> = ({
   label,
   name = '',
   size = 'lg',
@@ -86,7 +86,6 @@ const Select: FC<SelectProps> = ({
   value = '',
   callback,
 }): JSX.Element => {
-  // const [selectedValue, setSelectedValue] = useState(value)
   const [selectLabel, setSelectLabel] = useState(label || '')
 
   useEffect(() => {
@@ -117,5 +116,3 @@ const Select: FC<SelectProps> = ({
     </SelectStyles>
   )
 }
-
-export default Select

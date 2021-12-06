@@ -21,8 +21,8 @@ export function usePeopleHRFetch<S>(
     if (data) {
       jsonData = { ...jsonData, ...data }
     }
-    console.log(jsonData)
     try {
+      setIsLoading(true)
       console.log(`sending ${action} request`)
       const res = await fetch(`https://api.peoplehr.net/${dir}/`, {
         method: 'POST',
@@ -33,9 +33,11 @@ export function usePeopleHRFetch<S>(
       })
       const jsonResponse = await res.json()
       console.log(`${action} response recieved`)
+      setIsLoading(false)
       return jsonResponse
     } catch (err) {
       return 'Error'
+      setIsLoading(false)
     }
   }
 
