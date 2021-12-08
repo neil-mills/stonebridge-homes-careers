@@ -1,19 +1,20 @@
-import {
-  useState,
-  useEffect,
-  RefObject,
-  ForwardedRef,
-  MutableRefObject,
-} from 'react'
+import { useState, useEffect, RefObject } from 'react'
 
-export function useIntersectionObserver(
+type IntersectionObserverParams = {
   ref?: RefObject<HTMLElement>
-): [boolean] {
+  options?: {
+    rootMargin?: string
+    threshold?: number
+  }
+}
+export function useIntersectionObserver({
+  ref,
+  options = {},
+}: IntersectionObserverParams): boolean {
   const [isInViewport, setIsInViewport] = useState<boolean>(false)
-  const options = {
+  const observerOptions = {
     root: null, // relative to document viewport
-    rootMargin: '0px', // margin around root. Values are similar to css property. Unitless values not allowed
-    threshold: 1, // visible amount of item shown in relation to root
+    ...options,
   }
   const callback = (
     entries: IntersectionObserverEntry[],
@@ -21,22 +22,20 @@ export function useIntersectionObserver(
   ): void => {
     console.log('callback')
     entries.forEach(entry => {
-      setIsInViewport(entry.isIntersecting)
       if (entry.isIntersecting) {
-        console.log('is in  viewport')
-      } else {
-        console.log('is not in viewport')
+        setIsInViewport(true)
+        if (ref?.current) {
+          observer.unobserve(ref.current)
+        }
       }
     })
   }
   useEffect(() => {
     const observer: IntersectionObserver = new IntersectionObserver(
       callback,
-      options
+      observerOptions
     )
-    console.log(ref)
     if (ref?.current) {
-      console.log('observer inti')
       observer.observe(ref.current)
     }
     return () => {
@@ -45,5 +44,5 @@ export function useIntersectionObserver(
       }
     }
   }, [])
-  return [isInViewport]
+  return isInViewport
 }

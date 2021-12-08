@@ -1,25 +1,26 @@
 import { RefObject, useEffect, useState } from 'react'
-import { useIntersectionObserver } from '@asyarb/use-intersection-observer'
-
+//import { useIntersectionObserver } from '@asyarb/use-intersection-observer'
+import { useIntersectionObserver } from '../hooks/useIntersectionObserver'
 type LazyLoadType = {
   ref: RefObject<HTMLElement>
   srcSet?: string
   src?: string[]
+  options?: {
+    threshold?: number
+    rootMargin?: string
+  }
 }
 export const useLazyLoadImages = ({
   ref,
   srcSet,
   src,
+  options = {},
 }: LazyLoadType): [boolean, boolean] => {
   const [isLoaded, setIsLoaded] = useState(false)
   const [isError, setIsError] = useState(false)
-
   const isInViewport = useIntersectionObserver({
     ref,
-    options: {
-      threshold: 0,
-      triggerOnce: true,
-    },
+    options,
   })
 
   const preloadSrc = (src: string) => {
@@ -57,8 +58,7 @@ export const useLazyLoadImages = ({
   }
 
   useEffect(() => {
-    if (isInViewport && srcSet) {
-      console.log('in viewport')
+    if (isInViewport && (srcSet || src)) {
       preloadImages()
     }
   }, [isInViewport])

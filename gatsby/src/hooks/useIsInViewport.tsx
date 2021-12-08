@@ -9,12 +9,9 @@ export const useIsInViewport = (
     if (ref?.current) {
       const rect: DOMRect = ref?.current?.getBoundingClientRect()
       const inViewport: boolean =
-        rect.top >= 0 &&
-        rect.left >= 0 &&
-        rect.bottom <=
-          (window.innerHeight || document.documentElement.clientHeight) &&
-        rect.right <=
-          (window.innerWidth || document.documentElement.clientWidth)
+        rect.top <=
+        (window.innerHeight || document.documentElement.clientHeight)
+
       return inViewport
     }
     return false

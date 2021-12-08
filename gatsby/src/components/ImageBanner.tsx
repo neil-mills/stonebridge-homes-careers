@@ -1,8 +1,9 @@
-import React, { FC } from 'react'
+import React, { FC, useState, useEffect, useRef } from 'react'
 import styled from 'styled-components'
 import Button from './Button'
 import { HeadingLarge } from '../assets/styles/Typography'
 import { SectionInner } from './Section'
+import { useLazyLoadImages } from '../hooks/useLazyLoadImages'
 import {
   SectionGutter,
   GutterPaddingLeft,
@@ -97,12 +98,14 @@ const InsetBox = styled.div`
     padding: 8rem;
   }
 `
-const BgImage = styled.picture`
+const BgImage = styled.picture<{ isLoaded: boolean }>`
+  background-color: var(--light-grey);
   img {
     object-fit: cover;
     object-position: center top;
     width: 100%;
     height: 100%;
+    opacity: ${({ isLoaded }) => (isLoaded ? 1 : 0)};
   }
   position: relative;
   height: 320px;
@@ -131,16 +134,38 @@ const ImageBanner: FC<ImageBannerProps> = ({
   alignText = 'right',
   tint = false,
 }): JSX.Element => {
-  console.log('Align text=', alignText)
+  const imageRef = useRef(null)
+  const [loadedSrc, setLoadedSrc] = useState('')
+  const [loadedSrcSet, setLoadedSrcSet] = useState('')
+  const [isLoaded] = useLazyLoadImages({
+    ref: imageRef,
+    srcSet: srcSet,
+    options: {
+      threshold: 0,
+      rootMargin: '0px',
+    },
+  })
+
+  useEffect(() => {
+    if (isLoaded && src) {
+      if (srcSet) {
+        setLoadedSrcSet(srcSet)
+      }
+      if (src) {
+        setLoadedSrc(src)
+      }
+    }
+  }, [isLoaded])
+
   return (
     <ImageBannerStyles
       tint={tint}
       data-position={top ? 'top' : 'page'}
       data-text-align={alignText}
     >
-      <BgImage>
-        <source media="(min-width: 500px)" srcSet={srcSet} />
-        <img src={src} alt={srcAlt} />
+      <BgImage ref={imageRef} isLoaded={isLoaded}>
+        <source media="(min-width: 500px)" srcSet={loadedSrcSet} />
+        <img src={loadedSrc} alt={srcAlt} />
       </BgImage>
       <SectionInner>
         <ImageBannerInner>

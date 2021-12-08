@@ -15,7 +15,7 @@ const ArticleItemStyles = styled.article<{
   scroll-snap-align: start;
   width: 300px;
   opacity: 0;
-  transition: opacity 750ms ease, transform 750ms ease;
+  transition: opacity 500ms ease, transform 1s ease;
   transform: ${({ willAnimate }) =>
     willAnimate ? 'translateY(50px)' : 'translateY(0)'};
   &[data-loaded='true'] {
@@ -82,6 +82,7 @@ const ArticleGridItem = forwardRef<HTMLElement, ArticleType>((props, ref) => {
   const [src, setSrc] = useState('')
   const [srcSet, setSrcSet] = useState('')
   const [willAnimate, setWillAnimate] = useState(false)
+  const [animate, setAnimate] = useState(false)
   const imageRef = useRef<HTMLElement | null>(null)
   const isInViewport = useIsInViewport(imageRef)
   const [isLoaded] = useLazyLoadImages({
@@ -102,7 +103,9 @@ const ArticleGridItem = forwardRef<HTMLElement, ArticleType>((props, ref) => {
       if (image.asset.fluid.src) {
         setSrc(image.asset.fluid.src)
       }
-      // setIsAnimate(willAnimate)
+      setTimeout(() => {
+        setAnimate(true)
+      }, 500)
     }
   }, [isLoaded])
 
@@ -112,7 +115,7 @@ const ArticleGridItem = forwardRef<HTMLElement, ArticleType>((props, ref) => {
       isLoaded={isLoaded}
       ref={ref}
       style={{ width: `${width}` }}
-      data-loaded={isLoaded}
+      data-loaded={animate}
     >
       <ArticleLink link={`/articles/${id}`}>
         <picture ref={imageRef}>

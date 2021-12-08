@@ -1,6 +1,7 @@
 import React, { FC, useEffect, useState, useRef } from 'react'
 import styled from 'styled-components'
 import { ParallaxImageBlockType } from '../types'
+import { useLazyLoadImages } from '../hooks/useLazyLoadImages'
 
 const SectionStyles = styled.section`
   display: block;
@@ -27,43 +28,39 @@ const ParallaxImage: FC<ParallaxImageBlockType> = ({
   src,
   srcLarge,
 }): JSX.Element => {
-  console.log('src=', src, 'srcLarge', srcLarge)
   const sectionRef = useRef<HTMLElement | null>(null)
-  const [loaded, setLoaded] = useState<number>(0)
   const [bgSrc, setBgSrc] = useState<string>('')
-
-  const preloadImages = () => {
-    const images: string[] = [src.asset.fluid.src, srcLarge.asset.fluid.src]
-    images.forEach(src => {
-      const img = new Image()
-      img.src = src
-      img.onload = () => {
-        setLoaded(prevState => (prevState += 1))
-      }
-    })
-  }
-
-  const handleResize = () => {
-    setBgSrc(
-      window.innerWidth <= 767 ? src.asset.fluid.src : srcLarge.asset.fluid.src
-    )
-  }
+  const [isLoaded] = useLazyLoadImages({
+    ref: sectionRef,
+    src: src && srcLarge ? [src.asset.fluid.src, srcLarge.asset.fluid.src] : [],
+    options: {
+      threshold: 0,
+      rootMargin: '0px',
+    },
+  })
 
   useEffect(() => {
-    if (loaded === 0) {
-      preloadImages()
-    }
-    if (loaded === 2 && sectionRef.current) {
+    if (isLoaded && src && srcLarge) {
       handleResize()
-      window.addEventListener('resize', handleResize)
-      sectionRef.current.style.opacity = '1'
     }
-    if (bgSrc && sectionRef.current) {
-      sectionRef.current.style.backgroundImage = `url(${bgSrc})`
-    }
-  }, [loaded, bgSrc])
+  }, [isLoaded])
 
-  return <SectionStyles ref={sectionRef} />
+  const handleResize = () => {
+    if (src && srcLarge) {
+      setBgSrc(
+        window.innerWidth <= 767
+          ? src.asset.fluid.src
+          : srcLarge.asset.fluid.src
+      )
+    }
+  }
+
+  return (
+    <SectionStyles
+      ref={sectionRef}
+      style={{ backgroundImage: `url(${bgSrc})` }}
+    />
+  )
 }
 
 export default ParallaxImage

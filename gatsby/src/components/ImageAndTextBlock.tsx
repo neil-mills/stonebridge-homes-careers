@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import styled from 'styled-components'
 import PlayIcon from '../assets/svg/play.svg'
 import { MarginBottomNone } from '../assets/styles/Utils'
@@ -6,6 +6,8 @@ import Button from './Button'
 import { HeadingLarge } from '../assets/styles/Typography'
 import Section from './Section'
 import { ImageAndTextBlockType } from '../types'
+import { useLazyLoadImages } from '../hooks/useLazyLoadImages'
+import { useIsInViewport } from '../hooks/useIsInViewport'
 
 const SectionStyles = styled.section`
   display: grid;
@@ -41,14 +43,27 @@ const SectionStyles = styled.section`
     }
   }
 `
-const Picture = styled.picture`
+const Picture = styled.picture<{
+  willAnimate: boolean
+  isLoaded: boolean
+}>`
   display: grid;
+  transition: opacity 500ms ease, transform 1s ease;
+  opacity: ${({ willAnimate }) => (willAnimate ? 0 : 1)};
+  transform: ${({ willAnimate }) =>
+    willAnimate ? 'translateY(50px)' : 'translateY(0)'};
   align-items: center;
   width: 100%;
+  background: var(--light-grey);
+  &[data-loaded='true'] {
+    opacity: 1;
+    transform: translateY(0);
+  }
   img {
     grid-area: 1 / 1 / 1 / 1;
     object-fit: cover;
     width: 100%;
+    visibility: ${({ isLoaded }) => (isLoaded ? 'visible' : 'hidden')};
   }
   svg {
     grid-area: 1 / 1 / 1 / 1;
@@ -76,21 +91,62 @@ const ImageAndTextBlock = ({
   marginTop = true,
   marginBottom = true,
 }: ImageAndTextBlockType): JSX.Element => {
+  const [loadedSrc, setLoadedSrc] = useState('')
+  const [loadedSrcSet, setLoadedSrcSet] = useState('')
+  const [willAnimate, setWillAnimate] = useState(false)
+  const [animate, setAnimate] = useState(false)
+  const imageRef = useRef(null)
+  const isInViewport = useIsInViewport(imageRef)
+  const [isLoaded] = useLazyLoadImages({
+    ref: imageRef,
+    srcSet: src?.asset.fluid.srcSet,
+    options: {
+      threshold: 0,
+      rootMargin: '0px',
+    },
+  })
+
+  useEffect(() => {
+    const inViewport = isInViewport()
+    setWillAnimate(!inViewport)
+  }, [])
+
+  useEffect(() => {
+    if (isLoaded && src) {
+      if (src.asset.fluid.srcSet) {
+        setLoadedSrcSet(src.asset.fluid.srcSet)
+      }
+      if (src.asset.fluid.src) {
+        setLoadedSrc(src.asset.fluid.src)
+      }
+      setTimeout(() => {
+        setAnimate(true)
+      }, 1000)
+    }
+  }, [isLoaded])
+
   return (
     <Section tint={tint} marginTop={marginTop} marginBottom={marginBottom}>
       <SectionStyles data-text-align={alignText}>
         {src && videoSrc && (
-          <Picture>
-            <source
-              media="(min-width: 500px)"
-              srcSet={src.asset.fluid.srcSet}
-            />
+          <Picture
+            willAnimate={willAnimate}
+            isLoaded={isLoaded}
+            ref={imageRef}
+            data-loaded={animate}
+          >
+            <source media="(min-width: 500px)" srcSet={loadedSrcSet} />
             <PlayIcon />
-            <img src={src.asset.fluid.src} alt={srcAlt} />
+            <img src={loadedSrc} alt={srcAlt} />
           </Picture>
         )}
         {src && !videoSrc && (
-          <Picture>
+          <Picture
+            willAnimate={willAnimate}
+            isLoaded={isLoaded}
+            ref={imageRef}
+            data-loaded={animate}
+          >
             <source
               media="(min-width: 500px)"
               srcSet={src.asset.fluid.srcSet}

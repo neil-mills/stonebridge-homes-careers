@@ -4,6 +4,7 @@ import Button from './Button'
 import { HeadingStyle, HeadingXLarge } from '../assets/styles/Typography'
 import { GutterPaddingLeft, GutterPaddingRight } from '../assets/styles/Utils'
 import { SectionInner } from './Section'
+import { useLazyLoadImages } from '../hooks/useLazyLoadImages'
 
 const BgGradient = styled.div`
   background-image: linear-gradient(
@@ -43,43 +44,34 @@ interface HomeBannerProps {
   className?: string
 }
 const HomeBanner: FC<HomeBannerProps> = (props): JSX.Element => {
-  const [loaded, setLoaded] = useState<number>(0)
-  const [bgSrc, setBgSrc] = useState<string>('')
   const sectionRef = useRef<HTMLElement>(null)
 
-  const sources = [props.bgSrc, props.bgSrcLg]
+  const [bgSrc, setBgSrc] = useState<string>('')
+  const [isLoaded] = useLazyLoadImages({
+    ref: sectionRef,
+    src: [props.bgSrc, props.bgSrcLg],
+    options: {
+      threshold: 0,
+      rootMargin: '0px',
+    },
+  })
 
-  const preloadImages = () => {
-    sources.forEach(src => {
-      const img = new Image()
-      img.src = src
-      img.onload = () => {
-        setLoaded(prevState => (prevState += 1))
-      }
-    })
-  }
+  useEffect(() => {
+    if (isLoaded && props.bgSrc && props.bgSrcLg) {
+      handleResize()
+    }
+  }, [isLoaded])
 
   const handleResize = () => {
     setBgSrc(window.innerWidth < 500 ? props.bgSrc : props.bgSrcLg)
   }
 
-  useEffect(() => {
-    if (loaded === 0) {
-      preloadImages()
-    }
-    if (loaded === sources.length && sectionRef.current) {
-      handleResize()
-      window.addEventListener('resize', handleResize)
-      sectionRef.current.style.opacity = '1'
-    }
-    // linear-gradient(0deg, #171918, transparent 30%), linear-gradient(45deg, #000, transparent), url("https://uploads-ssl.webflow.com/6038e8aa530f4a83c5082401/60797a0c3347ee8959e18ea1_DSCF4827.jpg")
-    if (bgSrc && sectionRef.current) {
-      sectionRef.current.style.backgroundImage = `url(${bgSrc})`
-    }
-  }, [loaded, bgSrc])
-
   return (
-    <section className={props.className} ref={sectionRef}>
+    <section
+      className={props.className}
+      ref={sectionRef}
+      style={{ backgroundImage: `url(${bgSrc})` }}
+    >
       <BgGradient>
         <SectionInner>
           <HomeBannerInner>
