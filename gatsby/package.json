@@ -15,6 +15,7 @@
     "lint": "eslint --ignore-path .gitignore . --ext ts --ext tsx --ext js --ext jsx"
   },
   "dependencies": {
+    "@asyarb/use-intersection-observer": "^2.0.2",
     "@sanity/image-url": "^1.0.1",
     "@svgr/webpack": "^5.5.0",
     "babel-plugin-styled-components": "^1.11.1",

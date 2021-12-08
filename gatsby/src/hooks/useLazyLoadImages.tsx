@@ -1,21 +1,58 @@
-import { ForwardedRef, RefObject, useEffect, useState } from 'react'
-import { useIntersectionObserver } from './useIntersectionObserver'
+import { RefObject, useEffect, useState } from 'react'
+import { useIntersectionObserver } from '@asyarb/use-intersection-observer'
 
-export const useLazyLoadImages = (
-  ref: RefObject<HTMLElement>,
+type LazyLoadType = {
+  ref: RefObject<HTMLElement>
   srcSet?: string
-): [boolean] => {
+  src?: string[]
+}
+export const useLazyLoadImages = ({
+  ref,
+  srcSet,
+  src,
+}: LazyLoadType): [boolean, boolean] => {
   const [isLoaded, setIsLoaded] = useState(false)
-  const [isInViewport] = useIntersectionObserver(ref)
+  const [isError, setIsError] = useState(false)
 
-  const preloadImages = () => {
-    if (srcSet) {
+  const isInViewport = useIntersectionObserver({
+    ref,
+    options: {
+      threshold: 0,
+      triggerOnce: true,
+    },
+  })
+
+  const preloadSrc = (src: string) => {
+    return new Promise((resolve, reject) => {
+      const attr = srcSet ? 'srcset' : 'src'
       const image = new Image()
-      image.srcset = srcSet
-      image.onload = () => setIsLoaded(true)
-      image.onerror = () => setIsLoaded(false)
-    } else {
-      setIsLoaded(false)
+      image[attr] = src
+      image.onload = () => resolve(true)
+      image.onerror = () => reject(false)
+    })
+  }
+
+  const preloadImages = async () => {
+    if (srcSet) {
+      try {
+        await preloadSrc(srcSet)
+        setIsLoaded(true)
+        setIsError(false)
+      } catch {
+        setIsLoaded(false)
+        setIsError(true)
+      }
+    }
+    if (src) {
+      try {
+        const preloads: Promise<unknown>[] = src?.map(s => preloadSrc(s))
+        await Promise.all(preloads)
+        setIsLoaded(true)
+        setIsError(false)
+      } catch {
+        setIsLoaded(false)
+        setIsError(true)
+      }
     }
   }
 
@@ -26,5 +63,5 @@ export const useLazyLoadImages = (
     }
   }, [isInViewport])
 
-  return [isLoaded]
+  return [isLoaded, isError]
 }

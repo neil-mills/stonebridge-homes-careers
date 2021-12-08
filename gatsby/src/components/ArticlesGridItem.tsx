@@ -5,11 +5,23 @@ import { HeadingStyle, HeadingMedium } from '../assets/styles/Typography'
 import PlayIcon from '../assets/svg/play.svg'
 import { ArticleType } from '../types'
 import { useLazyLoadImages } from '../hooks/useLazyLoadImages'
+import { useIsInViewport } from '../hooks/useIsInViewport'
 
-const ArticleItemStyles = styled.article`
+const ArticleItemStyles = styled.article<{
+  willAnimate: boolean
+  isLoaded: boolean
+}>`
   background-color: var(--white);
   scroll-snap-align: start;
   width: 300px;
+  opacity: 0;
+  transition: opacity 750ms ease, transform 750ms ease;
+  transform: ${({ willAnimate }) =>
+    willAnimate ? 'translateY(50px)' : 'translateY(0)'};
+  &[data-loaded='true'] {
+    transform: translate(0);
+    opacity: 1;
+  }
   picture {
     margin: 0;
     width: 100%;
@@ -69,22 +81,39 @@ const ArticleGridItem = forwardRef<HTMLElement, ArticleType>((props, ref) => {
   } = props
   const [src, setSrc] = useState('')
   const [srcSet, setSrcSet] = useState('')
+  const [willAnimate, setWillAnimate] = useState(false)
   const imageRef = useRef<HTMLElement | null>(null)
-  const [isLoaded] = useLazyLoadImages(imageRef, image.asset.fluid.srcSet)
+  const isInViewport = useIsInViewport(imageRef)
+  const [isLoaded] = useLazyLoadImages({
+    ref: imageRef,
+    srcSet: image.asset.fluid.srcSet,
+  })
+
+  useEffect(() => {
+    const inViewport = isInViewport()
+    setWillAnimate(!inViewport)
+  }, [])
 
   useEffect(() => {
     if (isLoaded) {
-      console.log('loaded srcset, show image')
       if (image.asset.fluid.srcSet) {
         setSrcSet(image.asset.fluid.srcSet)
       }
       if (image.asset.fluid.src) {
         setSrc(image.asset.fluid.src)
       }
+      // setIsAnimate(willAnimate)
     }
   }, [isLoaded])
+
   return (
-    <ArticleItemStyles ref={ref} style={{ width: `${width}` }}>
+    <ArticleItemStyles
+      willAnimate={willAnimate}
+      isLoaded={isLoaded}
+      ref={ref}
+      style={{ width: `${width}` }}
+      data-loaded={isLoaded}
+    >
       <ArticleLink link={`/articles/${id}`}>
         <picture ref={imageRef}>
           <source srcSet={srcSet} />
