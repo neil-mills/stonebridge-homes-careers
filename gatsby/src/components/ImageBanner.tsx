@@ -4,6 +4,8 @@ import Button from './Button'
 import { HeadingLarge } from '../assets/styles/Typography'
 import { SectionInner } from './Section'
 import { useLazyLoadImages } from '../hooks/useLazyLoadImages'
+import { useIntersectionObserver } from '../hooks/useIntersectionObserver'
+import { useIsInViewport } from '../hooks/useIsInViewport'
 import {
   SectionGutter,
   GutterPaddingLeft,
@@ -62,9 +64,17 @@ const ImageBannerInner = styled.div`
   display: grid;
 `
 
-const InsetBox = styled.div`
+const InsetBox = styled.div<{ willAnimate: boolean }>`
   display: block;
   background-color: var(--green);
+  transition: opacity 500ms ease, transform 1s ease;
+  opacity: ${({ willAnimate }) => (willAnimate ? 0 : 1)};
+  transform: ${({ willAnimate }) =>
+    willAnimate ? 'translateY(50px)' : 'translateY(0)'};
+  &[data-active='true'] {
+    opacity: 1;
+    transform: translateY(0);
+  }
   width: 100%;
   ${SectionGutter}
   justify-self: end;
@@ -135,8 +145,13 @@ const ImageBanner: FC<ImageBannerProps> = ({
   tint = false,
 }): JSX.Element => {
   const imageRef = useRef(null)
+  const insetBoxRef = useRef(null)
   const [loadedSrc, setLoadedSrc] = useState('')
   const [loadedSrcSet, setLoadedSrcSet] = useState('')
+  const [willAnimate, setWillAnimate] = useState(false)
+  const [animate, setAnimate] = useState(false)
+  const isInViewport = useIsInViewport(imageRef)
+
   const [isLoaded] = useLazyLoadImages({
     ref: imageRef,
     srcSet: srcSet,
@@ -145,6 +160,18 @@ const ImageBanner: FC<ImageBannerProps> = ({
       rootMargin: '0px',
     },
   })
+  const isScrolledIntoViewport = useIntersectionObserver({
+    ref: insetBoxRef,
+    options: {
+      threshold: 0,
+      rootMargin: '0px',
+    },
+  })
+
+  useEffect(() => {
+    const inViewport = isInViewport()
+    setWillAnimate(!inViewport)
+  }, [])
 
   useEffect(() => {
     if (isLoaded && src) {
@@ -156,6 +183,14 @@ const ImageBanner: FC<ImageBannerProps> = ({
       }
     }
   }, [isLoaded])
+
+  useEffect(() => {
+    if (isScrolledIntoViewport && !animate) {
+      setTimeout(() => {
+        setAnimate(true)
+      }, 500)
+    }
+  }, [isScrolledIntoViewport])
 
   return (
     <ImageBannerStyles
@@ -169,7 +204,11 @@ const ImageBanner: FC<ImageBannerProps> = ({
       </BgImage>
       <SectionInner>
         <ImageBannerInner>
-          <InsetBox>
+          <InsetBox
+            ref={insetBoxRef}
+            willAnimate={willAnimate}
+            data-active={animate}
+          >
             <h3>{heading}</h3>
             <p>{text}</p>
             {buttonLabel && buttonLink && (
