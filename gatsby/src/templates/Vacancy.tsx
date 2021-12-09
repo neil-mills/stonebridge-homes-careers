@@ -102,7 +102,10 @@ const SingleVacancyPage: FC<Props> = ({ data, className }) => {
           <Button link={'/'} label={'Apply now'} />
         </ArticleTitle>
         <h2>The role</h2>
-        <div dangerouslySetInnerHTML={{ __html: description }} />
+        <div
+          className="description"
+          dangerouslySetInnerHTML={{ __html: description }}
+        />
       </Section>
       <Section tint={true}>
         <StyledForm>
@@ -161,16 +164,18 @@ const StyledSingleVacancyPage = styled(SingleVacancyPage)`
       max-width: 85%;
     }
   }
-  p.bullet,
-  li {
-    padding-left: 1.5rem;
-    position: relative;
-    &:before {
-      content: '•';
-      position: absolute;
-      left: 0;
-      top: 0;
-      color: var(--gold);
+  .description {
+    p.bullet,
+    li {
+      padding-left: 1.5rem;
+      position: relative;
+      &:before {
+        content: '•';
+        position: absolute;
+        left: 0;
+        top: 0;
+        color: var(--gold);
+      }
     }
   }
 `
