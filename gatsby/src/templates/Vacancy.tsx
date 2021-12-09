@@ -71,10 +71,8 @@ const SingleVacancyPage: FC<Props> = ({ data, className }) => {
   description = description.replaceAll('<p >​</p>', '')
   description = description.replaceAll('<p>​</p>', '')
   description = description.replaceAll(/\u200B/g, '')
-  console.log(description)
   const headingRegex = /<\s*p[^>]*>([A-Z&\s']+)<\s*\/\s*p\s*>/g
   const bulletRegex = /<\s*p[^>]*>· (.*?)<\s*\/\s*p>/g
-  const unclosedParaRegex = /<\s*p[^>]*>(.*?)<\s*p[^>]*>/g
   let result: RegExpExecArray | null
   while ((result = headingRegex.exec(description)) !== null) {
     description = description.replace(result[0], `<h3>${result[1]}</h3>`)
@@ -84,9 +82,6 @@ const SingleVacancyPage: FC<Props> = ({ data, className }) => {
       result[0],
       `<p class="bullet">${result[1]}</p>`
     )
-  }
-  while ((result = unclosedParaRegex.exec(description)) !== null) {
-    description = description.replace(result[0], `<h3>${result[1]}</h3>`)
   }
 
   return (
