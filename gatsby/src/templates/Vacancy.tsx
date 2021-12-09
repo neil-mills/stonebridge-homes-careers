@@ -69,8 +69,12 @@ const SingleVacancyPage: FC<Props> = ({ data, className }) => {
   let description: string = data.vacancy.JobDescription.replaceAll(regex, '')
   description = description.replaceAll('class="paragraph', '')
   description = description.replaceAll('<p >​</p>', '')
+  description = description.replaceAll('<p>​</p>', '')
+  description = description.replaceAll(/\u200B/g, '')
+  console.log(description)
   const headingRegex = /<\s*p[^>]*>([A-Z&\s']+)<\s*\/\s*p\s*>/g
   const bulletRegex = /<\s*p[^>]*>· (.*?)<\s*\/\s*p>/g
+  const unclosedParaRegex = /<\s*p[^>]*>(.*?)<\s*p[^>]*>/g
   let result: RegExpExecArray | null
   while ((result = headingRegex.exec(description)) !== null) {
     description = description.replace(result[0], `<h3>${result[1]}</h3>`)
@@ -80,6 +84,9 @@ const SingleVacancyPage: FC<Props> = ({ data, className }) => {
       result[0],
       `<p class="bullet">${result[1]}</p>`
     )
+  }
+  while ((result = unclosedParaRegex.exec(description)) !== null) {
+    description = description.replace(result[0], `<h3>${result[1]}</h3>`)
   }
 
   return (
@@ -147,6 +154,7 @@ export const query = graphql`
     }
   }
 `
+
 const StyledSingleVacancyPage = styled(SingleVacancyPage)`
   p {
     span {
@@ -157,16 +165,17 @@ const StyledSingleVacancyPage = styled(SingleVacancyPage)`
     @media screen and (min-width: 768px) {
       max-width: 85%;
     }
-    &.bullet {
-      padding-left: 1.5rem;
-      position: relative;
-      &:before {
-        content: '•';
-        position: absolute;
-        left: 0;
-        top: 0;
-        color: var(--gold);
-      }
+  }
+  p.bullet,
+  li {
+    padding-left: 1.5rem;
+    position: relative;
+    &:before {
+      content: '•';
+      position: absolute;
+      left: 0;
+      top: 0;
+      color: var(--gold);
     }
   }
 `

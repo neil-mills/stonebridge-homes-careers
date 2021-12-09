@@ -132,6 +132,9 @@ const Typography = createGlobalStyle`
     @media screen and (min-width: 768px) {
       margin: 2rem 0;
     }
+    &:empty {
+      display: none;
+    }
     &:first-child {
       margin-top: 0;
     }
