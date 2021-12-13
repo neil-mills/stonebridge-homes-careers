@@ -87,14 +87,15 @@ const ApplicationForm: FC<Props> = props => {
     setIsLoading(true)
     const response = await postCheckDuplicateApplicant()
     if (typeof response === 'object' && response.Result) {
-      if (!response.isError) {
+      if (!response.isError && response.Status !== 6) {
         if (response.Result.IsDuplicate === 'False') {
           //post applicant
           const response = await postCreateNewApplicant()
           if (typeof response === 'object' && response.Result) {
-            if (!response.isError) {
+            if (!response.isError && response.Status !== 6) {
               //post applicant cv file
               const { ApplicantId } = response.Result
+              console.log('New applicant ')
               setFormValues(prevState => ({ ...prevState, ApplicantId }))
               //convert file to base64
               if (FileRef) {
@@ -109,8 +110,7 @@ const ApplicationForm: FC<Props> = props => {
 
                 const response = await postUploadApplicantDocument()
                 if (typeof response === 'object' && response.Result) {
-                  console.log(response)
-                  if (!response.isError) {
+                  if (!response.isError && response.Status !== 6) {
                     //post application successful
                     setIsLoading(false)
                     setFormValues({ ...defaultValues })
