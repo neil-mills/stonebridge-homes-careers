@@ -70,7 +70,7 @@ const InsetBox = styled.div<{ willAnimate: boolean }>`
   transition: opacity 500ms ease, transform 1s ease;
   opacity: ${({ willAnimate }) => (willAnimate ? 0 : 1)};
   transform: ${({ willAnimate }) =>
-    willAnimate ? 'translateY(50px)' : 'translateY(0)'};
+    willAnimate ? 'translateY(100px)' : 'translateY(0)'};
   &[data-active='true'] {
     opacity: 1;
     transform: translateY(0);
