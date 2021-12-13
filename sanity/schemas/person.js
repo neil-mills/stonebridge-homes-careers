@@ -35,5 +35,11 @@ export default {
         hotspot: true,
       },
     },
+    {
+      name: 'videoUrl',
+      title: 'Video URL',
+      type: 'string',
+      description: '',
+    },
   ],
 };
