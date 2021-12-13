@@ -254,6 +254,7 @@ export const query = graphql`
               headingLevel
               subHeading
               text
+              columns
               items {
                 text
                 title
@@ -347,6 +348,7 @@ export const query = graphql`
       nodes {
         subTitle
         title
+        videoUrl
         slug {
           current
         }

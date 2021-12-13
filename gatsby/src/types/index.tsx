@@ -59,7 +59,7 @@ export interface ArticleType {
   subTitle?: string
   author?: string
   image: ImageType
-  videoSrc?: string
+  videoUrl?: string
   imageAlt?: string
   categories?: CategoryType[]
   articleSectionType?: Array<
