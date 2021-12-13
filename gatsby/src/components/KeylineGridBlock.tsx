@@ -19,6 +19,7 @@ interface Props {
   headingLevel?: string
   subHeading?: string
   text?: string
+  columns?: number
   items: IconCardProps[]
 }
 
@@ -29,7 +30,7 @@ const IconCardStyles = styled.div`
   text-align: left;
   @media screen and (min-width: 768px) {
     padding: 0 4rem;
-    text-align: center;
+    text-align: left;
     padding: 0;
     display: grid;
     overflow: hidden;
@@ -45,7 +46,7 @@ const IconCardStyles = styled.div`
 const CardStyles = css`
   @media screen and (min-width: 768px) {
     grid-area: 1 / 1 / 1 / 1;
-    text-align: center;
+    text-align: left;
     display: flex;
     justify-content: center;
     align-items: flex-start;
@@ -72,8 +73,8 @@ const OverlayCard = styled.div`
     transform: translateY(99%);
     transition: all 200ms ease;
     will-change: transform;
-    background-color: var(--green-tint);
-    color: var(--grey);
+    background-color: var(--green);
+    color: var(--white);
     opacity: 0;
   }
 `
@@ -106,7 +107,7 @@ const KeylineGridBlock: FC<Props> = props => {
     <Section>
       <Heading heading={props.heading} text={props.text} />
       <Spacer marginTop={true}>
-        <KeylineGrid columns={3}>
+        <KeylineGrid columns={props.columns || 3}>
           {props.items.map(item => (
             <KeylineGridItem key={item._key}>
               <IconCard {...item} />

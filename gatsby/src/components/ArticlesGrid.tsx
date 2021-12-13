@@ -12,6 +12,9 @@ const Track = styled.div`
     grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
     @media screen and (min-width: 1024px) {
       grid-template-columns: repeat(auto-fit, minmax(290px, 1fr));
+      &[data-columns='2'] {
+        grid-template-columns: repeat(2, 1fr);
+      }
     }
     @media screen and (min-width: 1400px) {
       grid-template-columns: repeat(3, 1fr);

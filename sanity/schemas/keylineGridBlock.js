@@ -29,6 +29,12 @@ export default {
       initialValue: 2,
     },
     {
+      name: 'columns',
+      title: 'Columns',
+      type: 'number',
+      initialValue: 3,
+    },
+    {
       name: 'items',
       title: 'Items',
       type: 'array',

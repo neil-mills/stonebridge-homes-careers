@@ -32,7 +32,7 @@ const QuoteStyles = styled.div`
 
 interface Quote {
   id?: string
-  heading: string
+  heading?: string
   quote: string
   author: string
   image?: {
@@ -55,7 +55,7 @@ const Quote = ({ heading, quote, author, image }: Quote): JSX.Element => {
   return (
     <QuoteStyles>
       <div>
-        <h3>{heading}</h3>
+        {heading && <h3>{heading}</h3>}
         <blockquote>{quote}</blockquote>
       </div>
       <footer>
@@ -110,7 +110,7 @@ const Quotes: FC<Props> = props => {
         />
       )}
       <GridWrapper>
-        <KeylineGrid columns={2}>
+        <KeylineGrid columns={4}>
           {selectedQuotes.map((quote: Quote) => (
             <KeylineGridItem key={quote.id}>
               <Quote

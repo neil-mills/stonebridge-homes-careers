@@ -25,10 +25,17 @@ const ArticleItemStyles = styled.article<{
   picture {
     margin: 0;
     width: 100%;
-    display: block;
+    display: grid;
+    align-items: center;
+    svg {
+      grid-area: 1 / 1 / 1 / 1;
+      z-index: 1;
+      justify-self: center;
+    }
     img {
       width: 100%;
       height: auto;
+      grid-area: 1 / 1 / 1 / 1;
     }
   }
   div {
@@ -74,7 +81,7 @@ const ArticleGridItem = forwardRef<HTMLElement, ArticleType>((props, ref) => {
     subTitle = '',
     date = '',
     title,
-    videoSrc = '',
+    videoUrl = '',
     image,
     imageAlt = '',
     width = 'auto',
@@ -120,7 +127,7 @@ const ArticleGridItem = forwardRef<HTMLElement, ArticleType>((props, ref) => {
       <ArticleLink link={`/articles/${id}`}>
         <picture ref={imageRef}>
           <source srcSet={srcSet} />
-          {videoSrc && <PlayIcon />}
+          {videoUrl && <PlayIcon />}
           <img src={src} alt={imageAlt} />
         </picture>
         <div>
