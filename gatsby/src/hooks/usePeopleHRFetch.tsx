@@ -23,7 +23,6 @@ export function usePeopleHRFetch<S>(
     }
     try {
       setIsLoading(true)
-      console.log(`sending ${action} request`)
       const res = await fetch(`https://api.peoplehr.net/${dir}/`, {
         method: 'POST',
         headers: {
@@ -32,7 +31,6 @@ export function usePeopleHRFetch<S>(
         body: JSON.stringify(jsonData),
       })
       const jsonResponse = await res.json()
-      console.log(`${action} response recieved`)
       setIsLoading(false)
       return jsonResponse
     } catch (err) {
