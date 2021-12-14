@@ -67,23 +67,50 @@ const SingleVacancyPage: FC<Props> = ({ data, className }) => {
   const regex =
     /face="(.*?)"|style="(.*?)"|<font(.*?)>|<\/font>|&nbsp;|<p[^>]*><\/p[^>]*>/gi
   let description: string = data.vacancy.JobDescription.replaceAll(regex, '')
+
   description = description.replaceAll('class="paragraph', '')
   description = description.replaceAll('<p >​</p>', '')
+  description = description.replaceAll(/<span\s?>\s?<\/span>/g, '')
   description = description.replaceAll('<p>​</p>', '')
   description = description.replaceAll(/\u200B/g, '')
   const headingRegex = /<\s*p[^>]*>([A-Z&\s']+)<\s*\/\s*p\s*>/g
-  const bulletRegex = /<\s*p[^>]*>· (.*?)<\s*\/\s*p>/g
+  const headingRegex2 =
+    /<\s*p[^>]*>(<span\s?><\/span>)?(<span\s?>)?([A-Z&\s']+)(<\/span>)?<\s*\/\s*p\s*>/g
+  const bulletRegex = /<\s*p[^>]*>• (.*?)<\s*\/\s*p>/g
+  const spanRegex = /<span\s?>([a-zA-Z/\-:·,£\0-9&\s]+)<\/span\s?>/g
+  const spanRegex2 = /<span\s?>·<\/span>/g
+  const ulRegex = /<ul\s?><li>(.*?)<\/li><\/ul>/g
   let result: RegExpExecArray | null
   while ((result = headingRegex.exec(description)) !== null) {
     description = description.replace(result[0], `<h3>${result[1]}</h3>`)
   }
-  while ((result = bulletRegex.exec(description)) !== null) {
+  while ((result = headingRegex2.exec(description)) !== null) {
+    description = description.replace(result[0], `<h3>${result[3]}</h3>`)
+  }
+  while ((result = spanRegex.exec(description)) !== null) {
+    description = description.replace(result[0], result[1])
+  }
+  description = description.replaceAll(spanRegex2, '• ')
+
+  while ((result = spanRegex.exec(description)) !== null) {
+    description = description.replace(result[0], result[1])
+  }
+  while ((result = ulRegex.exec(description)) !== null) {
     description = description.replace(
       result[0],
       `<p class="bullet">${result[1]}</p>`
     )
   }
 
+  description = description.replaceAll('·', '• ')
+
+  while ((result = bulletRegex.exec(description)) !== null) {
+    description = description.replace(
+      result[0],
+      `<p class="bullet">${result[1]}</p>`
+    )
+  }
+  console.log(description)
   return (
     <div className={className}>
       <Section as={'div'} marginTop={false}>
@@ -155,11 +182,6 @@ export const query = graphql`
 
 const StyledSingleVacancyPage = styled(SingleVacancyPage)`
   p {
-    span {
-      color: var(--gold);
-      display: inline-block;
-      padding-right: 0.5rem;
-    }
     @media screen and (min-width: 768px) {
       max-width: 85%;
     }
