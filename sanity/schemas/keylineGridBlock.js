@@ -40,6 +40,24 @@ export default {
       type: 'array',
       of: [{ type: 'keylineGridItem' }],
     },
+    {
+      name: 'tint',
+      title: 'Tint',
+      type: 'boolean',
+      initialValue: false,
+    },
+    {
+      name: 'marginTop',
+      title: 'Top spacing',
+      type: 'boolean',
+      initialValue: true,
+    },
+    {
+      name: 'marginBottom',
+      title: 'Bottom spacing',
+      type: 'boolean',
+      initialValue: true,
+    },
   ],
   // preview: {
   //   select: {

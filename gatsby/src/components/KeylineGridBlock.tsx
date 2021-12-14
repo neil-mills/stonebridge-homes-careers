@@ -10,6 +10,7 @@ import ArrowLink from './ArrowLink'
 interface IconCardProps {
   _key: string
   icon: { asset: { originalFilename: string; url: string; title: string } }
+  subTitle?: string
   title: string
   text: string
 }
@@ -20,6 +21,9 @@ interface Props {
   subHeading?: string
   text?: string
   columns?: number
+  tint?: boolean
+  marginTop?: boolean
+  marginBottom?: boolean
   items: IconCardProps[]
 }
 
@@ -88,11 +92,16 @@ const MoreIcon = styled(ArrowLink)`
     display: block;
   }
 `
-const IconCard: FC<IconCardProps> = ({ icon, title, text }) => {
+const IconCard: FC<IconCardProps> = ({ icon, title, subTitle, text }) => {
   return (
     <IconCardStyles>
       <TitleCard>
-        <IconTitle icon={icon.asset.url} title={title} align={'left'} />
+        <IconTitle
+          icon={icon.asset.url}
+          subTitle={subTitle}
+          title={title}
+          align={'left'}
+        />
         <MoreIcon color={'gold'} label={'More'} visibleLabel={false} />
       </TitleCard>
       <OverlayCard>
@@ -104,17 +113,19 @@ const IconCard: FC<IconCardProps> = ({ icon, title, text }) => {
 
 const KeylineGridBlock: FC<Props> = props => {
   return (
-    <Section>
+    <Section
+      tint={props.tint}
+      marginTop={props.marginTop}
+      marginBottom={props.marginBottom}
+    >
       <Heading heading={props.heading} text={props.text} />
-      <Spacer marginTop={true}>
-        <KeylineGrid columns={props.columns || 3}>
-          {props.items.map(item => (
-            <KeylineGridItem key={item._key}>
-              <IconCard {...item} />
-            </KeylineGridItem>
-          ))}
-        </KeylineGrid>
-      </Spacer>
+      <KeylineGrid columns={props.columns || 3}>
+        {props.items.map(item => (
+          <KeylineGridItem key={item._key}>
+            <IconCard {...item} />
+          </KeylineGridItem>
+        ))}
+      </KeylineGrid>
     </Section>
   )
 }

@@ -1,9 +1,10 @@
 import React, { FC } from 'react'
 import styled from 'styled-components'
-import { HeadingMedium } from '../assets/styles/Typography'
+import { HeadingMedium, FontRegular } from '../assets/styles/Typography'
 
 interface Props {
   icon: string
+  subTitle?: string
   title: string
   align?: string
 }
@@ -18,6 +19,12 @@ const IconTitleStyles = styled.div<StyleProps>`
     margin-top: 0;
     @media screen and (min-width: 768px) {
       margin: 0;
+    }
+    span {
+      display: block;
+      font-size: var(--font-small);
+      margin-bottom: 4px;
+      ${FontRegular}
     }
   }
   img {
@@ -39,11 +46,19 @@ const IconTitleStyles = styled.div<StyleProps>`
   }
 `
 
-const IconTitle: FC<Props> = ({ icon, title, align = 'center' }) => {
+const IconTitle: FC<Props> = ({
+  icon,
+  title,
+  subTitle = '',
+  align = 'center',
+}) => {
   return (
     <IconTitleStyles align={align}>
       <img src={icon} />
-      <h3>{title}</h3>
+      <h3>
+        {subTitle && <span>{subTitle}</span>}
+        {title}
+      </h3>
     </IconTitleStyles>
   )
 }

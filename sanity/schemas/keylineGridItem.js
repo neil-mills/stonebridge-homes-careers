@@ -9,6 +9,11 @@ export default {
       type: 'file',
     },
     {
+      name: 'subTitle',
+      title: 'Sub title',
+      type: 'string',
+    },
+    {
       name: 'title',
       title: 'Title',
       type: 'string',

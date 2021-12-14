@@ -254,10 +254,14 @@ export const query = graphql`
               headingLevel
               subHeading
               text
+              tint
+              marginTop
+              marginBottom
               columns
               items {
                 text
                 title
+                subTitle
                 icon {
                   asset {
                     originalFilename
