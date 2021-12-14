@@ -20,7 +20,7 @@ const StyledForm = styled.form`
   @media screen and (min-width: 768px) {
     gap: 2rem;
   }
-  p {
+  p.hint {
     font-size: var(--font-xsmall);
     ${FontRegular}
     margin: 0;

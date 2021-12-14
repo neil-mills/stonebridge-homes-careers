@@ -1,4 +1,5 @@
 import React, { FC, useState, ChangeEvent, FormEvent } from 'react'
+import styled from 'styled-components'
 import Form, {
   Select,
   TextInput,
@@ -12,12 +13,21 @@ import {
   CheckDuplicateApplicantResult,
   CreateNewApplicantResult,
 } from '../types'
+import { FontMedium } from '../assets/styles/Typography'
 
 interface Props {
   buttonLabel: string
   vacancyReference: string
 }
-
+const StyledNotification = styled.div`
+  padding: 8px;
+  color: var(--white);
+  background-color: var(--green);
+  text-align: left;
+  margin: 0;
+  font-size: var(--font-xsmall);
+  ${FontMedium}
+`
 const ApplicationForm: FC<Props> = props => {
   const defaultValues: ApplicantData = {
     Title: '',
@@ -187,8 +197,14 @@ const ApplicationForm: FC<Props> = props => {
 
   return (
     <Form callback={handleSubmit}>
-      {isLoading && <p>Sending, please wait...</p>}
-      {isError && <p>{isError}</p>}
+      {isLoading ||
+        (isError && (
+          <StyledNotification>
+            {isLoading && <p>Sending, please wait...</p>}
+            {isError && <p>{isError}</p>}
+          </StyledNotification>
+        ))}
+
       <div>
         <label htmlFor={'title'}>Title</label>
         <Select
@@ -238,7 +254,7 @@ const ApplicationForm: FC<Props> = props => {
       </div>
       <div>
         <label htmlFor={'phone'}>Phone</label>
-        <p>Required format: +44(0)XXXX-XXXXXX</p>
+        <p className="hint">Required format: +44XXXXXXXXXX</p>
         <TextInput
           type={'tel'}
           pattern={'^\\+(\\d{1,2})(\\s*)(\\d{7,15})'}
