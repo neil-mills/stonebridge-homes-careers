@@ -1,4 +1,4 @@
-import React, { FC } from 'react'
+import React, { FC, useRef, ReactNode } from 'react'
 
 import { graphql } from 'gatsby'
 import styled from 'styled-components'
@@ -10,9 +10,10 @@ import MetaList from '../components/MetaList'
 import VacancyImg from '../assets/images/vacancy-image.jpg'
 import { GapMargin } from '../assets/styles/Utils'
 import ArticleTitle from '../components/ArticleTitle'
-import { HeadingMediumKeyline, HeadingLarge } from '../assets/styles/Typography'
+import { HeadingLarge } from '../assets/styles/Typography'
 import ApplicationForm from '../components/ApplicationForm'
 import { VacancyType } from '../types'
+import { useScrollIntoView } from '../hooks/useScrollIntoView'
 
 const StyledPicture = styled.picture`
   display: block;
@@ -63,7 +64,8 @@ const SingleVacancyPage: FC<Props> = ({ data, className }) => {
     `Reference: ${data.vacancy.Reference}`,
     `Closing date: ${data.vacancy.ClosingDate}`,
   ]
-
+  const formRef = useRef(null)
+  const scrollToForm = useScrollIntoView(formRef)
   const regex =
     /face="(.*?)"|style="(.*?)"|<font(.*?)>|<\/font>|&nbsp;|<p[^>]*><\/p[^>]*>/gi
   let description: string = data.vacancy.JobDescription.replaceAll(regex, '')
@@ -110,7 +112,6 @@ const SingleVacancyPage: FC<Props> = ({ data, className }) => {
       `<p class="bullet">${result[1]}</p>`
     )
   }
-  console.log(description)
   return (
     <div className={className}>
       <Section as={'div'} marginTop={false}>
@@ -126,7 +127,7 @@ const SingleVacancyPage: FC<Props> = ({ data, className }) => {
             />
             <MetaList meta={meta} />
           </div>
-          <Button link={'/'} label={'Apply now'} />
+          <Button label={'Apply now'} callback={scrollToForm} />
         </ArticleTitle>
         <h2>The role</h2>
         <div
@@ -144,10 +145,12 @@ const SingleVacancyPage: FC<Props> = ({ data, className }) => {
           </div>
           <div aria-role="region">
             <h3>Apply now</h3>
-            <ApplicationForm
-              buttonLabel={'Send application'}
-              vacancyReference={data.vacancy.Reference}
-            />
+            <div ref={formRef}>
+              <ApplicationForm
+                buttonLabel={'Send application'}
+                vacancyReference={data.vacancy.Reference}
+              />
+            </div>
           </div>
         </StyledForm>
       </Section>
