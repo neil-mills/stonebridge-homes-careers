@@ -131,6 +131,10 @@ interface Props {
 interface Filter {
   [key: string]: string
 }
+interface Option {
+  label: string
+  value: string
+}
 
 const VacancyList: FC<Props> = props => {
   const { vacancies } = useStaticQuery(graphql`
@@ -160,17 +164,17 @@ const VacancyList: FC<Props> = props => {
     }
   `)
 
-  interface Option {
-    label: string
-    value: string
-  }
-
   const [filteredVacancies, setFilteredVacancies] = useState<VacancyType[]>(
     props.limit !== 'all'
       ? vacancies.nodes.filter(
-          (vacancy: VacancyType, i: number) => i < parseInt(props.limit)
+          (vacancy: VacancyType, i: number) =>
+            i < parseInt(props.limit) &&
+            new Date(vacancy.ClosingDate).getTime() >= new Date().getTime()
         )
-      : vacancies.nodes
+      : vacancies.nodes.filter(
+          (vacancy: VacancyType) =>
+            new Date(vacancy.ClosingDate).getTime() >= new Date().getTime()
+        )
   )
 
   const locations: Option[] = [
