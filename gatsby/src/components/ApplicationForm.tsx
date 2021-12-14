@@ -238,6 +238,7 @@ const ApplicationForm: FC<Props> = props => {
       </div>
       <div>
         <label htmlFor={'phone'}>Phone</label>
+        <p>Required format: +44(0)XXXX-XXXXXX</p>
         <TextInput
           type={'tel'}
           pattern={'^\\+(\\d{1,2})(\\s*)(\\d{7,15})'}

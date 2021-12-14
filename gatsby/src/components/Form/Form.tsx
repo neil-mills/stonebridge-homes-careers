@@ -1,6 +1,6 @@
 import React, { FC, FormEvent } from 'react'
 import styled from 'styled-components'
-import { FontMedium } from '../../assets/styles/Typography'
+import { FontMedium, FontRegular } from '../../assets/styles/Typography'
 
 interface Props {
   method?: string
@@ -19,6 +19,12 @@ const StyledForm = styled.form`
   gap: 1rem;
   @media screen and (min-width: 768px) {
     gap: 2rem;
+  }
+  p {
+    font-size: var(--font-xsmall);
+    ${FontRegular}
+    margin: 0;
+    margin-bottom: 5px;
   }
   label {
     font-size: var(--font-xsmall);
