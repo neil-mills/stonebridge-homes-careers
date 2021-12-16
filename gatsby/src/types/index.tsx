@@ -41,7 +41,7 @@ export interface ImageAndTextBlockType {
   src?: ImageType
   marginTop?: boolean
   marginBottom?: boolean
-  buttonCallback?: (e: MouseEvent) => void
+  buttonCallback?: (e: Event) => void | null
 }
 
 export interface ParallaxImageBlockType {

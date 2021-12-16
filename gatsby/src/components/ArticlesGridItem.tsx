@@ -39,7 +39,18 @@ const ArticleItemStyles = styled.article<{
     }
   }
   div {
-    padding: 2rem;
+    padding: 2rem 4rem 2rem 2rem;
+    position: relative;
+    svg {
+      width: 2.5rem;
+      height: 2.5rem;
+      position: absolute;
+      top: 2rem;
+      right: 2rem;
+      path {
+        fill: var(--gold);
+      }
+    }
   }
   time,
   span {
@@ -127,13 +138,14 @@ const ArticleGridItem = forwardRef<HTMLElement, ArticleType>((props, ref) => {
       <ArticleLink link={`/articles/${id}`}>
         <picture ref={imageRef}>
           <source srcSet={srcSet} />
-          {videoUrl && <PlayIcon />}
+
           <img src={src} alt={imageAlt} />
         </picture>
         <div>
           {date && <time dateTime="{date}">{date}</time>}
           {subTitle && <span>{subTitle}</span>}
           <h3>{title}</h3>
+          {videoUrl && <PlayIcon />}
         </div>
       </ArticleLink>
     </ArticleItemStyles>

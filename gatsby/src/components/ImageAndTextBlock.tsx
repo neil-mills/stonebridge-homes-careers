@@ -86,10 +86,10 @@ const ImageAndTextBlock = ({
   buttonLabel = '',
   buttonLink = '',
   videoSrc = '',
-  buttonCallback,
   tint = false,
   marginTop = true,
   marginBottom = true,
+  buttonCallback,
 }: ImageAndTextBlockType): JSX.Element => {
   const [loadedSrc, setLoadedSrc] = useState('')
   const [loadedSrcSet, setLoadedSrcSet] = useState('')
@@ -136,7 +136,6 @@ const ImageAndTextBlock = ({
             data-loaded={animate}
           >
             <source media="(min-width: 500px)" srcSet={loadedSrcSet} />
-            <PlayIcon />
             <img src={loadedSrc} alt={srcAlt} />
           </Picture>
         )}
@@ -161,6 +160,7 @@ const ImageAndTextBlock = ({
             <Button
               label={buttonLabel}
               link={buttonLink}
+              icon={videoSrc ? <PlayIcon /> : null}
               callback={buttonCallback}
             />
           )}

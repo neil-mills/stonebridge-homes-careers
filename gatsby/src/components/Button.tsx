@@ -1,4 +1,4 @@
-import React, { MouseEvent } from 'react'
+import React, { MouseEvent, ReactNode } from 'react'
 import styled from 'styled-components'
 import { navigate } from 'gatsby'
 import { FontBold } from '../assets/styles/Typography'
@@ -11,15 +11,19 @@ interface ButtonProps {
   label: string
   link?: string
   type?: 'button' | 'submit'
-  callback?: (e: MouseEvent) => void
+  callback?: (e: Event) => void
   secondary?: boolean
   className?: string
   disabled?: boolean
+  icon?: ReactNode | null
 }
 
 const StyledButton = styled.button<Props>`
   ${FontBold}
-  display: block;
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  align-items: center;
   margin-top: 3rem;
   @media screen and (min-width: 768px) {
     margin-top: 4.3vw;
@@ -36,12 +40,17 @@ const StyledButton = styled.button<Props>`
   transition: background-color 200ms ease;
   will-change: background-color;
   outline: none;
+  line-height: 2.5rem;
   cursor: pointer;
   &:hover,
   &:focus,
   &:active {
     background-color: ${props =>
       props.secondary ? 'transparent' : 'var(--gold-hover)'};
+  }
+  svg {
+    width: 2.5rem;
+    height: 2.5rem;
   }
 `
 
@@ -53,12 +62,14 @@ const Button = ({
   secondary = false,
   className = '',
   disabled = false,
+  icon,
 }: ButtonProps): JSX.Element => {
   const handleClick = (e: MouseEvent) => {
     if (callback) {
+      console.log('calling back')
       callback(e)
     }
-    if (link) {
+    if (!callback && link) {
       navigate(link)
     }
   }
@@ -72,6 +83,7 @@ const Button = ({
       disabled={disabled}
     >
       {label}
+      {icon && icon}
     </StyledButton>
   )
 }
