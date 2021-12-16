@@ -4,6 +4,7 @@ import React, {
   useState,
   Dispatch,
   SetStateAction,
+  ReactNode,
 } from 'react'
 import { useStaticQuery, graphql } from 'gatsby'
 
@@ -12,6 +13,8 @@ type ContextType = {
   setDialogActive: Dispatch<SetStateAction<boolean>> | null
   menuActive: boolean
   setMenuActive: Dispatch<SetStateAction<boolean>> | null
+  setDialogContent: Dispatch<SetStateAction<ReactNode>> | null
+  dialogContent: ReactNode | null
   bodyNoScroll: boolean
   stopBodyScroll?: (state: boolean) => void
   address: string
@@ -27,6 +30,8 @@ const AppContext = createContext<ContextType>({
   menuActive: false,
   setMenuActive: null,
   bodyNoScroll: false,
+  dialogContent: null,
+  setDialogContent: null,
   address: '',
 })
 
@@ -34,7 +39,7 @@ export const AppContextProvider: FC = ({ children }): JSX.Element => {
   const [dialogActive, setDialogActive] = useState<boolean>(false)
   const [menuActive, setMenuActive] = useState<boolean>(false)
   const [bodyNoScroll, setBodyNoScroll] = useState<boolean>(false)
-
+  const [dialogContent, setDialogContent] = useState<ReactNode>(null)
   const stopBodyScroll = (state: boolean) => {
     setBodyNoScroll(state)
     if (state) {
@@ -68,6 +73,8 @@ export const AppContextProvider: FC = ({ children }): JSX.Element => {
         setDialogActive,
         menuActive,
         setMenuActive,
+        setDialogContent,
+        dialogContent,
         bodyNoScroll,
         stopBodyScroll,
         ...settings.nodes[0],

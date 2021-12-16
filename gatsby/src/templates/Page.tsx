@@ -1,4 +1,4 @@
-import React, { FC } from 'react'
+import React, { FC, useContext } from 'react'
 import { graphql } from 'gatsby'
 import HomeBanner from '../components/HomeBanner'
 import ImageAndTextBlock from '../components/ImageAndTextBlock'
@@ -11,13 +11,21 @@ import Values from '../components/Values'
 import SubContractor from '../components/SubContractor'
 import VacancyList from '../components/VacancyList'
 import Quotes from '../components/Quotes'
-
+import AppContext from '../context/AppContext'
 interface Props {
   pageContext: { id: string; title: string; slug: string }
 }
 const PageTemplate: FC<Props> = ({ data, pageContext }) => {
   //  console.log('DATA=', data)
   const { title } = pageContext
+  const { setDialogActive } = useContext(AppContext)
+
+  const showVideo = (): void => {
+    console.log('launch video')
+    if (setDialogActive) {
+      setDialogActive(true)
+    }
+  }
   return (
     <>
       {data.pages.nodes[0].content.map(({ contentType }) => {
@@ -45,7 +53,7 @@ const PageTemplate: FC<Props> = ({ data, pageContext }) => {
                 alignText={contentType[0].alignText}
                 buttonLabel={contentType[0].buttonLabel}
                 buttonLink={contentType[0].buttonLink}
-                buttonCallback={contentType[0].buttonCallback}
+                buttonCallback={contentType[0].videoSrc ? showVideo : null}
                 tint={contentType[0].tint}
               />
             )

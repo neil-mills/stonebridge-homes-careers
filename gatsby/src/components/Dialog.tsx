@@ -1,17 +1,19 @@
-import React, { FC, useContext, useEffect } from 'react'
-import styled from 'styled-components'
+import React, { FC, useContext, useEffect, ReactNode } from 'react'
+import styled, { css } from 'styled-components'
 import CloseIcon from '../assets/svg/close.svg'
 import AppContext from '../context/AppContext'
 
 interface DialogProps {
-  children: React.ReactElement[]
+  children?: ReactNode | ReactNode[]
+  centred: boolean
 }
 
-const StyledDialog = styled.div<{ active: boolean }>`
+const StyledDialog = styled.div<{ active: boolean; centred: boolean }>`
   position: fixed;
   overflow-y: auto;
-  background-color: transparent;
-  transition: transform 200ms ease;
+  transition: background-color 500ms ease;
+  background-color: ${({ active }) =>
+    active ? 'rgba(0, 0, 0, 0.5)' : 'rgba(0, 0, 0, 0)'};
   top: 0;
   bottom: 0;
   width: 100%;
@@ -27,19 +29,48 @@ const StyledDialog = styled.div<{ active: boolean }>`
   }
 
   div[role='dialog'] {
+    transition: all 500ms ease;
     height: auto;
     min-height: 100%;
     padding: 6rem 2rem 2rem;
     width: 100%;
     position: absolute;
     background-color: var(--light-grey);
-    top: 0;
-    right: 0;
+    ${({ centred }) =>
+      centred &&
+      css`
+        left: 50%;
+        top: 60%;
+        transform: translate(-50%, -50%);
+        &[data-active='true'] {
+          top: 50%;
+        }
+      `};
+    ${({ centred }) =>
+      !centred &&
+      css`
+        transform: translateX(100%);
+        right: 0;
+        top: 0;
+        &[data-active='true'] {
+          transform: translateX(0);
+        }
+      `};
     z-index: 10;
     display: block;
     @media screen and (min-width: 768px) {
       min-height: auto;
-      width: auto;
+      ${({ centred }) =>
+        !centred &&
+        css`
+          width: auto;
+        `};
+      ${({ centred }) =>
+        centred &&
+        css`
+          width: 100%;
+          max-width: 70vw;
+        `};
       padding: 8rem 3rem;
     }
   }
@@ -64,15 +95,19 @@ const CloseButton = styled.button`
 `
 
 const Dialog: FC<DialogProps> = props => {
+  const nodes =
+    props.children instanceof Array ? props.children : [props.children]
   const {
     dialogActive = false,
     setDialogActive,
+    setDialogContent,
     stopBodyScroll,
   } = useContext(AppContext)
 
   const handleClick = () => {
-    if (setDialogActive) {
+    if (setDialogActive && setDialogContent) {
       setDialogActive(false)
+      setDialogContent(null)
     }
     if (stopBodyScroll) {
       stopBodyScroll(false)
@@ -84,16 +119,25 @@ const Dialog: FC<DialogProps> = props => {
   }, [dialogActive])
 
   return (
-    <StyledDialog active={dialogActive}>
+    <StyledDialog active={dialogActive} centred={props.centred}>
       <div tabIndex={-1}></div>
-      <div role="dialog" aria-modal="true" aria-labelledby="dialogTitle">
-        {props.children.map((child: React.ReactElement) => child)}
+      <div
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="dialogTitle"
+        data-active={dialogActive}
+      >
+        {nodes.map(node => node)}
         <CloseButton type="button" onClick={handleClick}>
           <CloseIcon />
         </CloseButton>
       </div>
     </StyledDialog>
   )
+}
+
+Dialog.defaultProps = {
+  centred: false,
 }
 
 export default Dialog
