@@ -1,4 +1,4 @@
-import React, { FC, useContext, useEffect, ReactNode } from 'react'
+import React, { FC, useContext, useEffect, ReactNode, useState } from 'react'
 import styled, { css } from 'styled-components'
 import CloseIcon from '../assets/svg/close.svg'
 import AppContext from '../context/AppContext'
@@ -8,12 +8,15 @@ interface DialogProps {
   centred: boolean
 }
 
-const StyledDialog = styled.div<{ active: boolean; centred: boolean }>`
+const StyledDialog = styled.div<{
+  active: boolean
+  centred: boolean
+}>`
   position: fixed;
   overflow-y: auto;
   transition: background-color 500ms ease;
   background-color: ${({ active }) =>
-    active ? 'rgba(0, 0, 0, 0.5)' : 'rgba(0, 0, 0, 0)'};
+    active ? 'rgba(0, 0, 0, 0.7)' : 'rgba(0, 0, 0, 0)'};
   top: 0;
   bottom: 0;
   width: 100%;
@@ -29,31 +32,35 @@ const StyledDialog = styled.div<{ active: boolean; centred: boolean }>`
   }
 
   div[role='dialog'] {
-    transition: all 500ms ease;
     height: auto;
     min-height: 100%;
     padding: 6rem 2rem 2rem;
     width: 100%;
     position: absolute;
+    opacity: 0;
     background-color: var(--light-grey);
     ${({ centred }) =>
       centred &&
       css`
         left: 50%;
         top: 60%;
+        transition: top 250ms ease, opacity 100ms ease;
         transform: translate(-50%, -50%);
         &[data-active='true'] {
           top: 50%;
+          opacity: 1;
         }
       `};
     ${({ centred }) =>
       !centred &&
       css`
-        transform: translateX(100%);
+        transition: transform 250ms ease, opacity 250ms ease;
         right: 0;
         top: 0;
+        transform: translateX(100%);
         &[data-active='true'] {
           transform: translateX(0);
+          opacity: 1;
         }
       `};
     z-index: 10;
@@ -95,6 +102,7 @@ const CloseButton = styled.button`
 `
 
 const Dialog: FC<DialogProps> = props => {
+  const [isAnimate, setIsAnimate] = useState(false)
   const nodes =
     props.children instanceof Array ? props.children : [props.children]
   const {
@@ -102,12 +110,15 @@ const Dialog: FC<DialogProps> = props => {
     setDialogActive,
     setDialogContent,
     stopBodyScroll,
+    centreDialog,
+    setCentreDialog,
   } = useContext(AppContext)
 
   const handleClick = () => {
-    if (setDialogActive && setDialogContent) {
+    if (setDialogActive && setDialogContent && setCentreDialog) {
       setDialogActive(false)
       setDialogContent(null)
+      setCentreDialog(false)
     }
     if (stopBodyScroll) {
       stopBodyScroll(false)
@@ -115,17 +126,23 @@ const Dialog: FC<DialogProps> = props => {
   }
 
   useEffect(() => {
-    console.log(`dialog active=${dialogActive}`)
+    if (!dialogActive) {
+      setIsAnimate(false)
+    } else {
+      setTimeout(() => {
+        setIsAnimate(true)
+      }, 500)
+    }
   }, [dialogActive])
 
   return (
-    <StyledDialog active={dialogActive} centred={props.centred}>
+    <StyledDialog active={dialogActive} centred={centreDialog}>
       <div tabIndex={-1}></div>
       <div
         role="dialog"
         aria-modal="true"
         aria-labelledby="dialogTitle"
-        data-active={dialogActive}
+        data-active={isAnimate}
       >
         {nodes.map(node => node)}
         <CloseButton type="button" onClick={handleClick}>

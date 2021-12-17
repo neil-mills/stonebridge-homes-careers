@@ -1,11 +1,20 @@
-import React, { FC, forwardRef, useRef, useEffect, useState } from 'react'
+import React, {
+  FC,
+  forwardRef,
+  useRef,
+  useEffect,
+  useState,
+  useContext,
+  MouseEvent,
+} from 'react'
 import styled from 'styled-components'
-import { Link } from 'gatsby'
+import { navigate } from 'gatsby'
 import { HeadingStyle, HeadingMedium } from '../assets/styles/Typography'
 import PlayIcon from '../assets/svg/play.svg'
 import { ArticleType } from '../types'
 import { useLazyLoadImages } from '../hooks/useLazyLoadImages'
 import { useIsInViewport } from '../hooks/useIsInViewport'
+import AppContext from '../context/AppContext'
 
 const ArticleItemStyles = styled.article<{
   willAnimate: boolean
@@ -21,6 +30,9 @@ const ArticleItemStyles = styled.article<{
   &[data-loaded='true'] {
     transform: translate(0);
     opacity: 1;
+  }
+  a {
+    cursor: pointer;
   }
   picture {
     margin: 0;
@@ -80,10 +92,24 @@ const ArticleItemStyles = styled.article<{
 
 interface ArticleLinkType {
   link?: string
+  videoSrc?: string
 }
 
-const ArticleLink: FC<ArticleLinkType> = ({ link, children }) => {
-  return <>{link ? <Link to={link}>{children}</Link> : children}</>
+const ArticleLink: FC<ArticleLinkType> = ({ link, videoSrc, children }) => {
+  const { setVideoSrc } = useContext(AppContext)
+
+  const handleClick = (e: MouseEvent): void => {
+    console.log('handle click')
+    e.preventDefault()
+    if (link) {
+      navigate(link)
+    }
+    if (videoSrc && setVideoSrc) {
+      setVideoSrc(videoSrc)
+    }
+  }
+
+  return <a onClick={handleClick}>{children}</a>
 }
 
 const ArticleGridItem = forwardRef<HTMLElement, ArticleType>((props, ref) => {
@@ -135,10 +161,9 @@ const ArticleGridItem = forwardRef<HTMLElement, ArticleType>((props, ref) => {
       style={{ width: `${width}` }}
       data-loaded={animate}
     >
-      <ArticleLink link={`/articles/${id}`}>
+      <ArticleLink link={id ? `/articles/${id}` : ''} videoSrc={videoUrl}>
         <picture ref={imageRef}>
           <source srcSet={srcSet} />
-
           <img src={src} alt={imageAlt} />
         </picture>
         <div>

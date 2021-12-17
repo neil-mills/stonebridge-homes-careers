@@ -7,6 +7,7 @@ import React, {
   ReactNode,
 } from 'react'
 import { useStaticQuery, graphql } from 'gatsby'
+import Video from '../components/Video'
 
 type ContextType = {
   dialogActive: boolean
@@ -14,6 +15,9 @@ type ContextType = {
   menuActive: boolean
   setMenuActive: Dispatch<SetStateAction<boolean>> | null
   setDialogContent: Dispatch<SetStateAction<ReactNode>> | null
+  setCentreDialog: Dispatch<SetStateAction<ReactNode>> | null
+  centreDialog: false
+  setVideoSrc: ((src: string) => void) | null
   dialogContent: ReactNode | null
   bodyNoScroll: boolean
   stopBodyScroll?: (state: boolean) => void
@@ -33,6 +37,9 @@ const AppContext = createContext<ContextType>({
   dialogContent: null,
   setDialogContent: null,
   address: '',
+  setVideoSrc: null,
+  centreDialog: false,
+  setCentreDialog: null,
 })
 
 export const AppContextProvider: FC = ({ children }): JSX.Element => {
@@ -40,6 +47,15 @@ export const AppContextProvider: FC = ({ children }): JSX.Element => {
   const [menuActive, setMenuActive] = useState<boolean>(false)
   const [bodyNoScroll, setBodyNoScroll] = useState<boolean>(false)
   const [dialogContent, setDialogContent] = useState<ReactNode>(null)
+  const [centreDialog, setCentreDialog] = useState<ReactNode>(null)
+
+  const setVideoSrc = (src: string) => {
+    setCentreDialog(true)
+    stopBodyScroll(true)
+    setDialogContent(<Video src={src} />)
+    setDialogActive(true)
+  }
+
   const stopBodyScroll = (state: boolean) => {
     setBodyNoScroll(state)
     if (state) {
@@ -77,6 +93,9 @@ export const AppContextProvider: FC = ({ children }): JSX.Element => {
         dialogContent,
         bodyNoScroll,
         stopBodyScroll,
+        setVideoSrc,
+        setCentreDialog,
+        centreDialog,
         ...settings.nodes[0],
       }}
     >
