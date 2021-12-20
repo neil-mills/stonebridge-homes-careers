@@ -59,6 +59,7 @@ const HomeBanner: FC<HomeBannerProps> = (props): JSX.Element => {
   useEffect(() => {
     if (isLoaded && props.bgSrc && props.bgSrcLg) {
       handleResize()
+      window.addEventListener('resize', handleResize)
     }
   }, [isLoaded])
 
