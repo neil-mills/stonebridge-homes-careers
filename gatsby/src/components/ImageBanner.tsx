@@ -44,7 +44,7 @@ const ImageBannerStyles = styled.section<Props>`
       content: '';
       display: block;
       width: 100%;
-      height: 29vw;
+      height: 23vw;
       max-height: 406px;
     }
     &[data-position='top'] {
