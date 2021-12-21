@@ -26,4 +26,12 @@ export default {
       type: 'image',
     },
   ],
+  preview: {
+    select: {
+      author: 'author',
+    },
+    prepare: ({ author }) => ({
+      title: author,
+    }),
+  },
 };

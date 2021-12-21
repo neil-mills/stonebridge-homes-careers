@@ -3,7 +3,7 @@ import { MdPerson as icon } from 'react-icons/md';
 export default {
   name: 'articlesBlock',
   title: 'Articles',
-  type: 'document',
+  type: 'object',
   icon,
   fields: [
     {
