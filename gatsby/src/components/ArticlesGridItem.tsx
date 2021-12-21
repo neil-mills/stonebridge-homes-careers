@@ -23,13 +23,16 @@ const ArticleItemStyles = styled.article<{
   background-color: var(--white);
   scroll-snap-align: start;
   width: 300px;
-  opacity: 0;
+  opacity: ${({ willAnimate }) => (willAnimate ? 0 : 1)};
   transition: opacity 500ms ease, transform 1s ease;
   transform: ${({ willAnimate }) =>
     willAnimate ? 'translateY(50px)' : 'translateY(0)'};
   &[data-loaded='true'] {
     transform: translate(0);
     opacity: 1;
+    img {
+      opacity: 1;
+    }
   }
   a {
     cursor: pointer;
@@ -37,8 +40,16 @@ const ArticleItemStyles = styled.article<{
   picture {
     margin: 0;
     width: 100%;
-    display: grid;
+    background-color: var(--keyline-grey);
     align-items: center;
+
+    position: relative;
+    display: block;
+    &:before {
+      content: '';
+      padding-top: 56%;
+      display: block;
+    }
     svg {
       grid-area: 1 / 1 / 1 / 1;
       z-index: 1;
@@ -46,8 +57,14 @@ const ArticleItemStyles = styled.article<{
     }
     img {
       width: 100%;
-      height: auto;
-      grid-area: 1 / 1 / 1 / 1;
+      position: absolute;
+      transition: opacity 500ms ease;
+      opacity: ${({ willAnimate }) => (willAnimate ? 1 : 0)};
+      top: 0;
+      left: 0;
+      height: 100%;
+      object-fit: cover;
+      object-position: center 20%;
     }
   }
   div {
@@ -97,9 +114,7 @@ interface ArticleLinkType {
 
 const ArticleLink: FC<ArticleLinkType> = ({ link, videoSrc, children }) => {
   const { setVideoSrc } = useContext(AppContext)
-
   const handleClick = (e: MouseEvent): void => {
-    console.log('handle click')
     e.preventDefault()
     if (link) {
       navigate(link)
@@ -108,7 +123,6 @@ const ArticleLink: FC<ArticleLinkType> = ({ link, videoSrc, children }) => {
       setVideoSrc(videoSrc)
     }
   }
-
   return <a onClick={handleClick}>{children}</a>
 }
 
@@ -136,7 +150,8 @@ const ArticleGridItem = forwardRef<HTMLElement, ArticleType>((props, ref) => {
 
   useEffect(() => {
     const inViewport = isInViewport()
-    setWillAnimate(!inViewport)
+    const setToAnimate = !inViewport && props.animateOnLoad
+    setWillAnimate(setToAnimate || false)
   }, [])
 
   useEffect(() => {
@@ -149,7 +164,7 @@ const ArticleGridItem = forwardRef<HTMLElement, ArticleType>((props, ref) => {
       }
       setTimeout(() => {
         setAnimate(true)
-      }, 500)
+      }, 300)
     }
   }, [isLoaded])
 

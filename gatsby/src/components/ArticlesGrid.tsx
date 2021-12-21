@@ -1,8 +1,42 @@
-import React, { useState, useEffect, useRef } from 'react'
+import React, { useState, useEffect, useRef, MouseEvent } from 'react'
 import styled from 'styled-components'
 import ArticlesGridItem from './ArticlesGridItem'
 import { ArticleType } from '../types'
+import ArrowIcon from '../assets/svg/arrow-icon.svg'
 
+const StyledArticleGrid = styled.div`
+  button {
+    background: var(--white);
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    border: none;
+    position: absolute;
+    top: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 4;
+    cursor: pointer;
+    &[data-dir='prev'] {
+      left: 0;
+      transform: translate(-50%, -50%) rotate(-180deg);
+    }
+    &[data-dir='next'] {
+      transform: translateY(-50%);
+      right: -20px;
+    }
+    svg path {
+      fill: var(--grey);
+    }
+    &[disabled] {
+      svg path {
+        fill: var(--keyline-grey);
+      }
+      cursor: default;
+    }
+  }
+`
 const Track = styled.div`
   [data-carousel='false'] & {
     display: grid;
@@ -48,6 +82,27 @@ const ArticlesBlock = ({
   const trackRef = useRef<HTMLDivElement | null>(null)
   const articleRefs = useRef<HTMLElement[]>([])
   const [articleWidth, setArticleWidth] = useState(0)
+  const [scrollLeft, setScrollLeft] = useState(0)
+  const [noScrollNext, setNoScrollNext] = useState(false)
+  const [noScrollPrev, setNoScrollPrev] = useState(false)
+  const [scrollWidth, setScrollWidth] = useState(0)
+
+  const handleClick = (e: MouseEvent, dir: string) => {
+    if (trackRef.current) {
+      if (dir === 'prev' && !noScrollPrev) {
+        trackRef.current.scrollBy(-articleWidth, 0)
+      }
+      if (dir === 'next' && !noScrollNext) {
+        trackRef.current.scrollBy(articleWidth, 0)
+      }
+    }
+  }
+
+  const handleScroll = () => {
+    if (trackRef.current) {
+      setScrollLeft(trackRef.current.scrollLeft)
+    }
+  }
 
   const handleResize = () => {
     const width = window.innerWidth
@@ -66,16 +121,28 @@ const ArticlesBlock = ({
           'margin-right'
         )
       )
-      setArticleWidth(
+      const width =
         (trackWidth - articleMargin * (visibleArticles - 1)) / visibleArticles
+      setArticleWidth(width)
+      setScrollWidth(
+        articles.length * (width + articleMargin) -
+          articleMargin -
+          trackWidth -
+          2
       )
     }
   }
 
   useEffect(() => {
+    setNoScrollNext(scrollLeft >= scrollWidth)
+    setNoScrollPrev(scrollLeft === 0)
+  }, [scrollLeft])
+
+  useEffect(() => {
     if (carousel && articles.length) {
-      window.addEventListener('resize', handleResize)
       handleResize()
+      handleScroll()
+      window.addEventListener('resize', handleResize)
       return () => {
         window.removeEventListener('resize', handleResize)
       }
@@ -84,8 +151,28 @@ const ArticlesBlock = ({
 
   return (
     <>
-      <div data-carousel={carousel}>
-        <Track ref={trackRef}>
+      <StyledArticleGrid data-carousel={carousel}>
+        {carousel && (
+          <>
+            <button
+              data-dir="prev"
+              disabled={noScrollPrev}
+              onClick={e => handleClick(e, 'prev')}
+            >
+              <ArrowIcon />
+            </button>
+
+            <button
+              data-dir="next"
+              disabled={noScrollNext}
+              onClick={e => handleClick(e, 'next')}
+            >
+              <ArrowIcon />
+            </button>
+          </>
+        )}
+
+        <Track ref={trackRef} onScroll={handleScroll}>
           {articles.map((article: ArticleType, i: number) => (
             <ArticlesGridItem
               key={i}
@@ -94,11 +181,12 @@ const ArticlesBlock = ({
               image={article.image}
               imageAlt={article.imageAlt}
               slug={article.slug}
+              animateOnLoad={!carousel}
               width={carousel ? `${articleWidth}px` : 'auto'}
             />
           ))}
         </Track>
-      </div>
+      </StyledArticleGrid>
     </>
   )
 }

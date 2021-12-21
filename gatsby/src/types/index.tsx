@@ -62,6 +62,7 @@ export interface ArticleType {
   videoUrl?: string
   imageAlt?: string
   categories?: CategoryType[]
+  animateOnLoad?: boolean
   articleSectionType?: Array<
     TextBlockType | ImageAndTextBlockType | ParallaxImageBlockType
   >
