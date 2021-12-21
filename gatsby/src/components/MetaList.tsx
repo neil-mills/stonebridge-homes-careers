@@ -48,7 +48,7 @@ const StyledMetaList = styled.div`
     margin-right: 1rem;
     overflow: hidden;
   }
-  @media screen and (min-width: 1400px) {
+  @media screen and (min-width: 1600px) {
     font-size: var(--font-base-desktop);
   }
 `

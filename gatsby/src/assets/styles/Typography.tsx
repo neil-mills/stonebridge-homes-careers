@@ -19,7 +19,7 @@ export const HeadingXLarge = css`
     font-size: var(--font-xlarge);
     font-size: clamp(var(--font-xlarge), 4.6vw, var(--font-xlarge-desktop));
   }
-  @media screen and (min-width: 1400px) {
+  @media screen and (min-width: 1600px) {
     font-size: var(--font-xlarge-desktop);
     margin-bottom: 4rem;
   }
@@ -33,7 +33,7 @@ export const HeadingLarger = css`
     font-size: var(--font-larger);
     font-size: clamp(var(--font-larger), 3.2vw, var(--font-larger-desktop));
   }
-  @media screen and (min-width: 1400px) {
+  @media screen and (min-width: 1600px) {
     font-size: var(--font-larger-desktop);
     margin-bottom: 4rem;
   }
@@ -52,7 +52,7 @@ export const HeadingLarge = css`
     font-size: var(--font-large);
     font-size: clamp(var(--font-large), 2.5vw, var(--font-large-desktop));
   }
-  @media screen and (min-width: 1400px) {
+  @media screen and (min-width: 1600px) {
     font-size: var(--font-large-desktop);
     /* margin-bottom: 3.2rem; */
   }
@@ -71,7 +71,7 @@ export const HeadingMedium = css`
     font-size: var(--font-medium-desktop);
     font-size: clamp(var(--font-medium), 1.7vw, var(--font-medium-desktop));
   }
-  @media screen and (min-width: 1400px) {
+  @media screen and (min-width: 1600px) {
     /* margin-bottom: 4rem; */
     font-size: var(--font-medium-desktop);
   }

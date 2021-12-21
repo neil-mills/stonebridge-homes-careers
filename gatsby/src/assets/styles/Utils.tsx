@@ -47,7 +47,7 @@ export const GutterPaddingTop = css`
   @media screen and (min-width: 768px) {
     padding-top: calc(var(--gutter-h) * 1.5);
   }
-  @media screen and (min-width: 1400px) {
+  @media screen and (min-width: 1600px) {
     padding-top: 11rem;
   }
 `
@@ -59,7 +59,7 @@ export const GutterPaddingRight = css`
   @media screen and (min-width: 1024px) {
     padding-right: calc(var(--gutter-h) * 1.5);
   }
-  @media screen and (min-width: 1400px) {
+  @media screen and (min-width: 1600px) {
     padding-right: 11rem;
   }
 `
@@ -69,7 +69,7 @@ export const GutterPaddingBottom = css`
     padding-bottom: calc(var(--gutter-h) * 1.5);
   }
 
-  @media screen and (min-width: 1400px) {
+  @media screen and (min-width: 1600px) {
     padding-bottom: 11rem;
   }
 `
@@ -81,7 +81,7 @@ export const GutterPaddingLeft = css`
   @media screen and (min-width: 1024px) {
     padding-left: calc(var(--gutter-h) * 1.5);
   }
-  @media screen and (min-width: 1400px) {
+  @media screen and (min-width: 1600px) {
     padding-left: 11rem;
   }
 `
@@ -93,7 +93,7 @@ export const GapMargin = css`
   @media screen and (min-width: 1024px) {
     gap: calc(var(--gutter-h) * 1.5);
   }
-  @media screen and (min-width: 1400px) {
+  @media screen and (min-width: 1600px) {
     gap: 11rem;
   }
 `
@@ -106,7 +106,7 @@ export const GutterMarginLeft = css`
   @media screen and (min-width: 1024px) {
     padding-left: calc(var(--gutter-h) * 1.5);
   }
-  @media screen and (min-width: 1400px) {
+  @media screen and (min-width: 1600px) {
     padding-left: 11rem;
   }
 `
@@ -119,7 +119,7 @@ export const GutterMarginTop = css`
   @media screen and (min-width: 1024px) {
     margin-top: calc(var(--gutter-h) * 1.5);
   }
-  @media screen and (min-width: 1400px) {
+  @media screen and (min-width: 1600px) {
     margin-top: 11rem;
   }
 `
@@ -129,7 +129,7 @@ export const GutterMarginBottom = css`
   @media screen and (min-width: 768px) {
     margin-bottom: calc(var(--gutter-h) * 1.5);
   }
-  @media screen and (min-width: 1400px) {
+  @media screen and (min-width: 1600px) {
     margin-bottom: 11rem;
   }
 `

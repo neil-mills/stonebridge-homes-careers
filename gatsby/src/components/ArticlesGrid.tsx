@@ -16,7 +16,7 @@ const Track = styled.div`
         grid-template-columns: repeat(2, 1fr);
       }
     }
-    @media screen and (min-width: 1400px) {
+    @media screen and (min-width: 1600px) {
       grid-template-columns: repeat(3, 1fr);
     }
     width: 100%;

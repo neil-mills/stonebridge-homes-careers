@@ -21,7 +21,7 @@ const GlobalStyles = createGlobalStyle`
     --font-large: 2.4rem;
     --font-large-desktop: 3.5rem;
     --font-base: 1.6rem;
-    --font-base-desktop: 2rem;
+    --font-base-desktop: 1.8rem;
     --font-medium: 1.8rem;
     --font-medium-desktop: 2.2rem;
     --font-small: 1.6rem;
@@ -41,7 +41,7 @@ const GlobalStyles = createGlobalStyle`
   }
   body {
     font-size: var(--font-base);
-    @media screen and (min-width: 1400px) {
+    @media screen and (min-width: 1024px) {
       font-size: var(--font-base-desktop);
     }
     line-height: 1.4;

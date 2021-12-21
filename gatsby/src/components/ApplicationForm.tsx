@@ -95,17 +95,20 @@ const ApplicationForm: FC<Props> = props => {
       })
     setIsError('')
     setIsLoading(true)
+    console.log('check duplicate')
     const response = await postCheckDuplicateApplicant()
     if (typeof response === 'object' && response.Result) {
-      if (!response.isError && response.Status !== 6) {
+      console.log(response)
+      if (!response.isError) {
         if (response.Result.IsDuplicate === 'False') {
           //post applicant
+          console.log('create new applicant')
           const response = await postCreateNewApplicant()
           if (typeof response === 'object' && response.Result) {
-            if (!response.isError && response.Status !== 6) {
+            console.log(response)
+            if (!response.isError) {
               //post applicant cv file
               const { ApplicantId } = response.Result
-              console.log('New applicant ')
               setFormValues(prevState => ({ ...prevState, ApplicantId }))
               //convert file to base64
               if (FileRef) {
@@ -117,10 +120,11 @@ const ApplicationForm: FC<Props> = props => {
                     ''
                   ),
                 }))
-
+                console.log('upload cv file')
                 const response = await postUploadApplicantDocument()
+                console.log(response)
                 if (typeof response === 'object' && response.Result) {
-                  if (!response.isError && response.Status !== 6) {
+                  if (!response.isError) {
                     //post application successful
                     setIsLoading(false)
                     setFormValues({ ...defaultValues })
@@ -130,6 +134,7 @@ const ApplicationForm: FC<Props> = props => {
                   } else {
                     //is api error with post upload document
                     setIsLoading(false)
+                    console.log('error with uploading cv')
                     setIsError(
                       'There was an error posting your application, please try again.'
                     )
@@ -146,6 +151,7 @@ const ApplicationForm: FC<Props> = props => {
               }
             } else {
               //is api response error with post new applicant request
+              console.log('error with new applicant post')
               setIsLoading(false)
               setIsError(
                 'There was an error posting your application, please try again.'
@@ -164,6 +170,7 @@ const ApplicationForm: FC<Props> = props => {
       } else {
         //is api response error with check duplicate post
         setIsLoading(false)
+        console.log('error checking duplicate')
         setIsError(
           'There was an error posting your application, please try again.'
         )
@@ -197,14 +204,10 @@ const ApplicationForm: FC<Props> = props => {
 
   return (
     <Form callback={handleSubmit}>
-      {isLoading ||
-        (isError && (
-          <StyledNotification>
-            {isLoading && <p>Sending, please wait...</p>}
-            {isError && <p>{isError}</p>}
-          </StyledNotification>
-        ))}
-
+      {isLoading && (
+        <StyledNotification>Sending, please wait...</StyledNotification>
+      )}
+      {isError && <StyledNotification>{isError}</StyledNotification>}
       <div>
         <label htmlFor={'title'}>Title</label>
         <Select

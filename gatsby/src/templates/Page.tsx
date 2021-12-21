@@ -249,7 +249,7 @@ export const query = graphql`
               }
               srcLarge {
                 asset {
-                  fluid(maxWidth: 1400) {
+                  fluid(maxWidth: 1600) {
                     src
                   }
                 }

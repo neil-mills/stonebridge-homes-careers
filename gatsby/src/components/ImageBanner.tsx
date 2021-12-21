@@ -104,7 +104,7 @@ const InsetBox = styled.div<{ willAnimate: boolean }>`
     max-width: 592px;
     padding: 5.7vw;
   }
-  @media screen and (min-width: 1400px) {
+  @media screen and (min-width: 1600px) {
     padding: 8rem;
   }
 `
@@ -127,7 +127,7 @@ const BgImage = styled.picture<{ isLoaded: boolean }>`
     left: 0;
     height: auto;
   }
-  @media screen and (min-width: 1400px) {
+  @media screen and (min-width: 1600px) {
     bottom: 11rem;
   }
 `

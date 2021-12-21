@@ -41,7 +41,7 @@ const IconTitleStyles = styled.div<StyleProps>`
     max-width: 255px;
     text-align: center;
   }
-  @media screen and (min-width: 1400px) {
+  @media screen and (min-width: 1600px) {
     max-width: 270px;
   }
 `
