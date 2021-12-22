@@ -33,7 +33,6 @@ const SelectStyles = styled.div<{ size: string }>`
     ${HeadingStyle}
     span {
       display: block;
-      padding-top: 3px;
       color: var(--grey);
       font-family: effraregular;
       text-transform: capitalize;

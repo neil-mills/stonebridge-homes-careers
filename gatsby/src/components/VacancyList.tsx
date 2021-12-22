@@ -1,4 +1,4 @@
-import React, { FC, useState, useEffect } from 'react'
+import React, { FC, useState, useEffect, ChangeEvent } from 'react'
 import Section from './Section'
 import { Link, useStaticQuery, graphql } from 'gatsby'
 import styled from 'styled-components'
@@ -164,7 +164,7 @@ const VacancyList: FC<Props> = props => {
     }
   `)
 
-  const [filteredVacancies, setFilteredVacancies] = useState<VacancyType[]>(
+  const [activeVacancies] = useState<VacancyType[]>(
     props.limit !== 'all'
       ? vacancies.nodes.filter(
           (vacancy: VacancyType, i: number) =>
@@ -177,41 +177,39 @@ const VacancyList: FC<Props> = props => {
         )
   )
 
-  const locations: Option[] = [
-    ...new Set(
-      filteredVacancies.map(({ Location }: VacancyType) => ({
-        label: Location,
-        value: Location,
-      }))
-    ),
-  ]
+  const [filteredVacancies, setFilteredVacancies] =
+    useState<VacancyType[]>(activeVacancies)
 
-  const departments: Option[] = [
+  const locations = [
+    ...new Set(activeVacancies.map(({ Location }: VacancyType) => Location)),
+  ].map(location => ({ label: location, value: location }))
+
+  const departments = [
     ...new Set(
-      filteredVacancies.map(({ Department }: VacancyType) => ({
-        label: Department,
-        value: Department,
-      }))
+      activeVacancies.map(({ Department }: VacancyType) => Department)
     ),
-  ]
+  ].map(department => ({ label: department, value: department }))
 
   const [selectedFilters, setSelectedFilters] = useState({
     location: '',
     department: '',
   })
 
-  const handleFilter = (filter: Filter) => {
-    setSelectedFilters({
-      ...selectedFilters,
-      ...filter,
-    })
+  const handleFilter = (
+    e: ChangeEvent<HTMLInputElement | HTMLSelectElement>
+  ): void => {
+    const { name, value } = e.target
+    setSelectedFilters(prevState => ({
+      ...prevState,
+      [name]: value,
+    }))
   }
 
   useEffect(() => {
     const { location: selectedLocation, department: selectedDepartment } =
       selectedFilters
 
-    let filteredResults = filteredVacancies
+    let filteredResults = activeVacancies
     if (selectedLocation)
       filteredResults = filteredResults.filter(
         ({ Location }: VacancyType) => Location === selectedLocation
@@ -245,12 +243,14 @@ const VacancyList: FC<Props> = props => {
                   name={'location'}
                   label={'Location'}
                   options={locations}
+                  value={selectedFilters.location}
                   callback={handleFilter}
                 />
                 <Select
                   name={'department'}
                   label={'Department'}
                   options={departments}
+                  value={selectedFilters.department}
                   callback={handleFilter}
                 />
               </form>
