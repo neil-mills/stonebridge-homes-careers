@@ -28,12 +28,13 @@ const PageTemplate: FC<Props> = ({ data, pageContext }) => {
   }
   return (
     <>
-      {data.pages.nodes[0].content.map(({ contentType }) => {
+      {data.pages.nodes[0].content.map(({ contentType }, i: number) => {
         //console.log(contentType)
         switch (contentType[0]._type) {
           case 'homeBanner':
             return (
               <HomeBanner
+                key={i}
                 title={contentType[0].heading}
                 text={contentType[0].text}
                 bgSrc={contentType[0].image.asset.fluid.src}
@@ -45,6 +46,7 @@ const PageTemplate: FC<Props> = ({ data, pageContext }) => {
           case 'imageAndTextBlock':
             return (
               <ImageAndTextBlock
+                key={i}
                 heading={contentType[0].heading}
                 sectionText={contentType[0].sectionText}
                 src={contentType[0].src}
@@ -60,6 +62,7 @@ const PageTemplate: FC<Props> = ({ data, pageContext }) => {
           case 'imageBanner':
             return (
               <ImageBanner
+                key={i}
                 src={contentType[0].src.asset.fluid.src}
                 srcSet={contentType[0].src.asset.fluid.srcSet}
                 srcAlt={contentType[0].srcAlt}
@@ -75,6 +78,7 @@ const PageTemplate: FC<Props> = ({ data, pageContext }) => {
           case 'articlesBlock':
             return (
               <ArticlesBlock
+                key={i}
                 subHeading={contentType[0].subHeading}
                 heading={contentType[0].heading}
                 text={contentType[0].text}
@@ -97,22 +101,28 @@ const PageTemplate: FC<Props> = ({ data, pageContext }) => {
           case 'parallaxImageBlock':
             return (
               <ParallaxImage
+                key={i}
                 src={contentType[0].src}
                 srcLarge={contentType[0].srcLarge}
               />
             )
           case 'timelineBlock':
-            return <TimelineList sections={contentType[0].timelineSections} />
+            return (
+              <TimelineList
+                key={i}
+                sections={contentType[0].timelineSections}
+              />
+            )
           case 'keylineGridBlock':
-            return <KeylineGridBlock {...contentType[0]} />
+            return <KeylineGridBlock key={i} {...contentType[0]} />
           case 'valuesBlock':
-            return <Values {...contentType[0]} />
+            return <Values key={i} {...contentType[0]} />
           case 'subContractorBlock':
-            return <SubContractor {...contentType[0]} />
+            return <SubContractor key={i} {...contentType[0]} />
           case 'vacanciesListBlock':
-            return <VacancyList {...contentType[0]} />
+            return <VacancyList key={i} {...contentType[0]} />
           case 'quoteListBlock':
-            return <Quotes {...contentType[0]} />
+            return <Quotes key={i} {...contentType[0]} />
           default:
             return null
         }
