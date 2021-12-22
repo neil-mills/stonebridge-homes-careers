@@ -164,7 +164,7 @@ const ArticleGridItem = forwardRef<HTMLElement, ArticleType>((props, ref) => {
       }
       setTimeout(() => {
         setAnimate(true)
-      }, 300)
+      }, 200)
     }
   }, [isLoaded])
 

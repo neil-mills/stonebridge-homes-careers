@@ -121,7 +121,7 @@ const ImageAndTextBlock = ({
       }
       setTimeout(() => {
         setAnimate(true)
-      }, 1000)
+      }, 200)
     }
   }, [isLoaded])
 
