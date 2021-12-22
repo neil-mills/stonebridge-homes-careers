@@ -20,7 +20,6 @@ export function useIntersectionObserver({
     entries: IntersectionObserverEntry[],
     observer: IntersectionObserver
   ): void => {
-    console.log('callback')
     entries.forEach(entry => {
       if (entry.isIntersecting) {
         setIsInViewport(true)
