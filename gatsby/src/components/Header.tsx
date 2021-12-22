@@ -1,10 +1,11 @@
-import React, { FC } from 'react'
-import { Link } from 'gatsby'
+import React, { FC, useContext, MouseEvent } from 'react'
+import { Link, navigate } from 'gatsby'
 import styled from 'styled-components'
 import Nav from './Nav'
 import Logo from '../assets/images/stonebridge.png'
 import { GutterPaddingLeft, GutterPaddingRight } from '../assets/styles/Utils'
 import { NavigationLink } from '../types/navigation'
+import AppContext from '../context/AppContext'
 
 const HeaderStyles = styled.header`
   display: flex;
@@ -20,7 +21,8 @@ const HeaderStyles = styled.header`
   ${GutterPaddingRight}
   ${GutterPaddingLeft}
 `
-const LogoStyles = styled(Link)`
+const StyledLogo = styled.a`
+  cursor: pointer;
   width: 170px;
   transition: width 200ms ease;
   height: auto;
@@ -53,12 +55,20 @@ const Header: FC<HeaderProps> = ({
 }: {
   navOptions: NavigationLink[]
 }) => {
+  const { setActivePage } = useContext(AppContext)
+  const handleClick = (e: MouseEvent) => {
+    e.preventDefault()
+    if (setActivePage) {
+      setActivePage(false)
+    }
+    navigate('/')
+  }
   return (
     <HeaderStyles>
       <SkipLink href="#content">Skip to main content</SkipLink>
-      <LogoStyles to="/">
+      <StyledLogo onClick={handleClick}>
         <img src={Logo} alt="Stonebridge" />
-      </LogoStyles>
+      </StyledLogo>
       <Nav options={navOptions} />
     </HeaderStyles>
   )

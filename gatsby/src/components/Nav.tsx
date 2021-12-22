@@ -1,11 +1,24 @@
-import React, { FC, MouseEvent, useState, useEffect, useRef } from 'react'
+import React, {
+  FC,
+  MouseEvent,
+  useState,
+  useEffect,
+  useRef,
+  useContext,
+} from 'react'
 import { Link } from 'gatsby'
 import styled, { css } from 'styled-components'
 import { FontBold } from '../assets/styles/Typography'
 import MenuButton from './MenuButton'
 import { NavigationLink } from '../types/navigation'
+import AppContext from '../context/AppContext'
 
-const NavStyles = styled.nav<{ left: number; width: number }>`
+const NavStyles = styled.nav<{
+  left: number
+  width: number
+  animateWidth: boolean
+  activePage: boolean
+}>`
   display: none;
   height: 100%;
   position: relative;
@@ -24,18 +37,6 @@ const NavStyles = styled.nav<{ left: number; width: number }>`
     display: flex;
     align-items: center;
     position: relative;
-    &[data-active='true'] {
-      /* &:after {
-        content: '';
-        display: block;
-        position: absolute;
-        bottom: 0;
-        left: 0;
-        width: 100%;
-        height: 2px;
-        background-color: var(--gold);
-      } */
-    }
   }
   a {
     color: var(--white);
@@ -51,7 +52,7 @@ const NavStyles = styled.nav<{ left: number; width: number }>`
     }
   }
   span {
-    display: block;
+    opacity: ${({ activePage }) => (activePage ? 1 : 0)};
     height: 3px;
     ${({ left, width }) => css`
       left: ${left}px;
@@ -60,7 +61,10 @@ const NavStyles = styled.nav<{ left: number; width: number }>`
     background-color: var(--gold);
     position: absolute;
     bottom: 0;
-    transition: left 200ms ease, width 200ms ease;
+    transition: ${({ animateWidth }) =>
+      animateWidth
+        ? 'left 200ms ease, width 200ms ease, opacity 200ms ease'
+        : 'left 200ms ease, opacity 200ms ease'};
   }
 `
 
@@ -73,11 +77,31 @@ const Nav: FC<NavProps> = ({ options }) => {
   const [activeWidth, setActiveWidth] = useState(0)
   const [hoverLeft, setHoverLeft] = useState(0)
   const [hoverWidth, setHoverWidth] = useState(0)
+  const [animateWidth, setAnimateWidth] = useState(false)
+  const [showLine, setShowLine] = useState(false)
   const liRefs = useRef<HTMLLIElement[]>([])
   let delay: ReturnType<typeof setTimeout> | null = null
+  const { setActivePage, activePage } = useContext(AppContext)
 
+  const HandleClick = (e: MouseEvent) => {
+    if (setActivePage) {
+      setActivePage(true)
+    }
+    if (delay) clearTimeout(delay)
+    if ((e.target as HTMLAnchorElement).parentElement) {
+      const parent = (e.target as HTMLAnchorElement).parentElement
+      if (parent) {
+        const width: number = parent.clientWidth
+        const left = parent.offsetLeft
+        setActiveLeft(left)
+        setActiveWidth(width)
+      }
+    }
+  }
   const handleHover = (e: MouseEvent) => {
     if (delay) clearTimeout(delay)
+    setShowLine(true)
+    setAnimateWidth(true)
     if ((e.target as HTMLAnchorElement).parentElement) {
       const parent = (e.target as HTMLAnchorElement).parentElement
       if (parent) {
@@ -91,25 +115,42 @@ const Nav: FC<NavProps> = ({ options }) => {
 
   const handleLeave = () => {
     delay = setTimeout(() => {
-      setHoverWidth(activeWidth)
-      setHoverLeft(activeLeft)
+      if (activePage) {
+        setHoverWidth(activeWidth)
+        setHoverLeft(activeLeft)
+      } else {
+        setShowLine(false)
+      }
     }, 500)
   }
 
   useEffect(() => {
+    setShowLine(activePage)
+  }, [activePage])
+
+  useEffect(() => {
+    setShowLine(activePage)
     liRefs.current.forEach(li => {
       if (li.getAttribute('data-active') === 'true') {
-        setActiveLeft(li.offsetLeft)
-        setActiveWidth(li.clientWidth)
-        setHoverLeft(li.offsetLeft)
-        setHoverWidth(li.clientWidth)
+        setTimeout(() => {
+          setActiveLeft(li.offsetLeft)
+          setActiveWidth(li.clientWidth)
+          setHoverLeft(li.offsetLeft)
+          setHoverWidth(li.clientWidth)
+        }, 1000)
       }
     })
   }, [])
 
   return (
     <>
-      <NavStyles left={hoverLeft} width={hoverWidth}>
+      <MenuButton />
+      <NavStyles
+        left={hoverLeft}
+        width={hoverWidth}
+        animateWidth={animateWidth}
+        activePage={showLine}
+      >
         <ul>
           {options.map((option: NavigationLink, i: number) => (
             <li
@@ -120,6 +161,7 @@ const Nav: FC<NavProps> = ({ options }) => {
               <Link
                 onMouseOver={handleHover}
                 onMouseLeave={handleLeave}
+                onClick={HandleClick}
                 to={`/${option.slug.current}`}
               >
                 {option.title}

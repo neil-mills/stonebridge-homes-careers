@@ -16,11 +16,13 @@ type ContextType = {
   setMenuActive: Dispatch<SetStateAction<boolean>> | null
   setDialogContent: Dispatch<SetStateAction<ReactNode>> | null
   setCentreDialog: Dispatch<SetStateAction<ReactNode>> | null
+  setActivePage: Dispatch<SetStateAction<boolean>> | null
   centreDialog: false
   setVideoSrc: ((src: string) => void) | null
   dialogContent: ReactNode | null
   bodyNoScroll: boolean
   stopBodyScroll?: (state: boolean) => void
+  activePage: boolean
   address: string
   instagram?: string
   facebook?: string
@@ -40,6 +42,8 @@ const AppContext = createContext<ContextType>({
   setVideoSrc: null,
   centreDialog: false,
   setCentreDialog: null,
+  activePage: false,
+  setActivePage: null,
 })
 
 export const AppContextProvider: FC = ({ children }): JSX.Element => {
@@ -48,6 +52,7 @@ export const AppContextProvider: FC = ({ children }): JSX.Element => {
   const [bodyNoScroll, setBodyNoScroll] = useState<boolean>(false)
   const [dialogContent, setDialogContent] = useState<ReactNode>(null)
   const [centreDialog, setCentreDialog] = useState<ReactNode>(null)
+  const [activePage, setActivePage] = useState<ReactNode>(null)
 
   const setVideoSrc = (src: string) => {
     setCentreDialog(true)
@@ -87,6 +92,7 @@ export const AppContextProvider: FC = ({ children }): JSX.Element => {
       value={{
         dialogActive,
         setDialogActive,
+        setActivePage,
         menuActive,
         setMenuActive,
         setDialogContent,
@@ -96,6 +102,7 @@ export const AppContextProvider: FC = ({ children }): JSX.Element => {
         setVideoSrc,
         setCentreDialog,
         centreDialog,
+        activePage,
         ...settings.nodes[0],
       }}
     >
