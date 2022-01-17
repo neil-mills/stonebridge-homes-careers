@@ -20,7 +20,7 @@ export const SectionInner = styled.div`
   display: block;
   position: relative;
   width: 100%;
-  @media screen and (min-width: 1600px) {
+  @media screen and (min-width: 1400px) {
     max-width: 1180px;
   }
   margin: 0 auto;
