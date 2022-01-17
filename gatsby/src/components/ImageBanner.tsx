@@ -170,6 +170,7 @@ const ImageBanner: FC<ImageBannerProps> = ({
 
   useEffect(() => {
     const inViewport = isInViewport()
+    // inViewport = window.innerWidth < 768
     setWillAnimate(!inViewport)
   }, [])
 
