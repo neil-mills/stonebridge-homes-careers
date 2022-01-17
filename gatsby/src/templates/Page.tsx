@@ -16,16 +16,9 @@ interface Props {
   pageContext: { id: string; title: string; slug: string }
 }
 const PageTemplate: FC<Props> = ({ data, pageContext }) => {
-  //  console.log('DATA=', data)
   const { title } = pageContext
   const { setDialogActive } = useContext(AppContext)
 
-  const showVideo = (): void => {
-    console.log('launch video')
-    if (setDialogActive) {
-      setDialogActive(true)
-    }
-  }
   return (
     <>
       {data.pages.nodes[0].content.map(({ contentType }, i: number) => {
@@ -55,7 +48,6 @@ const PageTemplate: FC<Props> = ({ data, pageContext }) => {
                 alignText={contentType[0].alignText}
                 buttonLabel={contentType[0].buttonLabel}
                 buttonLink={contentType[0].buttonLink}
-                buttonCallback={contentType[0].videoSrc ? showVideo : null}
                 tint={contentType[0].tint}
               />
             )
