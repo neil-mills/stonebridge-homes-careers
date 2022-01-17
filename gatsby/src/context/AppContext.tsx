@@ -67,6 +67,7 @@ export const AppContextProvider: FC = ({ children }): JSX.Element => {
       const { scrollY } = window
       document.body.style.position = 'fixed'
       document.body.style.top = `-${scrollY}px`
+      document.body.style.width = '100%'
     } else {
       const scrollY = document.body.style.top
       document.body.style.position = ''
