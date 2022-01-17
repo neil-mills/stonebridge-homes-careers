@@ -1,14 +1,15 @@
-import React, { useState, useEffect, useRef } from 'react'
+import React, { useState, useEffect, useRef, useContext } from 'react'
 import styled from 'styled-components'
 import PlayIcon from '../assets/svg/play.svg'
 import { MarginBottomNone } from '../assets/styles/Utils'
 import Button from './Button'
+import { navigate } from 'gatsby'
 import { HeadingLarge } from '../assets/styles/Typography'
 import Section from './Section'
 import { ImageAndTextBlockType } from '../types'
 import { useLazyLoadImages } from '../hooks/useLazyLoadImages'
 import { useIsInViewport } from '../hooks/useIsInViewport'
-
+import AppContext from '../context/AppContext'
 const SectionStyles = styled.section`
   display: grid;
   gap: 2rem;
@@ -95,6 +96,7 @@ const ImageAndTextBlock = ({
   const [loadedSrcSet, setLoadedSrcSet] = useState('')
   const [willAnimate, setWillAnimate] = useState(false)
   const [animate, setAnimate] = useState(false)
+  const { setVideoSrc } = useContext(AppContext)
   const imageRef = useRef(null)
   const isInViewport = useIsInViewport(imageRef)
   const [isLoaded] = useLazyLoadImages({
@@ -105,6 +107,21 @@ const ImageAndTextBlock = ({
       rootMargin: '0px',
     },
   })
+
+  const handleCallback = (e: Event): void => {
+    console.log('handle callback')
+    console.log(buttonLink)
+    console.log(videoSrc)
+    if (videoSrc && setVideoSrc) {
+      setVideoSrc(videoSrc)
+    }
+    if (buttonCallback) {
+      buttonCallback(e)
+    }
+    // if (buttonLink) {
+    //   navigate(buttonLink)
+    // }
+  }
 
   useEffect(() => {
     const inViewport = isInViewport()
@@ -161,7 +178,7 @@ const ImageAndTextBlock = ({
               label={buttonLabel}
               link={buttonLink}
               icon={videoSrc ? <PlayIcon /> : null}
-              callback={buttonCallback}
+              callback={handleCallback}
             />
           )}
         </aside>
