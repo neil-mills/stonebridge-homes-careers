@@ -2,15 +2,20 @@ import React, { useState, useEffect, useRef, FC } from 'react'
 import styled from 'styled-components'
 import Button from './Button'
 import { HeadingStyle, HeadingXLarge } from '../assets/styles/Typography'
-import { GutterPaddingLeft, GutterPaddingRight } from '../assets/styles/Utils'
+import {
+  GutterPaddingTop,
+  GutterPaddingLeft,
+  GutterPaddingRight,
+  GutterPaddingBottom,
+} from '../assets/styles/Utils'
 import { SectionInner } from './Section'
 import { useLazyLoadImages } from '../hooks/useLazyLoadImages'
 
 const BgGradient = styled.div`
   background-image: linear-gradient(
     90deg,
-    rgba(0, 0, 0, 0.25) 0,
-    transparent 60%
+    rgba(0, 0, 0, 0.3) 30%,
+    transparent 80%
   );
   position: absolute;
   display: block;
@@ -22,8 +27,6 @@ const BgGradient = styled.div`
   left: 0;
   display: flex;
   align-items: center;
-  ${GutterPaddingLeft}
-  ${GutterPaddingRight}
 `
 const HomeBannerInner = styled.div`
   width: 70%;
@@ -73,15 +76,14 @@ const HomeBanner: FC<HomeBannerProps> = (props): JSX.Element => {
       ref={sectionRef}
       style={{ backgroundImage: `url(${bgSrc})` }}
     >
-      <BgGradient>
-        <SectionInner>
-          <HomeBannerInner>
-            <h2>{props.title}</h2>
-            <p>{props.text}</p>
-            <Button label={'Find out more'} link={'/working-with-us'} />
-          </HomeBannerInner>
-        </SectionInner>
-      </BgGradient>
+      <BgGradient />
+      <SectionInner>
+        <HomeBannerInner>
+          <h2>{props.title}</h2>
+          <p>{props.text}</p>
+          <Button label={'Find out more'} link={'/working-with-us'} />
+        </HomeBannerInner>
+      </SectionInner>
     </section>
   )
 }
@@ -89,19 +91,33 @@ const HomeBanner: FC<HomeBannerProps> = (props): JSX.Element => {
 const StyledHomeBanner = styled(HomeBanner)`
   background-color: var(--green);
   height: auto;
+  ${GutterPaddingTop}
+  ${GutterPaddingBottom}
   ${GutterPaddingLeft}
   ${GutterPaddingRight}
     display: flex;
   align-items: center;
   justify-content: flex-start;
-  background-position: right top;
   transition: background-position 200ms ease;
-  background-size: cover;
+  background-size: auto 380px;
+  background-repeat: no-repeat;
+  background-position: right bottom;
   position: relative;
   height: auto;
   min-height: 35rem;
+  @media screen and (min-width: 500px) {
+    background-size: auto 400px;
+    background-position: right bottom;
+  }
+  @media screen and (min-width: 500px) {
+    background-size: auto 380px;
+  }
   @media screen and (min-width: 500px) and (max-width: 599px) {
-    background-position: -100px top;
+    background-position: -140px bottom;
+  }
+  @media screen and (min-width: 600px) {
+    background-size: cover;
+    background-position: right top;
   }
   @media screen and (min-width: 600px) and (max-width: 699px) {
     background-position: -50px top;
@@ -110,7 +126,7 @@ const StyledHomeBanner = styled(HomeBanner)`
     background-position: 20px top;
   }
   @media screen and (min-width: 500px) {
-    padding-bottom: 3rem;
+    /* padding-bottom: 3rem; */
     min-height: 38rem;
   }
   @media screen and (min-width: 768px) {
