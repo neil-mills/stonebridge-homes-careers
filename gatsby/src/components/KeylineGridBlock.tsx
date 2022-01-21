@@ -118,7 +118,7 @@ const KeylineGridBlock: FC<Props> = props => {
       marginTop={props.marginTop}
       marginBottom={props.marginBottom}
     >
-      <Heading heading={props.heading} text={props.text} />
+      <Heading heading={props.heading} text={props.text} marginBottom={true} />
       <KeylineGrid columns={props.columns || 3}>
         {props.items.map(item => (
           <KeylineGridItem key={item._key}>
