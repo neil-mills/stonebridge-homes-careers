@@ -56,7 +56,7 @@ const PageTemplate: FC<Props> = ({ data, pageContext }) => {
               <ImageBanner
                 key={i}
                 src={contentType[0].src.asset.fluid.src}
-                srcSet={contentType[0].src.asset.fluid.srcSet}
+                srcMobile={contentType[0].srcMobile.asset.fluid.src}
                 srcAlt={contentType[0].srcAlt}
                 heading={contentType[0].heading}
                 text={contentType[0].text}
@@ -155,7 +155,7 @@ export const query = graphql`
               imageDesktop {
                 asset {
                   id
-                  fluid(maxWidth: 1395) {
+                  fluid(maxWidth: 1600) {
                     srcWebp
                     src
                   }
@@ -196,10 +196,16 @@ export const query = graphql`
               alignText
               top
               tint
-              src {
+              srcMobile {
                 asset {
                   fluid(maxWidth: 500) {
-                    srcSet
+                    src
+                  }
+                }
+              }
+              src {
+                asset {
+                  fluid(maxWidth: 1600) {
                     src
                   }
                 }
