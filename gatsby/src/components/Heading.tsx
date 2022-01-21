@@ -57,9 +57,12 @@ const HeadingStyles = styled.div<HeadingProps>`
           margin-bottom: 0;
         }
       `};
-    ${({ text }) => text && 'margin-bottom: 0;'};
+    /* ${({ text }) => text && 'margin-bottom: 0;'}; */
   }
   p {
+    @media screen and (min-width: 768px) {
+      max-width: 70%;
+    }
     ${({ headingLarger }) =>
       headingLarger &&
       css`
@@ -69,7 +72,9 @@ const HeadingStyles = styled.div<HeadingProps>`
         }
       `};
     &:last-child {
-      margin-bottom: ${({ marginBottom }) => (!marginBottom ? '0' : '4rem')};
+      @media screen and (min-width: 768px) {
+        margin-bottom: ${({ marginBottom }) => (!marginBottom ? '0' : '4rem')};
+      }
     }
   }
 `
