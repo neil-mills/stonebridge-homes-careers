@@ -61,7 +61,7 @@ export const HeadingMedium = css`
   font-size: var(--font-medium);
   line-height: 1.1;
   /* margin-bottom: 2rem; */
-  margin: 3rem 0;
+  margin: 2rem 0;
   &:first-child {
     margin-top: 0;
   }
