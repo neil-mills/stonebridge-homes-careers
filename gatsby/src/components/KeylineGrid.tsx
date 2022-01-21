@@ -65,14 +65,17 @@ const ItemStyles = styled.li`
       }
     }
     [data-columns='3'] & {
-      width: calc(100% / 2);
-      padding: 0;
-      border-width: 0 1px 1px 0;
-      &:nth-last-child(-n + 2) {
-        border-width: 0 1px 0 0;
-      }
-      &:nth-child(2n) {
-        border-width: 0 0 1px 0;
+      width: 100%;
+      @media screen and (min-width: 768px) {
+        width: calc(100% / 2);
+        padding: 0;
+        border-width: 0 1px 1px 0;
+        &:nth-last-child(-n + 2) {
+          border-width: 0 1px 0 0;
+        }
+        &:nth-child(2n) {
+          border-width: 0 0 1px 0;
+        }
       }
     }
   }
