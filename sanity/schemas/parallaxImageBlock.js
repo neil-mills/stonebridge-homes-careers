@@ -4,12 +4,19 @@ export default {
   type: 'object',
   fields: [
     {
+      name: 'title',
+      title: 'Image Description',
+      type: 'string',
+      validation: (Rule) => Rule.required(),
+    },
+    {
       title: 'Image',
       name: 'src',
       type: 'image',
       options: {
         hotspot: true,
       },
+      validation: (Rule) => Rule.required(),
     },
     {
       title: 'Large image',
@@ -18,6 +25,17 @@ export default {
       options: {
         hotspot: true,
       },
+      validation: (Rule) => Rule.required(),
     },
   ],
+  preview: {
+    select: {
+      title: 'title',
+    },
+    prepare({ title }) {
+      return {
+        title,
+      };
+    },
+  },
 };

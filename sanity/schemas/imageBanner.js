@@ -16,6 +16,15 @@ export default {
       description: 'Visible text',
     },
     {
+      title: 'Mobile Image',
+      name: 'srcMobile',
+      type: 'image',
+      options: {
+        hotspot: true,
+      },
+      validation: (Rule) => Rule.required(),
+    },
+    {
       title: 'Image',
       name: 'src',
       type: 'image',
