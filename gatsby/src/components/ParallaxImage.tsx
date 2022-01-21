@@ -9,7 +9,6 @@ const SectionStyles = styled.section`
   width: 100%;
   height: 320px;
   background-position: top center;
-
   background-size: cover;
   @media screen and (min-width: 768px) {
     height: 50vw;
@@ -17,9 +16,7 @@ const SectionStyles = styled.section`
   }
   @media screen and (min-width: 768px) and (orientation: landscape) {
     background-attachment: fixed;
-    /* background-size: auto 100vh; */
     background-size: cover, auto, cover;
-    /* background-position: 0px 0px, 0px 0px, 50% 42%; */
     background-repeat: no-repeat;
   }
 `
@@ -35,7 +32,7 @@ const ParallaxImage: FC<ParallaxImageBlockType> = ({
     src: src && srcLarge ? [src.asset.fluid.src, srcLarge.asset.fluid.src] : [],
     options: {
       threshold: 0,
-      rootMargin: '0px',
+      rootMargin: '200px',
     },
   })
 
