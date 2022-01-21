@@ -64,16 +64,21 @@ const ImageBannerInner = styled.div`
   display: grid;
 `
 
-const InsetBox = styled.div<{ willAnimate: boolean }>`
+const InsetBox = styled.div<{ willAnimate: boolean; isDesktop: boolean }>`
   display: block;
   background-color: var(--green);
   transition: opacity 500ms ease, transform 1s ease;
-  opacity: ${({ willAnimate }) => (willAnimate ? 0 : 1)};
-  transform: ${({ willAnimate }) =>
-    willAnimate ? 'translateY(100px)' : 'translateY(0)'};
+  opacity: ${({ willAnimate, isDesktop }) =>
+    willAnimate && isDesktop ? 0 : 1};
+  transform: ${({ willAnimate, isDesktop }) =>
+    willAnimate && isDesktop ? 'translateY(100px)' : 'translateY(0)'};
   &[data-active='true'] {
     opacity: 1;
     transform: translateY(0);
+    div {
+      transform: translateX(0);
+      opacity: 1;
+    }
   }
   width: 100%;
   ${SectionGutter}
@@ -85,6 +90,13 @@ const InsetBox = styled.div<{ willAnimate: boolean }>`
     justify-self: end;
   }
   z-index: 1;
+  div {
+    transition: opacity 500ms ease, transform 1s ease;
+    opacity: ${({ willAnimate, isDesktop }) =>
+      willAnimate && !isDesktop ? 0 : 1};
+    transform: ${({ willAnimate, isDesktop }) =>
+      willAnimate && !isDesktop ? 'translateX(50px)' : 'translateX(0)'};
+  }
   h3 {
     ${HeadingLarge}
     color: var(--gold);
@@ -108,7 +120,7 @@ const InsetBox = styled.div<{ willAnimate: boolean }>`
     padding: 8rem;
   }
 `
-const BgImage = styled.picture<{ isLoaded: boolean }>`
+const BgImage = styled.picture<{ isLoaded: boolean; willAnimate: boolean }>`
   background-color: var(--light-grey);
   img {
     object-fit: cover;
@@ -150,6 +162,7 @@ const ImageBanner: FC<ImageBannerProps> = ({
   const [loadedSrc, setLoadedSrc] = useState('')
   const [loadedSrcSet, setLoadedSrcSet] = useState('')
   const [willAnimate, setWillAnimate] = useState(false)
+  const [isDesktop, setIsDesktop] = useState(false)
   const [animate, setAnimate] = useState(false)
   const isInViewport = useIsInViewport(imageRef)
   const srcSet = `${src} 1400w`
@@ -171,8 +184,8 @@ const ImageBanner: FC<ImageBannerProps> = ({
 
   useEffect(() => {
     const inViewport = isInViewport()
-    // inViewport = window.innerWidth < 768
     setWillAnimate(!inViewport)
+    setIsDesktop(window.innerWidth >= 768)
   }, [])
 
   useEffect(() => {
@@ -190,7 +203,7 @@ const ImageBanner: FC<ImageBannerProps> = ({
     if (isScrolledIntoViewport && !animate) {
       setTimeout(() => {
         setAnimate(true)
-      }, 500)
+      }, 750)
     }
   }, [isScrolledIntoViewport])
 
@@ -200,7 +213,7 @@ const ImageBanner: FC<ImageBannerProps> = ({
       data-position={top ? 'top' : 'page'}
       data-text-align={alignText}
     >
-      <BgImage ref={imageRef} isLoaded={isLoaded}>
+      <BgImage ref={imageRef} isLoaded={isLoaded} willAnimate={willAnimate}>
         <source media="(min-width: 500px)" srcSet={loadedSrcSet} />
         <img src={loadedSrc} alt={srcAlt} />
       </BgImage>
@@ -209,13 +222,16 @@ const ImageBanner: FC<ImageBannerProps> = ({
           <InsetBox
             ref={insetBoxRef}
             willAnimate={willAnimate}
+            isDesktop={isDesktop}
             data-active={animate}
           >
-            <h3>{heading}</h3>
-            <p>{text}</p>
-            {buttonLabel && buttonLink && (
-              <Button label={buttonLabel} link={buttonLink} />
-            )}
+            <div>
+              <h3>{heading}</h3>
+              <p>{text}</p>
+              {buttonLabel && buttonLink && (
+                <Button label={buttonLabel} link={buttonLink} />
+              )}
+            </div>
           </InsetBox>
         </ImageBannerInner>
       </SectionInner>

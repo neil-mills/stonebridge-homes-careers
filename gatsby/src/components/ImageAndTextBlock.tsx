@@ -47,12 +47,14 @@ const SectionStyles = styled.section`
 const Picture = styled.picture<{
   willAnimate: boolean
   isLoaded: boolean
+  isDesktop: boolean
 }>`
   display: grid;
   transition: opacity 500ms ease, transform 1s ease;
-  opacity: ${({ willAnimate }) => (willAnimate ? 0 : 1)};
-  transform: ${({ willAnimate }) =>
-    willAnimate ? 'translateY(50px)' : 'translateY(0)'};
+  opacity: ${({ willAnimate, isDesktop }) =>
+    willAnimate && isDesktop ? 0 : 1};
+  transform: ${({ willAnimate, isDesktop }) =>
+    willAnimate && isDesktop ? 'translateY(50px)' : 'translateY(0)'};
   align-items: center;
   width: 100%;
   background: var(--light-grey);
@@ -95,6 +97,7 @@ const ImageAndTextBlock = ({
   const [loadedSrc, setLoadedSrc] = useState('')
   const [loadedSrcSet, setLoadedSrcSet] = useState('')
   const [willAnimate, setWillAnimate] = useState(false)
+  const [isDesktop, setIsDesktop] = useState(false)
   const [animate, setAnimate] = useState(false)
   const { setVideoSrc } = useContext(AppContext)
   const imageRef = useRef(null)
@@ -123,6 +126,7 @@ const ImageAndTextBlock = ({
 
   useEffect(() => {
     const inViewport = isInViewport()
+    setIsDesktop(window.innerWidth >= 768)
     setWillAnimate(!inViewport)
   }, [])
 
@@ -146,6 +150,7 @@ const ImageAndTextBlock = ({
         {src && videoSrc && (
           <Picture
             willAnimate={willAnimate}
+            isDesktop={isDesktop}
             isLoaded={isLoaded}
             ref={imageRef}
             data-loaded={animate}
@@ -157,6 +162,7 @@ const ImageAndTextBlock = ({
         {src && !videoSrc && (
           <Picture
             willAnimate={willAnimate}
+            isDesktop={isDesktop}
             isLoaded={isLoaded}
             ref={imageRef}
             data-loaded={animate}
