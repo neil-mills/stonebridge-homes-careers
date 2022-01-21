@@ -104,7 +104,7 @@ export const AppContextProvider: FC = ({ children }): JSX.Element => {
         setCentreDialog,
         centreDialog,
         activePage,
-        ...settings.nodes[0],
+        ...settings.nodes[1],
       }}
     >
       {children}
