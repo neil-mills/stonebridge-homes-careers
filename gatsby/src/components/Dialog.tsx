@@ -37,6 +37,8 @@ const StyledDialog = styled.div<{
     padding: 6rem 2rem 2rem;
     width: 100%;
     position: absolute;
+    display: flex;
+    align-items: center;
     opacity: 0;
     background-color: var(--light-grey);
     ${({ centred }) =>
@@ -64,7 +66,6 @@ const StyledDialog = styled.div<{
         }
       `};
     z-index: 10;
-    display: block;
     @media screen and (min-width: 768px) {
       min-height: auto;
       ${({ centred }) =>
