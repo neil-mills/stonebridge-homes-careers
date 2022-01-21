@@ -14,6 +14,7 @@ interface SectionProps {
   marginBottom?: boolean
   as?: React.ElementType
   className?: string
+  children: React.ReactNode
 }
 
 export const SectionInner = styled.div`
@@ -35,25 +36,19 @@ const SectionStyled = styled.section<SectionProps>`
     tint ? 'var(--light-grey)' : 'var(--white)'};
 `
 
-const Section: FC<SectionProps> = ({
-  tint = false,
-  marginTop = true,
-  marginBottom = true,
-  as = 'section',
-  children,
-  className,
-}): JSX.Element => {
-  return (
-    <SectionStyled
-      marginTop={marginTop}
-      marginBottom={marginBottom}
-      tint={tint}
-      as={as}
-      className={className}
-    >
-      <SectionInner>{children}</SectionInner>
-    </SectionStyled>
-  )
-}
+export type Ref = HTMLElement
+const Section = React.forwardRef<Ref, SectionProps>((props, ref) => (
+  <SectionStyled
+    ref={ref}
+    marginTop={props.marginTop}
+    marginBottom={props.marginBottom}
+    tint={props.tint}
+    as={props.as}
+    className={props.className}
+  >
+    <SectionInner>{props.children}</SectionInner>
+  </SectionStyled>
+))
 
+Section.displayName = 'Section'
 export default Section
