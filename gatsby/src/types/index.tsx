@@ -27,6 +27,10 @@ export interface TextBlockType {
   className?: string
 }
 
+export interface Slug {
+  slug: { current: string }
+}
+
 export interface ImageAndTextBlockType {
   _key?: string
   _type?: string
@@ -34,7 +38,7 @@ export interface ImageAndTextBlockType {
   sectionText?: string
   alignText?: string
   buttonLabel?: string
-  buttonLink?: string
+  buttonLink?: Slug[]
   tint?: boolean
   videoSrc?: string
   srcAlt?: string

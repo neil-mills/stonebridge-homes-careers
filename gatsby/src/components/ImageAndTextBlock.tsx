@@ -85,7 +85,7 @@ const ImageAndTextBlock = ({
   src,
   srcAlt = '',
   buttonLabel = '',
-  buttonLink = '',
+  buttonLink = [],
   videoSrc = '',
   tint = false,
   marginTop = true,
@@ -109,18 +109,16 @@ const ImageAndTextBlock = ({
   })
 
   const handleCallback = (e: Event): void => {
-    console.log('handle callback')
-    console.log(buttonLink)
-    console.log(videoSrc)
     if (videoSrc && setVideoSrc) {
       setVideoSrc(videoSrc)
     }
     if (buttonCallback) {
       buttonCallback(e)
     }
-    // if (buttonLink) {
-    //   navigate(buttonLink)
-    // }
+    if (buttonLink) {
+      console.log(buttonLink[0])
+      navigate(buttonLink[0].slug.current)
+    }
   }
 
   useEffect(() => {
