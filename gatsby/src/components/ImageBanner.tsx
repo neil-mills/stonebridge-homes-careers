@@ -16,7 +16,7 @@ interface ImageBannerProps {
   heading: string
   text: string
   src: string
-  srcSet: string
+  srcMobile: string
   srcAlt?: string
   buttonLabel?: string
   buttonLink?: string
@@ -135,7 +135,8 @@ const BgImage = styled.picture<{ isLoaded: boolean }>`
 const ImageBanner: FC<ImageBannerProps> = ({
   top = false,
   src,
-  srcSet,
+  srcMobile,
+  // srcSet,
   srcAlt = '',
   heading,
   text,
@@ -151,7 +152,7 @@ const ImageBanner: FC<ImageBannerProps> = ({
   const [willAnimate, setWillAnimate] = useState(false)
   const [animate, setAnimate] = useState(false)
   const isInViewport = useIsInViewport(imageRef)
-
+  const srcSet = `${src} 1400w`
   const [isLoaded] = useLazyLoadImages({
     ref: imageRef,
     srcSet: srcSet,
@@ -180,7 +181,7 @@ const ImageBanner: FC<ImageBannerProps> = ({
         setLoadedSrcSet(srcSet)
       }
       if (src) {
-        setLoadedSrc(src)
+        setLoadedSrc(srcMobile)
       }
     }
   }, [isLoaded])
