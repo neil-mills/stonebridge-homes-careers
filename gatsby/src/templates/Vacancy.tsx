@@ -1,4 +1,4 @@
-import React, { FC, useRef, ReactNode } from 'react'
+import React, { FC, useRef } from 'react'
 
 import { graphql } from 'gatsby'
 import styled from 'styled-components'
