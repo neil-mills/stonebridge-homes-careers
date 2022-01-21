@@ -101,13 +101,14 @@ const ImageAndTextBlock = ({
   const [animate, setAnimate] = useState(false)
   const { setVideoSrc } = useContext(AppContext)
   const imageRef = useRef(null)
-  const isInViewport = useIsInViewport(imageRef)
+  const sectionRef = useRef(null)
+  const isInViewport = useIsInViewport(sectionRef)
   const [isLoaded] = useLazyLoadImages({
     ref: imageRef,
     srcSet: src?.asset.fluid.srcSet,
     options: {
       threshold: 0,
-      rootMargin: '0px',
+      rootMargin: '80px',
     },
   })
 
@@ -145,7 +146,12 @@ const ImageAndTextBlock = ({
   }, [isLoaded])
 
   return (
-    <Section tint={tint} marginTop={marginTop} marginBottom={marginBottom}>
+    <Section
+      ref={sectionRef}
+      tint={tint}
+      marginTop={marginTop}
+      marginBottom={marginBottom}
+    >
       <SectionStyles data-text-align={alignText}>
         {src && videoSrc && (
           <Picture
