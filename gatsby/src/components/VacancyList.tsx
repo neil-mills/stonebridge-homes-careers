@@ -148,6 +148,7 @@ const VacancyList: FC<Props> = props => {
           Country
           Department
           Experience
+          Reference
           IsHideSalary
           JobBordUrl
           JobDescription
@@ -169,11 +170,13 @@ const VacancyList: FC<Props> = props => {
       ? vacancies.nodes.filter(
           (vacancy: VacancyType, i: number) =>
             i < parseInt(props.limit) &&
+            vacancy.Reference !== 'VA6' &&
             new Date(vacancy.ClosingDate).getTime() >= new Date().getTime()
         )
       : vacancies.nodes.filter(
           (vacancy: VacancyType) =>
-            new Date(vacancy.ClosingDate).getTime() >= new Date().getTime()
+            new Date(vacancy.ClosingDate).getTime() >= new Date().getTime() &&
+            vacancy.Reference !== 'VA6'
         )
   )
 

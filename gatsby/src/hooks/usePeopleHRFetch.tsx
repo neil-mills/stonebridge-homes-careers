@@ -1,4 +1,4 @@
-import { setState, useState } from 'react'
+import { useState } from 'react'
 import { ApplicantData, ResponseType } from '../types'
 export function usePeopleHRFetch<S>(
   action: string,

@@ -20,7 +20,7 @@ const SubContractor: FC<Props> = ({ heading, text, buttonLabel }) => {
         <>
           <h3>Register as a subcontractor</h3>
           <ApplicationForm
-            vacancyReference={'123'}
+            vacancyReference={'VA6'}
             buttonLabel={'Register details'}
           />
         </>
