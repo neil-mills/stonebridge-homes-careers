@@ -114,7 +114,7 @@ const SingleVacancyPage: FC<Props> = ({ data, className }) => {
   }
   return (
     <div className={className}>
-      <Section as={'div'} marginTop={false}>
+      <Section as={'div'} marginTop={false} marginBottom={true}>
         <ArticleHeaderLinks backLink={'/vacancies'} />
         <ArticleTitle>
           <div>
@@ -135,7 +135,7 @@ const SingleVacancyPage: FC<Props> = ({ data, className }) => {
           dangerouslySetInnerHTML={{ __html: description }}
         />
       </Section>
-      <Section tint={true}>
+      <Section tint={true} marginTop={true} marginBottom={true}>
         <StyledForm>
           <div>
             <StyledPicture>
