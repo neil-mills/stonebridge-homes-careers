@@ -110,7 +110,7 @@ const TimelineItem: FC<TimelineItem> = ({
 }
 const TimelineList: FC<Props> = ({ sections }) => {
   return (
-    <Section>
+    <Section marginTop={true} marginBottom={true}>
       {sections.map(section => (
         <TimelineSection key={section._key} {...section} />
       ))}

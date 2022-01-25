@@ -100,7 +100,7 @@ const Quotes: FC<Props> = props => {
   const selectedQuotes: Quote[] = props.quotes || quotes.nodes
   if (!selectedQuotes.length) return null
   return (
-    <Section marginBottom={false}>
+    <Section marginBottom={true} marginTop={true}>
       {props.heading && (
         <Heading
           subHeading={props.subHeading}
