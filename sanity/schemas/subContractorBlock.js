@@ -21,5 +21,11 @@ export default {
       type: 'string',
       description: 'Visible button label',
     },
+    {
+      title: 'Tint',
+      name: 'tint',
+      type: 'boolean',
+      description: 'Does this section have a tinted background',
+    },
   ],
 };

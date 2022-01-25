@@ -8,8 +8,14 @@ interface Props {
   heading: string
   text: string
   buttonLabel?: string
+  tint?: boolean
 }
-const SubContractor: FC<Props> = ({ heading, text, buttonLabel }) => {
+const SubContractor: FC<Props> = ({
+  heading,
+  text,
+  buttonLabel,
+  tint = false,
+}) => {
   const { setDialogActive, setDialogContent, stopBodyScroll } =
     useContext(AppContext)
 
@@ -39,6 +45,7 @@ const SubContractor: FC<Props> = ({ heading, text, buttonLabel }) => {
         sectionText={text}
         buttonLabel={buttonLabel}
         buttonCallback={openDialog}
+        tint={tint}
       />
     </>
   )

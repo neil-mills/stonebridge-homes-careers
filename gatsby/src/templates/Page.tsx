@@ -22,7 +22,6 @@ const PageTemplate: FC<Props> = ({ data, pageContext }) => {
   return (
     <>
       {data.pages.nodes[0].content.map(({ contentType }, i: number) => {
-        //console.log(contentType)
         switch (contentType[0]._type) {
           case 'homeBanner':
             return (
@@ -309,6 +308,7 @@ export const query = graphql`
               buttonLabel
               heading
               text
+              tint
             }
             ... on SanityVacanciesListBlock {
               _type
