@@ -59,7 +59,7 @@ const StyledMobileNav = styled.div<{ active: boolean | undefined }>`
 `
 
 const MobileNav: FC = () => {
-  const { menuActive, setMenuActive, setBodyNoScroll, address } =
+  const { menuActive, setMenuActive, stopBodyScroll, address } =
     useContext(AppContext)
 
   const handleClick = (e: MouseEvent, url: string) => {
@@ -73,11 +73,11 @@ const MobileNav: FC = () => {
     if (
       menuActive &&
       setMenuActive &&
-      setBodyNoScroll &&
+      stopBodyScroll &&
       window.innerWidth >= 768
     ) {
       setMenuActive(false)
-      setBodyNoScroll(false)
+      stopBodyScroll(false)
     }
   }
 

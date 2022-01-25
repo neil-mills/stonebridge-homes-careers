@@ -1,5 +1,5 @@
 import React, { FC, useContext, MouseEvent } from 'react'
-import { Link, navigate } from 'gatsby'
+import { navigate } from 'gatsby'
 import styled from 'styled-components'
 import Nav from './Nav'
 import Logo from '../assets/images/stonebridge.png'
@@ -50,16 +50,20 @@ const SkipLink = styled.a`
 interface HeaderProps {
   navOptions: NavigationLink[]
 }
+
 const Header: FC<HeaderProps> = ({
   navOptions,
 }: {
   navOptions: NavigationLink[]
 }) => {
-  const { setActivePage } = useContext(AppContext)
+  const { setActivePage, setMenuActive } = useContext(AppContext)
   const handleClick = (e: MouseEvent) => {
     e.preventDefault()
     if (setActivePage) {
       setActivePage(false)
+    }
+    if (setMenuActive) {
+      setMenuActive(false)
     }
     navigate('/')
   }
