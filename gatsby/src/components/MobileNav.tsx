@@ -52,7 +52,7 @@ const StyledMobileNav = styled.div<{ active: boolean | undefined }>`
   a {
     ${HeadingStyle}
     ${WhiteHover};
-    font-size: var(--font-small);
+    font-size: var(--font-medium);
     padding: 0.2rem 0.2rem 0.2em 0;
     line-height: 1;
   }
