@@ -119,8 +119,8 @@ const ImageAndTextBlock = ({
     if (buttonCallback) {
       buttonCallback(e)
     }
-    if (buttonLink) {
-      console.log(buttonLink[0])
+
+    if (buttonLink.length) {
       navigate(buttonLink[0].slug.current)
     }
   }
