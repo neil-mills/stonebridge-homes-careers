@@ -51,7 +51,7 @@ export const AppContextProvider: FC = ({ children }): JSX.Element => {
   const [menuActive, setMenuActive] = useState<boolean>(false)
   const [bodyNoScroll, setBodyNoScroll] = useState<boolean>(false)
   const [dialogContent, setDialogContent] = useState<ReactNode>(null)
-  const [centreDialog, setCentreDialog] = useState<ReactNode>(null)
+  const [centreDialog, setCentreDialog] = useState<boolean>(false)
   const [activePage, setActivePage] = useState<ReactNode>(null)
 
   const setVideoSrc = (src: string) => {

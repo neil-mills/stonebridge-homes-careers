@@ -38,7 +38,7 @@ const StyledDialog = styled.div<{
     width: 100%;
     position: absolute;
     display: flex;
-    align-items: center;
+    flex-direction: column;
     opacity: 0;
     background-color: var(--light-grey);
     ${({ centred }) =>
@@ -48,6 +48,7 @@ const StyledDialog = styled.div<{
         top: 60%;
         transition: top 250ms ease, opacity 100ms ease;
         transform: translate(-50%, -50%);
+        justify-content: center;
         &[data-active='true'] {
           top: 50%;
           opacity: 1;
