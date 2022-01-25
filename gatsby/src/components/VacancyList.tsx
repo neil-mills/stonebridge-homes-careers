@@ -225,7 +225,7 @@ const VacancyList: FC<Props> = props => {
   }, [selectedFilters])
 
   return (
-    <Section tint={true}>
+    <Section tint={true} marginTop={true} marginBottom={true}>
       {props.heading && (
         <Heading
           heading={props.heading}
