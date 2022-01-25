@@ -1,5 +1,5 @@
 import React, { FC, useState, useEffect, useRef } from 'react'
-import styled from 'styled-components'
+import styled, { css } from 'styled-components'
 import Button from './Button'
 import { HeadingLarge } from '../assets/styles/Typography'
 import { SectionInner } from './Section'
@@ -108,9 +108,7 @@ const InsetBox = styled.div<{ willAnimate: boolean; isDesktop: boolean }>`
       margin-bottom: 0;
     }
   }
-  button {
-    margin-top: 4.3vw;
-  }
+
   @media screen and (min-width: 768px) {
     width: 50%;
     max-width: 592px;
@@ -120,11 +118,20 @@ const InsetBox = styled.div<{ willAnimate: boolean; isDesktop: boolean }>`
     padding: 8rem;
   }
 `
-const BgImage = styled.picture<{ isLoaded: boolean; willAnimate: boolean }>`
+const BgImage = styled.picture<{
+  isLoaded: boolean
+  willAnimate: boolean
+  top: boolean
+}>`
   background-color: var(--light-grey);
   img {
     object-fit: cover;
     object-position: center top;
+    ${({ top }) =>
+      !top &&
+      css`
+        transition: opacity 200ms ease;
+      `};
     width: 100%;
     height: 100%;
     opacity: ${({ isLoaded }) => (isLoaded ? 1 : 0)};
