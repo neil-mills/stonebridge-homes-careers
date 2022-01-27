@@ -29,6 +29,7 @@ const PageTemplate: FC<Props> = ({ data, pageContext }) => {
                 key={i}
                 title={contentType[0].heading}
                 text={contentType[0].text}
+                textMobile={contentType[0].textMobile}
                 bgSrc={contentType[0].image.asset.fluid.src}
                 bgSrcLg={contentType[0].imageDesktop.asset.fluid.src}
                 btnLabel={contentType[0].buttonLabel}
@@ -40,8 +41,9 @@ const PageTemplate: FC<Props> = ({ data, pageContext }) => {
               <ImageAndTextBlock
                 key={i}
                 heading={contentType[0].heading}
-                sectionText={contentType[0].sectionText}
+                textBlock={contentType[0].textBlock}
                 src={contentType[0].src}
+                srcMobile={contentType[0].srcMobile}
                 srcAlt={contentType[0].srcAlt}
                 videoSrc={contentType[0].videoSrc}
                 alignText={contentType[0].alignText}
@@ -141,6 +143,7 @@ export const query = graphql`
                 }
               }
               text
+              textMobile
               image {
                 asset {
                   id
@@ -166,9 +169,21 @@ export const query = graphql`
               _key
               _type
               heading
-              sectionText: text
+              textBlock {
+                children {
+                  text
+                }
+              }
               alignText
               src {
+                asset {
+                  fluid {
+                    srcSet
+                    src
+                  }
+                }
+              }
+              srcMobile {
                 asset {
                   fluid(maxWidth: 500) {
                     srcSet
@@ -307,7 +322,11 @@ export const query = graphql`
               _type
               buttonLabel
               heading
-              text
+              textBlock {
+                children {
+                  text
+                }
+              }
               tint
             }
             ... on SanityVacanciesListBlock {
