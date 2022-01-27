@@ -47,7 +47,7 @@ const ArticleItemStyles = styled.article<{
     display: block;
     &:before {
       content: '';
-      padding-top: 56%;
+      padding-top: 77%;
       display: block;
     }
     svg {
