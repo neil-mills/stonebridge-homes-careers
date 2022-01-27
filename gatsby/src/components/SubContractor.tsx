@@ -1,18 +1,20 @@
 import React, { FC, useContext } from 'react'
 import ImageAndTextBlock from './ImageAndTextBlock'
 import AppContext from '../context/AppContext'
+import { Block } from '../types'
 // import Dialog from '../components/Dialog'
 import ApplicationForm from '../components/ApplicationForm'
 
 interface Props {
   heading: string
   text: string
+  textBlock?: Block[]
   buttonLabel?: string
   tint?: boolean
 }
 const SubContractor: FC<Props> = ({
   heading,
-  text,
+  textBlock,
   buttonLabel,
   tint = false,
 }) => {
@@ -26,6 +28,7 @@ const SubContractor: FC<Props> = ({
         <>
           <h3>Register as a subcontractor</h3>
           <ApplicationForm
+            isSubContractor={true}
             vacancyReference={'VA6'}
             buttonLabel={'Register details'}
           />
@@ -42,7 +45,7 @@ const SubContractor: FC<Props> = ({
     <>
       <ImageAndTextBlock
         heading={heading}
-        sectionText={text}
+        textBlock={textBlock}
         buttonLabel={buttonLabel}
         buttonCallback={openDialog}
         tint={tint}
