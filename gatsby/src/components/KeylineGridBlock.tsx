@@ -50,7 +50,7 @@ const IconCardStyles = styled.div`
 const CardStyles = css`
   @media screen and (min-width: 768px) {
     grid-area: 1 / 1 / 1 / 1;
-    text-align: left;
+    text-align: center;
     display: flex;
     justify-content: center;
     align-items: flex-start;
