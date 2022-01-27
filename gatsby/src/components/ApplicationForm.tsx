@@ -1,4 +1,4 @@
-import React, { FC, useState, ChangeEvent, FormEvent } from 'react'
+import React, { FC, useState, ChangeEvent, FormEvent, useRef } from 'react'
 import styled from 'styled-components'
 import Form, {
   Select,
@@ -14,10 +14,12 @@ import {
   CreateNewApplicantResult,
 } from '../types'
 import { FontMedium } from '../assets/styles/Typography'
+import { useScrollIntoView } from '../hooks/useScrollIntoView'
 
 interface Props {
   buttonLabel: string
   vacancyReference: string
+  isSubContractor: boolean
 }
 const StyledNotification = styled.div`
   padding: 8px;
@@ -36,6 +38,7 @@ const ApplicationForm: FC<Props> = props => {
     Email: '',
     PhoneNumber: '',
     File: '',
+    TradeOrProfession: '',
     Terms: 'false',
     VacancyReference: props.vacancyReference,
   }
@@ -43,6 +46,12 @@ const ApplicationForm: FC<Props> = props => {
   const [formValues, setFormValues] = useState(defaultValues)
   const [isLoading, setIsLoading] = useState(false)
   const [isError, setIsError] = useState('')
+  const formRef = useRef(null)
+
+  const handleNotification = () => {
+    const scrollToNotification = useScrollIntoView(formRef)
+    scrollToNotification()
+  }
 
   const {
     Title,
@@ -54,6 +63,7 @@ const ApplicationForm: FC<Props> = props => {
     ApplicantId,
     DocumentName,
     File,
+    TradeOrProfession,
     FileRef,
   } = formValues
 
@@ -72,7 +82,9 @@ const ApplicationForm: FC<Props> = props => {
       LastName,
       Email,
       PhoneNumber,
-      OtherContactDetails: `Title: ${Title}`,
+      OtherContactDetails: `Title: ${Title}${
+        TradeOrProfession ? `, Trade or Profession: ${TradeOrProfession}` : ''
+      }`,
     })
 
   const [postUploadApplicantDocument, isLoadingPostUploadApplicantDocument] =
@@ -111,43 +123,55 @@ const ApplicationForm: FC<Props> = props => {
               const { ApplicantId } = response.Result
               setFormValues(prevState => ({ ...prevState, ApplicantId }))
               //convert file to base64
-              if (FileRef) {
-                const base64File: unknown = await toBase64(FileRef)
-                setFormValues(prevState => ({
-                  ...prevState,
-                  File: String(base64File).replace(
-                    /^(data:)(.*)(base64,)/g,
-                    ''
-                  ),
-                }))
-                console.log('upload cv file')
-                const response = await postUploadApplicantDocument()
-                console.log(response)
-                if (typeof response === 'object' && response.Result) {
-                  if (!response.isError) {
-                    //post application successful
-                    setIsLoading(false)
-                    setFormValues({ ...defaultValues })
-                    setIsError(
-                      'Your application has been submitted successfully'
-                    )
+              if (!props.isSubContractor) {
+                if (FileRef) {
+                  const base64File: unknown = await toBase64(FileRef)
+                  setFormValues(prevState => ({
+                    ...prevState,
+                    File: String(base64File).replace(
+                      /^(data:)(.*)(base64,)/g,
+                      ''
+                    ),
+                  }))
+                  console.log('upload cv file')
+                  const response = await postUploadApplicantDocument()
+                  console.log(response)
+                  if (typeof response === 'object' && response.Result) {
+                    if (!response.isError) {
+                      //post application successful
+                      setIsLoading(false)
+                      setFormValues({ ...defaultValues })
+                      setIsError(
+                        'Your application has been submitted successfully'
+                      )
+                      handleNotification()
+                    } else {
+                      //is api error with post upload document
+                      setIsLoading(false)
+                      console.log('error with uploading cv')
+                      setIsError(
+                        'There was an error posting your application, please try again.'
+                      )
+                      handleNotification()
+                    }
                   } else {
-                    //is api error with post upload document
+                    //is server error with post upload document
                     setIsLoading(false)
-                    console.log('error with uploading cv')
-                    setIsError(
-                      'There was an error posting your application, please try again.'
-                    )
+                    setIsError('Server error, please try again.')
+                    handleNotification()
                   }
                 } else {
-                  //is server error with post upload document
+                  //file wasnt selected
                   setIsLoading(false)
                   setIsError('Server error, please try again.')
+                  handleNotification()
                 }
               } else {
-                //something went wrong with the file selection
+                //is subcontractor form, no cv to upload, so finish here
                 setIsLoading(false)
-                setIsError('Server error, please try again.')
+                setFormValues({ ...defaultValues })
+                setIsError('Your application has been submitted successfully')
+                handleNotification()
               }
             } else {
               //is api response error with post new applicant request
@@ -156,16 +180,19 @@ const ApplicationForm: FC<Props> = props => {
               setIsError(
                 'There was an error posting your application, please try again.'
               )
+              handleNotification()
             }
           } else {
             //is server error with post new applicant request
             setIsLoading(false)
             setIsError('Server error, please try again.')
+            handleNotification()
           }
         } else {
           //is duplicate application
           setIsLoading(false)
           setIsError('You have already applied for this vacancy.')
+          handleNotification()
         }
       } else {
         //is api response error with check duplicate post
@@ -174,11 +201,13 @@ const ApplicationForm: FC<Props> = props => {
         setIsError(
           'There was an error posting your application, please try again.'
         )
+        handleNotification()
       }
     } else {
       //is server error with check duplicate applicant request
       setIsLoading(false)
       setIsError('Server error, please try again.')
+      handleNotification()
     }
   }
 
@@ -203,7 +232,7 @@ const ApplicationForm: FC<Props> = props => {
   }
 
   return (
-    <Form callback={handleSubmit}>
+    <Form ref={formRef} callback={handleSubmit}>
       {isLoading && (
         <StyledNotification>Sending, please wait...</StyledNotification>
       )}
@@ -256,7 +285,7 @@ const ApplicationForm: FC<Props> = props => {
         />
       </div>
       <div>
-        <label htmlFor={'phone'}>Phone</label>
+        <label htmlFor={'PhoneNumber'}>Phone</label>
         <p className="hint">Required format: +44XXXXXXXXXX</p>
         <TextInput
           type={'tel'}
@@ -268,15 +297,28 @@ const ApplicationForm: FC<Props> = props => {
           onChange={handleChange}
         />
       </div>
-      <div>
-        <label htmlFor={'cv'}>CV</label>
-        <FileInput
-          id={'CV'}
-          value={formValues.DocumentName}
-          callback={handleChange}
-          required={true}
-        />
-      </div>
+      {props.isSubContractor ? (
+        <div>
+          <label htmlFor={'TradeOrProfession'}>Trade or Profession</label>
+          <TextInput
+            type={'text'}
+            id={'TradeOrProfession'}
+            value={formValues.TradeOrProfession}
+            required={true}
+            onChange={handleChange}
+          />
+        </div>
+      ) : (
+        <div>
+          <label htmlFor={'cv'}>CV</label>
+          <FileInput
+            id={'CV'}
+            value={formValues.DocumentName}
+            callback={handleChange}
+            required={true}
+          />
+        </div>
+      )}
       <div>
         <CheckboxInput
           label={'I accept the terms and conditions'}
@@ -293,6 +335,10 @@ const ApplicationForm: FC<Props> = props => {
       />
     </Form>
   )
+}
+
+ApplicationForm.defaultProps = {
+  isSubContractor: false,
 }
 
 export default ApplicationForm

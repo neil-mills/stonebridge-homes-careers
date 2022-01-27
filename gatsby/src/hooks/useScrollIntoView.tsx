@@ -5,7 +5,14 @@ export function useScrollIntoView(
 ): () => void {
   const scrollElementIntoView = () => {
     if (ref?.current) {
-      ref.current.scrollIntoView({ behavior: 'smooth', block: 'end' })
+      window.scrollTo({
+        behavior: 'smooth',
+        top:
+          ref.current.getBoundingClientRect().top -
+          document.body.getBoundingClientRect().top -
+          100,
+      })
+      // ref.current.scrollIntoView({ behavior: 'smooth', block: 'end' })
     }
   }
   return scrollElementIntoView

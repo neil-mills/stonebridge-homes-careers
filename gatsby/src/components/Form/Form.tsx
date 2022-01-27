@@ -1,4 +1,4 @@
-import React, { FC, FormEvent } from 'react'
+import React, { FC, FormEvent, Ref } from 'react'
 import styled from 'styled-components'
 import { FontMedium, FontRegular } from '../../assets/styles/Typography'
 
@@ -6,6 +6,7 @@ interface Props {
   method?: string
   action?: string
   callback: (e: FormEvent) => void
+  children?: React.ReactNode
 }
 
 const StyledForm = styled.form`
@@ -38,21 +39,39 @@ const StyledForm = styled.form`
   }
 `
 
-const Form: FC<Props> = ({ method, action, children, callback }) => {
+const Form = React.forwardRef<HTMLFormElement, Props>((props, ref) => {
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault()
-    callback(e)
+    props.callback(e)
   }
-
   return (
-    <StyledForm method={method} action={action} onSubmit={handleSubmit}>
-      {children}
+    <StyledForm
+      ref={ref}
+      method={props.method}
+      action={props.action}
+      onSubmit={handleSubmit}
+    >
+      {props.children}
     </StyledForm>
   )
-}
+})
+
+// const Form: FC<Props> = ({ method, action, children, callback }) => {
+//   const handleSubmit = (e: FormEvent) => {
+//     e.preventDefault()
+//     callback(e)
+//   }
+
+//   return (
+//     <StyledForm method={method} action={action} onSubmit={handleSubmit}>
+//       {children}
+//     </StyledForm>
+//   )
+// }
 
 Form.defaultProps = {
   method: 'post',
   action: '',
 }
+Form.displayName = 'Form'
 export default Form
