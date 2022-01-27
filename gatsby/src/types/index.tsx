@@ -31,17 +31,22 @@ export interface Slug {
   slug: { current: string }
 }
 
+export interface Block {
+  children: [{ text: string }]
+}
+
 export interface ImageAndTextBlockType {
   _key?: string
   _type?: string
   heading?: string
-  sectionText?: string
+  textBlock?: Block[]
   alignText?: string
   buttonLabel?: string
   buttonLink?: Slug[]
   tint?: boolean
   videoSrc?: string
   srcAlt?: string
+  srcMobile?: ImageType
   src?: ImageType
   marginTop?: boolean
   marginBottom?: boolean
@@ -75,6 +80,10 @@ export interface ArticleType {
 
 export interface SlugType {
   current: string
+}
+
+export interface Link {
+  slug: { current: string }
 }
 
 export interface VacancyType {
@@ -126,6 +135,7 @@ export interface ApplicantData {
   VacancyReference?: string
   OtherContactDetails?: string
   File?: string
+  TradeOrProfession?: string
   Description?: string
   DocumentName?: string
   FileRef?: File | null
