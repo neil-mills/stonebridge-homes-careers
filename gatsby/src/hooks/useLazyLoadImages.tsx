@@ -1,6 +1,6 @@
 import { RefObject, useEffect, useState } from 'react'
-//import { useIntersectionObserver } from '@asyarb/use-intersection-observer'
 import { useIntersectionObserver } from '../hooks/useIntersectionObserver'
+
 type LazyLoadType = {
   ref: RefObject<HTMLElement>
   srcSet?: string
@@ -13,7 +13,7 @@ type LazyLoadType = {
 export const useLazyLoadImages = ({
   ref,
   srcSet,
-  src,
+  src = [],
   options = {},
 }: LazyLoadType): [boolean, boolean] => {
   const [isLoaded, setIsLoaded] = useState(false)
@@ -43,8 +43,7 @@ export const useLazyLoadImages = ({
         setIsLoaded(false)
         setIsError(true)
       }
-    }
-    if (src) {
+    } else if (src.length) {
       try {
         const preloads: Promise<unknown>[] = src?.map(s => preloadSrc(s))
         await Promise.all(preloads)
@@ -54,6 +53,8 @@ export const useLazyLoadImages = ({
         setIsLoaded(false)
         setIsError(true)
       }
+    } else {
+      setIsLoaded(true)
     }
   }
 
