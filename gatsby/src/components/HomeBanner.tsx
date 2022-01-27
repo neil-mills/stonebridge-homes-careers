@@ -40,6 +40,7 @@ const HomeBannerInner = styled.div`
 interface HomeBannerProps {
   title: string
   text: string
+  textMobile?: string
   btnLabel?: string
   btnLink?: string
   bgSrc: string
@@ -50,6 +51,7 @@ const HomeBanner: FC<HomeBannerProps> = (props): JSX.Element => {
   const sectionRef = useRef<HTMLElement>(null)
 
   const [bgSrc, setBgSrc] = useState<string>('')
+  const [visibleText, setVisibleText] = useState(props.text)
   const [isLoaded] = useLazyLoadImages({
     ref: sectionRef,
     src: [props.bgSrc, props.bgSrcLg],
@@ -68,6 +70,9 @@ const HomeBanner: FC<HomeBannerProps> = (props): JSX.Element => {
 
   const handleResize = () => {
     setBgSrc(window.innerWidth < 500 ? props.bgSrc : props.bgSrcLg)
+    if (props.textMobile) {
+      setVisibleText(window.innerWidth < 500 ? props.textMobile : props.text)
+    }
   }
 
   return (
@@ -80,7 +85,7 @@ const HomeBanner: FC<HomeBannerProps> = (props): JSX.Element => {
       <SectionInner>
         <HomeBannerInner>
           <h2>{props.title}</h2>
-          <p>{props.text}</p>
+          <p>{visibleText}</p>
           <Button label={'Find out more'} link={'/working-with-us'} />
         </HomeBannerInner>
       </SectionInner>
@@ -104,33 +109,35 @@ const StyledHomeBanner = styled(HomeBanner)`
   background-position: right bottom;
   position: relative;
   height: auto;
-  min-height: 35rem;
+  min-height: 41rem;
   @media screen and (min-width: 500px) {
     background-size: auto 400px;
     background-position: right bottom;
   }
   @media screen and (min-width: 500px) {
-    background-size: auto 380px;
+    background-size: auto 520px;
   }
   @media screen and (min-width: 500px) and (max-width: 599px) {
-    background-position: -140px bottom;
+    background-position: 60% bottom;
   }
   @media screen and (min-width: 600px) {
     background-size: cover;
     background-position: right top;
   }
   @media screen and (min-width: 600px) and (max-width: 699px) {
-    background-position: -50px top;
+    background-position: 60% top;
   }
   @media screen and (min-width: 700px) and (max-width: 767px) {
-    background-position: 20px top;
+    background-position: 50% top;
   }
   @media screen and (min-width: 500px) {
     /* padding-bottom: 3rem; */
-    min-height: 38rem;
+    min-height: 52rem;
   }
   @media screen and (min-width: 768px) {
+    background-position: 70% top;
     height: calc(60vw - 7.6rem);
+    min-height: 54rem;
     max-height: 60rem;
   }
   @media screen and (min-width: 1400px) {
