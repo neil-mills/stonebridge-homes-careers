@@ -135,7 +135,7 @@ const SingleVacancyPage: FC<Props> = ({ data, className }) => {
           dangerouslySetInnerHTML={{ __html: description }}
         />
       </Section>
-      <Section tint={true} marginTop={true} marginBottom={true}>
+      <Section tint={true} marginTop={true} marginBottom={true} ref={formRef}>
         <StyledForm>
           <div>
             <StyledPicture>
@@ -145,8 +145,9 @@ const SingleVacancyPage: FC<Props> = ({ data, className }) => {
           </div>
           <div aria-role="region">
             <h3>Apply now</h3>
-            <div ref={formRef}>
+            <div>
               <ApplicationForm
+                isSubContractor={false}
                 buttonLabel={'Send application'}
                 vacancyReference={data.vacancy.Reference}
               />
