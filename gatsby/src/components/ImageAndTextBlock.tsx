@@ -82,8 +82,9 @@ const Picture = styled.picture<{
 
 const ImageAndTextBlock = ({
   heading,
-  sectionText,
+  textBlock,
   alignText = 'left',
+  srcMobile,
   src,
   srcAlt = '',
   buttonLabel = '',
@@ -95,7 +96,7 @@ const ImageAndTextBlock = ({
   buttonCallback,
 }: ImageAndTextBlockType): JSX.Element => {
   const [loadedSrc, setLoadedSrc] = useState('')
-  const [loadedSrcSet, setLoadedSrcSet] = useState('')
+  const [loadedMobileSrc, setLoadedMobileSrc] = useState('')
   const [willAnimate, setWillAnimate] = useState(false)
   const [isDesktop, setIsDesktop] = useState(false)
   const [animate, setAnimate] = useState(false)
@@ -103,9 +104,13 @@ const ImageAndTextBlock = ({
   const imageRef = useRef(null)
   const sectionRef = useRef(null)
   const isInViewport = useIsInViewport(sectionRef)
+  let srcToLoad: string[] = []
+  srcToLoad = srcMobile ? [srcMobile.asset.fluid.src] : srcToLoad
+  srcToLoad = src ? [...srcToLoad, src.asset.fluid.src] : srcToLoad
+
   const [isLoaded] = useLazyLoadImages({
     ref: imageRef,
-    srcSet: src?.asset.fluid.srcSet,
+    src: srcToLoad,
     options: {
       threshold: 0,
       rootMargin: '80px',
@@ -129,16 +134,15 @@ const ImageAndTextBlock = ({
     const inViewport = isInViewport()
     setIsDesktop(window.innerWidth >= 768)
     setWillAnimate(!inViewport)
+    if (src && !srcMobile) {
+      srcMobile = src
+    }
   }, [])
 
   useEffect(() => {
-    if (isLoaded && src) {
-      if (src.asset.fluid.srcSet) {
-        setLoadedSrcSet(src.asset.fluid.srcSet)
-      }
-      if (src.asset.fluid.src) {
-        setLoadedSrc(src.asset.fluid.src)
-      }
+    if (isLoaded && src && srcMobile) {
+      setLoadedMobileSrc(srcMobile.asset.fluid.src)
+      setLoadedSrc(src.asset.fluid.src)
       setTimeout(() => {
         setAnimate(true)
       }, 200)
@@ -161,8 +165,8 @@ const ImageAndTextBlock = ({
             ref={imageRef}
             data-loaded={animate}
           >
-            <source media="(min-width: 500px)" srcSet={loadedSrcSet} />
-            <img src={loadedSrc} alt={srcAlt} />
+            <source srcSet={loadedSrc} media="(min-width: 768px)" />
+            <img src={loadedMobileSrc} alt={srcAlt} />
           </Picture>
         )}
         {src && !videoSrc && (
@@ -173,16 +177,15 @@ const ImageAndTextBlock = ({
             ref={imageRef}
             data-loaded={animate}
           >
-            <source
-              media="(min-width: 500px)"
-              srcSet={src.asset.fluid.srcSet}
-            />
-            <img src={src.asset.fluid.src} />
+            <source srcSet={loadedSrc} media="(min-width: 500px)" />
+            <img src={loadedMobileSrc} alt="{srcAlt}" />
           </Picture>
         )}
         <aside>
           <h2>{heading}</h2>
-          <p>{sectionText}</p>
+          {textBlock?.map(({ children }, i) => (
+            <p key={i}>{children[0].text}</p>
+          ))}
           {buttonLabel && (
             <Button
               label={buttonLabel}
