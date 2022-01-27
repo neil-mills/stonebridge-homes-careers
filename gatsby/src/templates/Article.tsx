@@ -36,7 +36,7 @@ const StyledPicture = styled.picture`
   width: 100%;
   &:before {
     content: '';
-    padding-top: 56%;
+    padding-top: 77%;
     display: block;
   }
   img {
@@ -158,7 +158,11 @@ export const query = graphql`
           _type
           videoSrc
           tint
-          sectionText: text
+          textBlock {
+            children {
+              text
+            }
+          }
           srcAlt
           src {
             asset {
