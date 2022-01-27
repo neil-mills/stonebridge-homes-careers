@@ -11,9 +11,9 @@ export default {
     },
     {
       title: 'Text',
-      name: 'text',
-      type: 'text',
-      description: 'Visible text',
+      name: 'textBlock',
+      type: 'array',
+      of: [{ type: 'block' }],
     },
     {
       title: 'Text alignment',
@@ -26,6 +26,14 @@ export default {
           { title: 'Right', value: 'right' },
         ],
         layout: 'dropdown',
+      },
+    },
+    {
+      title: 'Mobile image',
+      name: 'srcMobile',
+      type: 'image',
+      options: {
+        hotspot: true,
       },
     },
     {

@@ -10,6 +10,12 @@ export default {
       description: 'Visible heading',
     },
     {
+      title: 'Mobile Text',
+      name: 'textMobile',
+      type: 'text',
+      description: 'Visible text on mobile',
+    },
+    {
       title: 'Text',
       name: 'text',
       type: 'text',

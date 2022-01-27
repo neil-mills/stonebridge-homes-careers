@@ -11,9 +11,9 @@ export default {
     },
     {
       title: 'Text',
-      name: 'text',
-      type: 'text',
-      description: 'Visible text',
+      name: 'textBlock',
+      type: 'array',
+      of: [{ type: 'block' }],
     },
     {
       title: 'Button label',
