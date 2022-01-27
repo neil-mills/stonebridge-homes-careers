@@ -26,7 +26,7 @@ const StyledButton = styled.button<Props>`
   align-items: center;
   margin-top: 3rem;
   @media screen and (min-width: 768px) {
-    margin-top: 4.3vw;
+    margin-top: 4rem;
   }
   border: ${props => (props.secondary ? '1px solid var(--green)' : 'none')};
   background-color: ${props =>
