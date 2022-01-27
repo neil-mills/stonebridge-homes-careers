@@ -3,6 +3,7 @@ import styled, { css } from 'styled-components'
 import Button from './Button'
 import { HeadingLarge } from '../assets/styles/Typography'
 import { SectionInner } from './Section'
+import { Link } from '../types'
 import { useLazyLoadImages } from '../hooks/useLazyLoadImages'
 import { useIntersectionObserver } from '../hooks/useIntersectionObserver'
 import { useIsInViewport } from '../hooks/useIsInViewport'
@@ -19,7 +20,7 @@ interface ImageBannerProps {
   srcMobile: string
   srcAlt?: string
   buttonLabel?: string
-  buttonLink?: string
+  buttonLink?: Link[]
   alignText?: string
   top?: boolean
   tint?: boolean
@@ -155,7 +156,6 @@ const ImageBanner: FC<ImageBannerProps> = ({
   top = false,
   src,
   srcMobile,
-  // srcSet,
   srcAlt = '',
   heading,
   text,
@@ -220,7 +220,12 @@ const ImageBanner: FC<ImageBannerProps> = ({
       data-position={top ? 'top' : 'page'}
       data-text-align={alignText}
     >
-      <BgImage ref={imageRef} isLoaded={isLoaded} willAnimate={willAnimate}>
+      <BgImage
+        ref={imageRef}
+        isLoaded={isLoaded}
+        willAnimate={willAnimate}
+        top={top}
+      >
         <source media="(min-width: 500px)" srcSet={loadedSrcSet} />
         <img src={loadedSrc} alt={srcAlt} />
       </BgImage>
@@ -236,7 +241,7 @@ const ImageBanner: FC<ImageBannerProps> = ({
               <h3>{heading}</h3>
               <p>{text}</p>
               {buttonLabel && buttonLink && (
-                <Button label={buttonLabel} link={buttonLink} />
+                <Button label={buttonLabel} link={buttonLink[0].slug.current} />
               )}
             </div>
           </InsetBox>
