@@ -56,7 +56,7 @@ const Quote = ({ heading, quote, author, image }: Quote): JSX.Element => {
     <QuoteStyles>
       <div>
         {heading && <h3>{heading}</h3>}
-        <blockquote>{quote}</blockquote>
+        <blockquote>&quot;{quote}&quot;</blockquote>
       </div>
       <footer>
         <MetaList
