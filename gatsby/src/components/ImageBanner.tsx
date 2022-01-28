@@ -188,7 +188,7 @@ const ImageBanner: FC<ImageBannerProps> = ({
       rootMargin: '0px',
     },
   })
-
+  console.log('button link=', buttonLink)
   useEffect(() => {
     const inViewport = isInViewport()
     setWillAnimate(!inViewport)
@@ -240,8 +240,11 @@ const ImageBanner: FC<ImageBannerProps> = ({
             <div>
               <h3>{heading}</h3>
               <p>{text}</p>
-              {buttonLabel && buttonLink && (
-                <Button label={buttonLabel} link={buttonLink[0].slug.current} />
+              {buttonLabel && buttonLink && buttonLink.length && (
+                <Button
+                  label={buttonLabel}
+                  link={buttonLink[0]?.slug?.current}
+                />
               )}
             </div>
           </InsetBox>
