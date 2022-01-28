@@ -40,8 +40,8 @@ const StyledMetaList = styled.div`
   div {
     border-radius: 50%;
     background-color: var(--mid-grey);
-    height: 4rem;
-    width: 4rem;
+    height: 6rem;
+    width: 6rem;
     display: flex;
     justify-content: center;
     align-items: center;
