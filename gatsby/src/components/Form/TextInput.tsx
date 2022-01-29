@@ -1,4 +1,4 @@
-import React, { ChangeEvent, FC } from 'react'
+import React, { ChangeEvent } from 'react'
 import styled from 'styled-components'
 
 interface Props {
@@ -9,6 +9,7 @@ interface Props {
   minLength?: number
   maxLength?: number
   pattern?: string
+  placeholder?: string
   onChange: (e: ChangeEvent<HTMLInputElement>) => void
 }
 
@@ -31,30 +32,38 @@ export const StyledTextInput = styled.input`
   }
 `
 
-export const TextInput: FC<Props> = ({
-  type = 'text',
-  minLength,
-  maxLength,
-  required = false,
-  id,
-  onChange,
-  pattern,
-  value = '',
-}) => {
-  return (
-    <StyledTextInput
-      type={type}
-      id={id}
-      name={id}
-      value={value}
-      onChange={onChange}
-      minLength={minLength}
-      maxLength={maxLength}
-      required={required}
-      pattern={pattern}
-      autoComplete={'off'}
-    />
-  )
-}
+export const TextInput = React.forwardRef<HTMLInputElement, Props>(
+  (
+    {
+      type = 'text',
+      minLength,
+      maxLength,
+      required = false,
+      id,
+      onChange,
+      pattern,
+      value = '',
+      placeholder = '',
+    },
+    ref
+  ) => {
+    return (
+      <StyledTextInput
+        ref={ref}
+        type={type}
+        id={id}
+        name={id}
+        value={value}
+        onChange={onChange}
+        minLength={minLength}
+        maxLength={maxLength}
+        required={required}
+        pattern={pattern}
+        autoComplete={'off'}
+        placeholder={placeholder}
+      />
+    )
+  }
+)
 
-
+TextInput.displayName = 'TextInput'

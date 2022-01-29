@@ -47,9 +47,10 @@ const ApplicationForm: FC<Props> = props => {
   const [isLoading, setIsLoading] = useState(false)
   const [isError, setIsError] = useState('')
   const formRef = useRef(null)
+  const fieldsRef = useRef<HTMLElement[]>([])
 
   const handleNotification = () => {
-    const scrollToNotification = useScrollIntoView(formRef)
+    const scrollToNotification = useScrollIntoView(formRef.current)
     scrollToNotification()
   }
 
@@ -95,9 +96,28 @@ const ApplicationForm: FC<Props> = props => {
       File,
     })
 
-  const handleSubmit = async (e: FormEvent) => {
+  const handleValidation = (e: FormEvent) => {
     e.preventDefault()
+    let error = false
+    for (const ref of fieldsRef.current) {
+      const el = ref as HTMLSelectElement
+      if (!el.validity.valid) {
+        console.log(`${el.id} is not valid`)
+        el.reportValidity()
+        error = true
+        const scrollToField = useScrollIntoView(el)
+        setTimeout(() => {
+          scrollToField()
+        }, 100)
+        break
+      }
+    }
+    if (!error) {
+      handleSubmit()
+    }
+  }
 
+  const handleSubmit = async () => {
     const toBase64 = (file: File) =>
       new Promise((resolve, reject) => {
         const reader = new FileReader()
@@ -107,7 +127,6 @@ const ApplicationForm: FC<Props> = props => {
       })
     setIsError('')
     setIsLoading(true)
-    console.log('check duplicate')
     const response = await postCheckDuplicateApplicant()
     if (typeof response === 'object' && response.Result) {
       console.log(response)
@@ -232,11 +251,15 @@ const ApplicationForm: FC<Props> = props => {
   }
 
   return (
-    <Form ref={formRef} callback={handleSubmit}>
+    <Form ref={formRef} callback={handleValidation}>
       {isLoading && (
-        <StyledNotification>Sending, please wait...</StyledNotification>
+        <StyledNotification aria-live="polite">
+          Sending, please wait...
+        </StyledNotification>
       )}
-      {isError && <StyledNotification>{isError}</StyledNotification>}
+      {isError && (
+        <StyledNotification aria-live="polite">{isError}</StyledNotification>
+      )}
       <div>
         <label htmlFor={'title'}>Title</label>
         <Select
@@ -252,6 +275,7 @@ const ApplicationForm: FC<Props> = props => {
           value={formValues.Title}
           callback={handleChange}
           required={true}
+          ref={(element: HTMLSelectElement) => (fieldsRef.current[0] = element)}
         />
       </div>
       <div>
@@ -262,6 +286,7 @@ const ApplicationForm: FC<Props> = props => {
           value={formValues.FirstName}
           required={true}
           onChange={handleChange}
+          ref={(element: HTMLInputElement) => (fieldsRef.current[1] = element)}
         />
       </div>
       <div>
@@ -272,6 +297,7 @@ const ApplicationForm: FC<Props> = props => {
           value={formValues.LastName}
           required={true}
           onChange={handleChange}
+          ref={(element: HTMLInputElement) => (fieldsRef.current[2] = element)}
         />
       </div>
       <div>
@@ -282,19 +308,24 @@ const ApplicationForm: FC<Props> = props => {
           value={formValues.Email}
           required={true}
           onChange={handleChange}
+          ref={(element: HTMLInputElement) => (fieldsRef.current[3] = element)}
         />
       </div>
       <div>
         <label htmlFor={'PhoneNumber'}>Phone</label>
-        <p className="hint">Required format: +44XXXXXXXXXX</p>
+        <p className="hint">
+          Include country code and remove first zero from number
+        </p>
         <TextInput
           type={'tel'}
-          pattern={'^\\+(\\d{1,2})(\\s*)(\\d{7,15})'}
+          pattern={'([+]{1}[0-9]{2}\\s?[1-9]{1}[0-9]{3}\\s?[0-9]{6,10})'}
           id={'PhoneNumber'}
           maxLength={16}
           value={formValues.PhoneNumber}
           required={true}
           onChange={handleChange}
+          placeholder={'+447000000000'}
+          ref={(element: HTMLInputElement) => (fieldsRef.current[4] = element)}
         />
       </div>
       {props.isSubContractor ? (
@@ -306,16 +337,22 @@ const ApplicationForm: FC<Props> = props => {
             value={formValues.TradeOrProfession}
             required={true}
             onChange={handleChange}
+            ref={(element: HTMLInputElement) =>
+              (fieldsRef.current[5] = element)
+            }
           />
         </div>
       ) : (
         <div>
-          <label htmlFor={'cv'}>CV</label>
+          <label htmlFor={'CV'}>CV</label>
           <FileInput
             id={'CV'}
             value={formValues.DocumentName}
             callback={handleChange}
             required={true}
+            ref={(element: HTMLInputElement) =>
+              (fieldsRef.current[5] = element)
+            }
           />
         </div>
       )}
@@ -326,6 +363,7 @@ const ApplicationForm: FC<Props> = props => {
           value={formValues.Terms}
           required={true}
           callback={handleChange}
+          ref={(element: HTMLInputElement) => (fieldsRef.current[6] = element)}
         />
       </div>
       <Button

@@ -55,26 +55,31 @@ const StyledCheckboxInput = styled.div`
   }
 `
 
-export const CheckboxInput: FC<Props> = props => {
-  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
-    props.callback(e)
-  }
+export const CheckboxInput = React.forwardRef<HTMLInputElement, Props>(
+  (props, ref) => {
+    const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
+      props.callback(e)
+    }
 
-  return (
-    <StyledCheckboxInput className={props.className}>
-      <input
-        id={props.id}
-        name={props.id}
-        type="checkbox"
-        value={props.value}
-        defaultChecked={props.value === 'true'}
-        onChange={handleChange}
-        required={props.required}
-      />
-      <div>
-        <CheckIcon />
-      </div>
-      <label htmlFor={props.id}>{props.label}</label>
-    </StyledCheckboxInput>
-  )
-}
+    return (
+      <StyledCheckboxInput className={props.className}>
+        <input
+          ref={ref}
+          id={props.id}
+          name={props.id}
+          type="checkbox"
+          value={props.value}
+          defaultChecked={props.value === 'true'}
+          onChange={handleChange}
+          required={props.required}
+        />
+        <div>
+          <CheckIcon />
+        </div>
+        <label htmlFor={props.id}>{props.label}</label>
+      </StyledCheckboxInput>
+    )
+  }
+)
+
+CheckboxInput.displayName = 'CheckboxInput'

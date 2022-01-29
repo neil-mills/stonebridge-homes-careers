@@ -1,4 +1,4 @@
-import React, { ChangeEvent, useEffect, useState, FC, useRef } from 'react'
+import React, { ChangeEvent } from 'react'
 import styled from 'styled-components'
 import Button from '../Button'
 
@@ -43,21 +43,23 @@ const StyledFileInput = styled.div`
   }
 `
 
-export const FileInput: FC<Props> = props => {
-  const inputRef = useRef<HTMLInputElement>(null)
+export const FileInput = React.forwardRef<HTMLInputElement, Props>(
+  (props, ref) => {
+    return (
+      <StyledFileInput>
+        <input
+          ref={ref}
+          name={props.id}
+          id={props.id}
+          type="file"
+          required={props.required}
+          onChange={e => props.callback(e)}
+        />
+        <Button secondary={true} label={'Choose file'} />
+        <span>{props.value || 'No file chosen'}</span>
+      </StyledFileInput>
+    )
+  }
+)
 
-  return (
-    <StyledFileInput>
-      <input
-        ref={inputRef}
-        name={props.id}
-        id={props.id}
-        type="file"
-        required={props.required}
-        onChange={e => props.callback(e)}
-      />
-      <Button secondary={true} label={'Choose file'} />
-      <span>{props.value || 'No file chosen'}</span>
-    </StyledFileInput>
-  )
-}
+FileInput.displayName = 'FileInput'

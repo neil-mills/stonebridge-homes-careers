@@ -46,6 +46,7 @@ const Form = React.forwardRef<HTMLFormElement, Props>((props, ref) => {
   }
   return (
     <StyledForm
+      noValidate={true}
       ref={ref}
       method={props.method}
       action={props.action}
@@ -55,19 +56,6 @@ const Form = React.forwardRef<HTMLFormElement, Props>((props, ref) => {
     </StyledForm>
   )
 })
-
-// const Form: FC<Props> = ({ method, action, children, callback }) => {
-//   const handleSubmit = (e: FormEvent) => {
-//     e.preventDefault()
-//     callback(e)
-//   }
-
-//   return (
-//     <StyledForm method={method} action={action} onSubmit={handleSubmit}>
-//       {children}
-//     </StyledForm>
-//   )
-// }
 
 Form.defaultProps = {
   method: 'post',

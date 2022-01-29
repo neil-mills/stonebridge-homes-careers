@@ -1,4 +1,4 @@
-import React, { FC, useState, useEffect, ChangeEvent } from 'react'
+import React, { useState, useEffect, ChangeEvent } from 'react'
 import ArrowIcon from '../../assets/svg/select-arrow.svg'
 import styled, { css } from 'styled-components'
 import { HeadingStyle } from '../../assets/styles/Typography'
@@ -74,44 +74,52 @@ interface SelectProps {
   value?: string
   callback: (e: ChangeEvent<HTMLSelectElement>) => void
 }
+export const Select = React.forwardRef<HTMLSelectElement, SelectProps>(
+  (
+    {
+      label,
+      name = '',
+      size = 'lg',
+      disabled = false,
+      required = false,
+      options = [],
+      value = '',
+      callback,
+    },
+    ref
+  ) => {
+    const [selectLabel, setSelectLabel] = useState(label || '')
 
-export const Select: FC<SelectProps> = ({
-  label,
-  name = '',
-  size = 'lg',
-  disabled = false,
-  required = false,
-  options = [],
-  value = '',
-  callback,
-}): JSX.Element => {
-  const [selectLabel, setSelectLabel] = useState(label || '')
+    useEffect(() => {
+      setSelectLabel(label ? `${label}${value && `: ${value}`}` : value)
+    }, [value])
 
-  useEffect(() => {
-    setSelectLabel(label ? `${label}${value && `: ${value}`}` : value)
-  }, [value])
+    return (
+      <SelectStyles size={size}>
+        <p id="location">{label}</p>
+        <StyledTextInput as={'button'} type="button" aria-labelledby="location">
+          <span>{selectLabel}</span>
+          <ArrowIcon />
+        </StyledTextInput>
+        <select
+          onChange={(e: ChangeEvent<HTMLSelectElement>) => callback(e)}
+          name={name}
+          id={name}
+          disabled={disabled}
+          required={required}
+          value={value}
+          ref={ref}
+        >
+          <option value={''}>{label}</option>
+          {options.map((option: Option, i: number) => (
+            <option key={i} value={option.value}>
+              {option.label}
+            </option>
+          ))}
+        </select>
+      </SelectStyles>
+    )
+  }
+)
 
-  return (
-    <SelectStyles size={size}>
-      <p id="location">{label}</p>
-      <StyledTextInput as={'button'} type="button" aria-labelledby="location">
-        <span>{selectLabel}</span>
-        <ArrowIcon />
-      </StyledTextInput>
-      <select
-        onChange={(e: ChangeEvent<HTMLSelectElement>) => callback(e)}
-        name={name}
-        disabled={disabled}
-        required={required}
-        value={value}
-      >
-        <option value={''}>{label}</option>
-        {options.map((option: Option, i: number) => (
-          <option key={i} value={option.value}>
-            {option.label}
-          </option>
-        ))}
-      </select>
-    </SelectStyles>
-  )
-}
+Select.displayName = 'Select'
