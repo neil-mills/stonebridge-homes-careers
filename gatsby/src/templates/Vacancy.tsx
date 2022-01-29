@@ -65,7 +65,7 @@ const SingleVacancyPage: FC<Props> = ({ data, className }) => {
     `Closing date: ${data.vacancy.ClosingDate}`,
   ]
   const formRef = useRef(null)
-  const scrollToForm = useScrollIntoView(formRef)
+  const scrollToForm = useScrollIntoView(formRef.current)
   const regex =
     /face="(.*?)"|style="(.*?)"|<font(.*?)>|<\/font>|&nbsp;|<p[^>]*><\/p[^>]*>/gi
   let description: string = data.vacancy.JobDescription.replaceAll(regex, '')
