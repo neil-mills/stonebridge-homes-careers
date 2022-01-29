@@ -42,7 +42,7 @@ export interface ImageAndTextBlockType {
   textBlock?: Block[]
   alignText?: string
   buttonLabel?: string
-  buttonLink?: Slug[]
+  buttonLink?: Link[]
   tint?: boolean
   videoSrc?: string
   srcAlt?: string

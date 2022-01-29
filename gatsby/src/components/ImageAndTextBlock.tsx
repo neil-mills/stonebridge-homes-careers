@@ -189,7 +189,7 @@ const ImageAndTextBlock = ({
           {buttonLabel && (
             <Button
               label={buttonLabel}
-              link={buttonLink}
+              link={buttonLink[0]?.slug?.current}
               icon={videoSrc ? <PlayIcon /> : null}
               callback={handleCallback}
             />
