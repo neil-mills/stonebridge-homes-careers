@@ -188,7 +188,7 @@ const ImageBanner: FC<ImageBannerProps> = ({
       rootMargin: '0px',
     },
   })
-  console.log('button link=', buttonLink)
+
   useEffect(() => {
     const inViewport = isInViewport()
     setWillAnimate(!inViewport)
