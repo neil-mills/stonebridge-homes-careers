@@ -1,14 +1,10 @@
-import { MutableRefObject } from 'react'
-
-export function useScrollIntoView(
-  ref: MutableRefObject<HTMLElement | null>
-): () => void {
+export function useScrollIntoView(el: HTMLElement | null): () => void {
   const scrollElementIntoView = () => {
-    if (ref?.current) {
+    if (el) {
       window.scrollTo({
         behavior: 'smooth',
         top:
-          ref.current.getBoundingClientRect().top -
+          el.getBoundingClientRect().top -
           document.body.getBoundingClientRect().top -
           100,
       })
