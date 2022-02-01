@@ -8,6 +8,7 @@ interface Props {
   className?: string
   required?: boolean
   callback: (e: ChangeEvent<HTMLInputElement>) => void
+  tabIndex?: number
 }
 
 const StyledFileInput = styled.div`
@@ -46,7 +47,7 @@ const StyledFileInput = styled.div`
 export const FileInput = React.forwardRef<HTMLInputElement, Props>(
   (props, ref) => {
     return (
-      <StyledFileInput>
+      <StyledFileInput tabIndex={-1}>
         <input
           ref={ref}
           name={props.id}
@@ -54,8 +55,9 @@ export const FileInput = React.forwardRef<HTMLInputElement, Props>(
           type="file"
           required={props.required}
           onChange={e => props.callback(e)}
+          tabIndex={props.tabIndex}
         />
-        <Button secondary={true} label={'Choose file'} />
+        <Button tabIndex={-1} secondary={true} label={'Choose file'} />
         <span>{props.value || 'No file chosen'}</span>
       </StyledFileInput>
     )

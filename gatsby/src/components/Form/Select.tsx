@@ -72,6 +72,7 @@ interface SelectProps {
   required?: boolean
   options: Option[]
   value?: string
+  tabIndex?: number
   callback: (e: ChangeEvent<HTMLSelectElement>) => void
 }
 export const Select = React.forwardRef<HTMLSelectElement, SelectProps>(
@@ -85,6 +86,7 @@ export const Select = React.forwardRef<HTMLSelectElement, SelectProps>(
       options = [],
       value = '',
       callback,
+      tabIndex = 0,
     },
     ref
   ) => {
@@ -95,9 +97,14 @@ export const Select = React.forwardRef<HTMLSelectElement, SelectProps>(
     }, [value])
 
     return (
-      <SelectStyles size={size}>
+      <SelectStyles size={size} tabIndex={-1}>
         <p id="location">{label}</p>
-        <StyledTextInput as={'button'} type="button" aria-labelledby="location">
+        <StyledTextInput
+          as={'button'}
+          type="button"
+          tabIndex={-1}
+          aria-labelledby="location"
+        >
           <span>{selectLabel}</span>
           <ArrowIcon />
         </StyledTextInput>
@@ -109,6 +116,7 @@ export const Select = React.forwardRef<HTMLSelectElement, SelectProps>(
           required={required}
           value={value}
           ref={ref}
+          tabIndex={tabIndex}
         >
           <option value={''}>{label}</option>
           {options.map((option: Option, i: number) => (

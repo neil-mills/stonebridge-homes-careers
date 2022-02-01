@@ -11,6 +11,7 @@ interface Props {
   pattern?: string
   placeholder?: string
   onChange: (e: ChangeEvent<HTMLInputElement>) => void
+  tabIndex?: number
 }
 
 export const StyledTextInput = styled.input`
@@ -44,6 +45,7 @@ export const TextInput = React.forwardRef<HTMLInputElement, Props>(
       pattern,
       value = '',
       placeholder = '',
+      tabIndex = 0,
     },
     ref
   ) => {
@@ -61,6 +63,7 @@ export const TextInput = React.forwardRef<HTMLInputElement, Props>(
         pattern={pattern}
         autoComplete={'off'}
         placeholder={placeholder}
+        tabIndex={tabIndex}
       />
     )
   }

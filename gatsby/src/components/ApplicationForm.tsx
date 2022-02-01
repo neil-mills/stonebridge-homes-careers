@@ -1,4 +1,11 @@
-import React, { FC, useState, ChangeEvent, FormEvent, useRef } from 'react'
+import React, {
+  FC,
+  useState,
+  ChangeEvent,
+  FormEvent,
+  useRef,
+  useContext,
+} from 'react'
 import styled from 'styled-components'
 import Form, {
   Select,
@@ -15,6 +22,7 @@ import {
 } from '../types'
 import { FontMedium } from '../assets/styles/Typography'
 import { useScrollIntoView } from '../hooks/useScrollIntoView'
+import AppContext from '../context/AppContext'
 
 interface Props {
   buttonLabel: string
@@ -42,7 +50,7 @@ const ApplicationForm: FC<Props> = props => {
     Terms: 'false',
     VacancyReference: props.vacancyReference,
   }
-
+  const { modalTabIndex } = useContext(AppContext)
   const [formValues, setFormValues] = useState(defaultValues)
   const [isLoading, setIsLoading] = useState(false)
   const [isError, setIsError] = useState('')
@@ -275,6 +283,7 @@ const ApplicationForm: FC<Props> = props => {
           value={formValues.Title}
           callback={handleChange}
           required={true}
+          tabIndex={modalTabIndex}
           ref={(element: HTMLSelectElement) => (fieldsRef.current[0] = element)}
         />
       </div>
@@ -287,6 +296,7 @@ const ApplicationForm: FC<Props> = props => {
           required={true}
           onChange={handleChange}
           ref={(element: HTMLInputElement) => (fieldsRef.current[1] = element)}
+          tabIndex={modalTabIndex}
         />
       </div>
       <div>
@@ -298,6 +308,7 @@ const ApplicationForm: FC<Props> = props => {
           required={true}
           onChange={handleChange}
           ref={(element: HTMLInputElement) => (fieldsRef.current[2] = element)}
+          tabIndex={modalTabIndex}
         />
       </div>
       <div>
@@ -309,6 +320,7 @@ const ApplicationForm: FC<Props> = props => {
           required={true}
           onChange={handleChange}
           ref={(element: HTMLInputElement) => (fieldsRef.current[3] = element)}
+          tabIndex={modalTabIndex}
         />
       </div>
       <div>
@@ -326,6 +338,7 @@ const ApplicationForm: FC<Props> = props => {
           onChange={handleChange}
           placeholder={'+447000000000'}
           ref={(element: HTMLInputElement) => (fieldsRef.current[4] = element)}
+          tabIndex={modalTabIndex}
         />
       </div>
       {props.isSubContractor ? (
@@ -340,6 +353,7 @@ const ApplicationForm: FC<Props> = props => {
             ref={(element: HTMLInputElement) =>
               (fieldsRef.current[5] = element)
             }
+            tabIndex={modalTabIndex}
           />
         </div>
       ) : (
@@ -353,6 +367,7 @@ const ApplicationForm: FC<Props> = props => {
             ref={(element: HTMLInputElement) =>
               (fieldsRef.current[5] = element)
             }
+            tabIndex={modalTabIndex}
           />
         </div>
       )}
@@ -364,12 +379,14 @@ const ApplicationForm: FC<Props> = props => {
           required={true}
           callback={handleChange}
           ref={(element: HTMLInputElement) => (fieldsRef.current[6] = element)}
+          tabIndex={modalTabIndex}
         />
       </div>
       <Button
         type="submit"
         label={isLoading ? 'Sending' : props.buttonLabel}
         disabled={isLoading}
+        tabIndex={modalTabIndex}
       />
     </Form>
   )
