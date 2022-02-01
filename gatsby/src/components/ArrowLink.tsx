@@ -1,20 +1,33 @@
-import React, { FC } from 'react'
+import React, { FC, useEffect, useRef } from 'react'
 import styled, { css } from 'styled-components'
 import { Link } from 'gatsby'
 import { VisiblyHidden } from '../assets/styles/Utils'
 import ArrowIcon from '../assets/svg/arrow-icon.svg'
+import CloseIcon from '../assets/svg/close.svg'
 
 interface ArrowLinkProps {
   direction?: string
   color?: string
   link?: string
+  callback?: () => void
   label: string
   visibleLabel?: boolean
+  isClose?: boolean
+  tabIndex?: number
+  isFocussed?: boolean
 }
 interface LinkWrapperProps {
   link?: string
+  callback?: () => void
+  tabIndex?: number
   children: React.ReactElement[]
+  isFocussed?: boolean
 }
+
+const StyledCloseIcon = styled(CloseIcon)`
+  width: 10px;
+  height: 10px;
+`
 
 const ArrowStyles = styled.div<ArrowLinkProps>`
   display: flex;
@@ -46,11 +59,17 @@ const ArrowStyles = styled.div<ArrowLinkProps>`
       `};
   }
   color: ${({ color }) => (color === 'gold' ? 'var(--gold)' : 'var(--grey)')};
-  a {
+  button {
+    border: none;
+    background-color: transparent;
+  }
+  a,
+  button {
     display: flex;
     justify-content: flex-start;
     align-items: center;
     transition: all 200ms ease;
+    color: ${({ color }) => (color === 'gold' ? 'var(--gold)' : 'var(--grey)')};
     &:link,
     &:visited {
       color: ${({ color }) =>
@@ -76,23 +95,46 @@ const ArrowStyles = styled.div<ArrowLinkProps>`
       direction === 'left' && visibleLabel
         ? css`
             order: 1;
-            padding-left: 1rem;
+            padding-left: 0.5rem;
           `
         : css`
             order: 0;
-            padding-right: 1rem;
+            padding-right: 0.5rem;
           `};
   }
 `
 
-const LinkWrapper: FC<LinkWrapperProps> = ({ link, children }) => {
+const LinkWrapper: FC<LinkWrapperProps> = ({
+  link,
+  callback,
+  children,
+  tabIndex = 0,
+  isFocussed = false,
+}) => {
+  const buttonRef = useRef<HTMLButtonElement>(null)
+
+  useEffect(() => {
+    if (isFocussed && buttonRef.current) buttonRef.current.focus()
+  }, [isFocussed])
+
   return (
     <>
-      {link ? (
+      {callback && (
+        <button
+          tabIndex={tabIndex}
+          onClick={() => callback()}
+          onBlur={() => callback()}
+          ref={buttonRef}
+        >
+          {children.map((child: React.ReactElement) => child)}
+        </button>
+      )}
+      {link && (
         <Link to={link}>
           {children.map((child: React.ReactElement) => child)}
         </Link>
-      ) : (
+      )}
+      {!link && !callback && (
         <>{children.map((child: React.ReactElement) => child)}</>
       )}
     </>
@@ -101,10 +143,15 @@ const LinkWrapper: FC<LinkWrapperProps> = ({ link, children }) => {
 
 const ArrowLink: FC<ArrowLinkProps> = ({ ...props }) => {
   return (
-    <ArrowStyles {...props}>
-      <LinkWrapper link={props.link}>
-        <span>{props.label}</span>
-        <ArrowIcon />
+    <ArrowStyles {...props} tabIndex={-1}>
+      <LinkWrapper
+        link={props.link}
+        callback={props.callback}
+        tabIndex={props.tabIndex || 0}
+        isFocussed={props.isFocussed}
+      >
+        <span tabIndex={-1}>{props.label}</span>
+        {!props.isClose ? <ArrowIcon /> : <StyledCloseIcon />}
       </LinkWrapper>
     </ArrowStyles>
   )

@@ -1,11 +1,12 @@
-import React, { FC } from 'react'
+import React, { FC, useState, useRef, useContext, useEffect } from 'react'
 import styled, { css } from 'styled-components'
 import Section from './Section'
 import KeylineGrid, { KeylineGridItem } from './KeylineGrid'
-import Spacer from './Spacer'
 import IconTitle from './IconTitle'
 import Heading from './Heading'
 import ArrowLink from './ArrowLink'
+import { useOnClickOutside } from '../hooks/useOnClickOutside'
+import AppContext from '../context/AppContext'
 
 interface IconCardProps {
   _key: string
@@ -13,6 +14,7 @@ interface IconCardProps {
   subTitle?: string
   title: string
   text: string
+  index: number
 }
 
 interface Props {
@@ -38,13 +40,6 @@ const IconCardStyles = styled.div`
     padding: 0;
     display: grid;
     overflow: hidden;
-    cursor: pointer;
-    &:hover {
-      div:last-child {
-        transform: translateY(0);
-        opacity: 1;
-      }
-    }
   }
 `
 const CardStyles = css`
@@ -60,26 +55,42 @@ const CardStyles = css`
     padding: 6rem 3rem;
   }
 `
-const TitleCard = styled.div`
+const TitleCard = styled.button<{ isActive: boolean }>`
   ${CardStyles}
+  border: none;
+  display: ${({ isActive }) => (isActive ? 'none' : 'flex')};
+  background-color: transparent;
+  cursor: pointer;
+  z-index: ${({ isActive }) => (isActive ? 1 : 2)};
+  &:focus {
+    outline: 2px solid var(--black);
+  }
+  outline-offset: -2px;
   @media screen and (min-width: 768px) {
     padding-bottom: 8rem;
   }
 `
-const OverlayCard = styled.div`
+const OverlayCard = styled.div<{ isActive: boolean }>`
   ${CardStyles}
   position: relative;
+
   p {
     margin: 0;
   }
+  span[aria-hidden='true'] {
+    visibility: hidden;
+  }
   @media screen and (min-width: 768px) {
     align-items: center;
-    transform: translateY(99%);
+
+    transform: ${({ isActive }) =>
+      isActive ? 'translateY(0)' : 'translateY(99%)'};
     transition: all 200ms ease;
     will-change: transform;
     background-color: var(--green);
     color: var(--white);
-    opacity: 0;
+    opacity: ${({ isActive }) => (isActive ? 1 : 0)};
+    z-index: ${({ isActive }) => (isActive ? 2 : 1)};
   }
 `
 const MoreIcon = styled(ArrowLink)`
@@ -89,23 +100,69 @@ const MoreIcon = styled(ArrowLink)`
   transform: translateX(-50%);
   bottom: 20px;
   @media screen and (min-width: 768px) {
-    display: block;
+    display: flex;
   }
 `
-const IconCard: FC<IconCardProps> = ({ icon, title, subTitle, text }) => {
+const IconCard: FC<IconCardProps> = ({
+  icon,
+  title,
+  subTitle,
+  text,
+  index,
+}) => {
+  const [isActive, setIsActive] = useState(false)
+  const cardRef = useRef<HTMLDivElement>(null)
+  const { pageTabIndex } = useContext(AppContext)
+  const handleCardClick = () => {
+    setIsActive(true)
+  }
+  const handleCardFocus = () => {
+    setIsActive(false)
+  }
+  const handleCardBlur = () => {
+    setIsActive(false)
+  }
+  useOnClickOutside(cardRef, handleCardBlur)
+
   return (
-    <IconCardStyles>
-      <TitleCard>
+    <IconCardStyles ref={cardRef}>
+      <TitleCard
+        type="button"
+        tabIndex={isActive ? -1 : pageTabIndex}
+        onClick={handleCardClick}
+        isActive={isActive}
+        // onBlur={handleCardBlur}
+        onFocus={handleCardFocus}
+        aria-label={`Read more about ${title}`}
+      >
         <IconTitle
           icon={icon.asset.url}
           subTitle={subTitle}
           title={title}
           align={'left'}
+          id={`title-${index}`}
         />
-        <MoreIcon color={'gold'} label={'More'} visibleLabel={false} />
+        <MoreIcon
+          color={'gold'}
+          label={'More'}
+          visibleLabel={false}
+          tabIndex={-1}
+        />
       </TitleCard>
-      <OverlayCard>
-        <p>{text}</p>
+      <OverlayCard isActive={isActive} tabIndex={-1}>
+        <p>
+          {!isActive && <span aria-hidden="true">{text}</span>}
+          <span role="status">{isActive && text}</span>
+        </p>
+        <MoreIcon
+          color={'gold'}
+          label={'Close'}
+          isClose={true}
+          visibleLabel={true}
+          callback={handleCardBlur}
+          isFocussed={false}
+          tabIndex={isActive ? pageTabIndex : -1}
+        />
       </OverlayCard>
     </IconCardStyles>
   )
@@ -120,9 +177,9 @@ const KeylineGridBlock: FC<Props> = props => {
     >
       <Heading heading={props.heading} text={props.text} marginBottom={true} />
       <KeylineGrid columns={props.columns || 3}>
-        {props.items.map(item => (
-          <KeylineGridItem key={item._key}>
-            <IconCard {...item} />
+        {props.items.map((item, i: number) => (
+          <KeylineGridItem key={i}>
+            <IconCard {...item} index={i + 1} />
           </KeylineGridItem>
         ))}
       </KeylineGrid>

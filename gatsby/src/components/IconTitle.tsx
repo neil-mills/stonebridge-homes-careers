@@ -7,6 +7,7 @@ interface Props {
   subTitle?: string
   title: string
   align?: string
+  id: string
 }
 
 interface StyleProps {
@@ -51,11 +52,12 @@ const IconTitle: FC<Props> = ({
   title,
   subTitle = '',
   align = 'center',
+  id = '',
 }) => {
   return (
     <IconTitleStyles align={align}>
       <img src={icon} />
-      <h3>
+      <h3 id={id}>
         {subTitle && <span>{subTitle}</span>}
         {title}
       </h3>

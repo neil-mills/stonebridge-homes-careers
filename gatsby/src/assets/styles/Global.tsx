@@ -102,5 +102,8 @@ const GlobalStyles = createGlobalStyle`
     font-style: normal;
     white-space: pre-wrap;
   }
+  *:focus {
+    outline: 2px solid var(--black)
+  }
 `
 export default GlobalStyles
