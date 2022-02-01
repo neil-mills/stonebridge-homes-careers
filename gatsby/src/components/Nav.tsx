@@ -81,7 +81,7 @@ const Nav: FC<NavProps> = ({ options }) => {
   const [showLine, setShowLine] = useState(false)
   const liRefs = useRef<HTMLLIElement[]>([])
   let delay: ReturnType<typeof setTimeout> | null = null
-  const { setActivePage, activePage } = useContext(AppContext)
+  const { setActivePage, activePage, pageTabIndex } = useContext(AppContext)
 
   const HandleClick = (e: MouseEvent) => {
     if (setActivePage) {
@@ -162,6 +162,7 @@ const Nav: FC<NavProps> = ({ options }) => {
                 onMouseOver={handleHover}
                 onMouseLeave={handleLeave}
                 onClick={HandleClick}
+                tabIndex={pageTabIndex}
                 to={`/${option.slug.current}`}
               >
                 {option.title}

@@ -16,6 +16,7 @@ interface ButtonProps {
   className?: string
   disabled?: boolean
   icon?: ReactNode | null
+  tabIndex: number
 }
 
 const StyledButton = styled.button<Props>`
@@ -39,7 +40,7 @@ const StyledButton = styled.button<Props>`
   text-align: center;
   transition: background-color 200ms ease;
   will-change: background-color;
-  outline: none;
+  outline: 2px solid transparent;
   line-height: 2.5rem;
   cursor: pointer;
   &:hover,
@@ -47,6 +48,9 @@ const StyledButton = styled.button<Props>`
   &:active {
     background-color: ${props =>
       props.secondary ? 'transparent' : 'var(--gold-hover)'};
+  }
+  &:focus {
+    outline: 2px solid var(--black);
   }
   svg {
     width: 2.5rem;
@@ -63,6 +67,7 @@ const Button = ({
   className = '',
   disabled = false,
   icon,
+  tabIndex = 0,
 }: ButtonProps): JSX.Element => {
   const handleClick = (e: MouseEvent) => {
     if (callback) {
@@ -81,6 +86,7 @@ const Button = ({
       secondary={secondary}
       onClick={handleClick}
       disabled={disabled}
+      tabIndex={tabIndex}
     >
       {label}
       {icon && icon}

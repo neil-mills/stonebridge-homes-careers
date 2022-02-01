@@ -17,6 +17,8 @@ type ContextType = {
   setDialogContent: Dispatch<SetStateAction<ReactNode>> | null
   setCentreDialog: Dispatch<SetStateAction<ReactNode>> | null
   setActivePage: Dispatch<SetStateAction<boolean>> | null
+  setPageTabIndex: Dispatch<SetStateAction<number>> | null
+  setModalTabIndex: Dispatch<SetStateAction<number>> | null
   centreDialog: false
   setVideoSrc: ((src: string) => void) | null
   dialogContent: ReactNode | null
@@ -28,6 +30,8 @@ type ContextType = {
   facebook?: string
   linkedin?: string
   twitter?: string
+  pageTabIndex: number
+  modalTabIndex: number
 }
 
 const AppContext = createContext<ContextType>({
@@ -38,12 +42,16 @@ const AppContext = createContext<ContextType>({
   bodyNoScroll: false,
   dialogContent: null,
   setDialogContent: null,
+  setPageTabIndex: null,
+  setModalTabIndex: null,
   address: '',
   setVideoSrc: null,
   centreDialog: false,
   setCentreDialog: null,
   activePage: false,
   setActivePage: null,
+  pageTabIndex: 0,
+  modalTabIndex: -1,
 })
 
 export const AppContextProvider: FC = ({ children }): JSX.Element => {
@@ -53,6 +61,8 @@ export const AppContextProvider: FC = ({ children }): JSX.Element => {
   const [dialogContent, setDialogContent] = useState<ReactNode>(null)
   const [centreDialog, setCentreDialog] = useState<boolean>(false)
   const [activePage, setActivePage] = useState<ReactNode>(null)
+  const [pageTabIndex, setPageTabIndex] = useState<number>(0)
+  const [modalTabIndex, setModalTabIndex] = useState<number>(-1)
 
   const setVideoSrc = (src: string) => {
     setCentreDialog(true)
@@ -104,6 +114,10 @@ export const AppContextProvider: FC = ({ children }): JSX.Element => {
         setCentreDialog,
         centreDialog,
         activePage,
+        pageTabIndex,
+        modalTabIndex,
+        setPageTabIndex,
+        setModalTabIndex,
         ...settings.nodes[1],
       }}
     >

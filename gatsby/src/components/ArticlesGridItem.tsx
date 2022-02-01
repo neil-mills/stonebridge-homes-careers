@@ -22,6 +22,7 @@ const ArticleItemStyles = styled.article<{
 }>`
   background-color: var(--white);
   scroll-snap-align: start;
+  padding: 2px;
   width: 300px;
   opacity: ${({ willAnimate }) => (willAnimate ? 0 : 1)};
   transition: opacity 500ms ease, transform 1s ease;
@@ -113,7 +114,7 @@ interface ArticleLinkType {
 }
 
 const ArticleLink: FC<ArticleLinkType> = ({ link, videoSrc, children }) => {
-  const { setVideoSrc } = useContext(AppContext)
+  const { setVideoSrc, pageTabIndex } = useContext(AppContext)
   const handleClick = (e: MouseEvent): void => {
     e.preventDefault()
     if (link) {
@@ -123,7 +124,11 @@ const ArticleLink: FC<ArticleLinkType> = ({ link, videoSrc, children }) => {
       setVideoSrc(videoSrc)
     }
   }
-  return <a onClick={handleClick}>{children}</a>
+  return (
+    <a href={'#'} tabIndex={pageTabIndex} onClick={handleClick}>
+      {children}
+    </a>
+  )
 }
 
 const ArticleGridItem = forwardRef<HTMLElement, ArticleType>((props, ref) => {

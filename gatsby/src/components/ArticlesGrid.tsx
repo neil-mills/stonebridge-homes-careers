@@ -1,8 +1,15 @@
-import React, { useState, useEffect, useRef, MouseEvent } from 'react'
+import React, {
+  useState,
+  useEffect,
+  useRef,
+  MouseEvent,
+  useContext,
+} from 'react'
 import styled from 'styled-components'
 import ArticlesGridItem from './ArticlesGridItem'
 import { ArticleType } from '../types'
 import ArrowIcon from '../assets/svg/arrow-icon.svg'
+import AppContext from '../context/AppContext'
 
 const StyledArticleGrid = styled.div`
   button {
@@ -86,7 +93,7 @@ const ArticlesBlock = ({
   const [noScrollNext, setNoScrollNext] = useState(false)
   const [noScrollPrev, setNoScrollPrev] = useState(false)
   const [scrollWidth, setScrollWidth] = useState(0)
-
+  const { pageTabIndex } = useContext(AppContext)
   const handleClick = (e: MouseEvent, dir: string) => {
     if (trackRef.current) {
       if (dir === 'prev' && !noScrollPrev) {
@@ -125,10 +132,7 @@ const ArticlesBlock = ({
         (trackWidth - articleMargin * (visibleArticles - 1)) / visibleArticles
       setArticleWidth(width)
       setScrollWidth(
-        articles.length * (width + articleMargin) -
-          articleMargin -
-          trackWidth -
-          2
+        articles.length * (width + articleMargin) - articleMargin - trackWidth
       )
     }
   }
@@ -158,6 +162,7 @@ const ArticlesBlock = ({
               data-dir="prev"
               disabled={noScrollPrev}
               onClick={e => handleClick(e, 'prev')}
+              tabIndex={pageTabIndex}
             >
               <ArrowIcon />
             </button>
@@ -166,6 +171,7 @@ const ArticlesBlock = ({
               data-dir="next"
               disabled={noScrollNext}
               onClick={e => handleClick(e, 'next')}
+              tabIndex={pageTabIndex}
             >
               <ArrowIcon />
             </button>

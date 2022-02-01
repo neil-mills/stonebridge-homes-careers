@@ -1,4 +1,4 @@
-import React, { FC, useState, useEffect, useRef } from 'react'
+import React, { FC, useState, useEffect, useRef, useContext } from 'react'
 import styled, { css } from 'styled-components'
 import Button from './Button'
 import { HeadingLarge } from '../assets/styles/Typography'
@@ -7,6 +7,7 @@ import { Link } from '../types'
 import { useLazyLoadImages } from '../hooks/useLazyLoadImages'
 import { useIntersectionObserver } from '../hooks/useIntersectionObserver'
 import { useIsInViewport } from '../hooks/useIsInViewport'
+import AppContext from '../context/AppContext'
 import {
   SectionGutter,
   GutterPaddingLeft,
@@ -173,6 +174,7 @@ const ImageBanner: FC<ImageBannerProps> = ({
   const [animate, setAnimate] = useState(false)
   const isInViewport = useIsInViewport(imageRef)
   const srcSet = `${src} 1400w`
+  const { pageTabIndex } = useContext(AppContext)
   const [isLoaded] = useLazyLoadImages({
     ref: imageRef,
     srcSet: srcSet,
@@ -241,10 +243,7 @@ const ImageBanner: FC<ImageBannerProps> = ({
               <h3>{heading}</h3>
               <p>{text}</p>
               {buttonLabel && buttonLink && buttonLink.length && (
-                <Button
-                  label={buttonLabel}
-                  link={buttonLink[0]?.slug?.current}
-                />
+                <Button label={buttonLabel} tabIndex={pageTabIndex} />
               )}
             </div>
           </InsetBox>

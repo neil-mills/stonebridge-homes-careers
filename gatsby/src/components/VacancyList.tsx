@@ -1,4 +1,4 @@
-import React, { FC, useState, useEffect, ChangeEvent } from 'react'
+import React, { FC, useState, useEffect, ChangeEvent, useContext } from 'react'
 import Section from './Section'
 import { Link, useStaticQuery, graphql } from 'gatsby'
 import styled from 'styled-components'
@@ -9,6 +9,7 @@ import ArrowIcon from '../assets/svg/arrow-icon.svg'
 import { VacancyType } from '../types'
 import Heading from './Heading'
 import Button from './Button'
+import AppContext from '../context/AppContext'
 
 const TableStyles = styled.table`
   border-collapse: collapse;
@@ -165,6 +166,8 @@ const VacancyList: FC<Props> = props => {
     }
   `)
 
+  const { pageTabIndex } = useContext(AppContext)
+
   const [activeVacancies] = useState<VacancyType[]>(
     props.limit !== 'all'
       ? vacancies.nodes.filter(
@@ -248,6 +251,7 @@ const VacancyList: FC<Props> = props => {
                   options={locations}
                   value={selectedFilters.location}
                   callback={handleFilter}
+                  tabIndex={pageTabIndex}
                 />
                 <Select
                   name={'department'}
@@ -255,6 +259,7 @@ const VacancyList: FC<Props> = props => {
                   options={departments}
                   value={selectedFilters.department}
                   callback={handleFilter}
+                  tabIndex={pageTabIndex}
                 />
               </form>
             </Filters>
@@ -273,7 +278,7 @@ const VacancyList: FC<Props> = props => {
               {filteredVacancies.map((vacancy: VacancyType) => (
                 <tr key={vacancy.id}>
                   <td>
-                    <Link to={`/vacancy/${vacancy.id}`}>
+                    <Link tabIndex={pageTabIndex} to={`/vacancy/${vacancy.id}`}>
                       {vacancy.VacancyName}
                     </Link>
                   </td>
@@ -281,7 +286,10 @@ const VacancyList: FC<Props> = props => {
                   <td>{vacancy.VacancyType}</td>
                   <td>{vacancy.Department}</td>
                   <td>
-                    <ArrowLink to={`/vacancy/${vacancy.id}`}>
+                    <ArrowLink
+                      tabIndex={pageTabIndex}
+                      to={`/vacancy/${vacancy.id}`}
+                    >
                       Apply
                       <ArrowIcon />
                     </ArrowLink>
@@ -295,7 +303,11 @@ const VacancyList: FC<Props> = props => {
         <p>No vacancies</p>
       )}
       {props.buttonLabel && (
-        <Button label={props.buttonLabel} link={'/vacancies'} />
+        <Button
+          tabIndex={pageTabIndex}
+          label={props.buttonLabel}
+          link={'/vacancies'}
+        />
       )}
     </Section>
   )

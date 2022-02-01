@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef, FC } from 'react'
+import React, { useState, useEffect, useRef, FC, useContext } from 'react'
 import styled from 'styled-components'
 import Button from './Button'
 import { HeadingStyle, HeadingXLarge } from '../assets/styles/Typography'
@@ -10,6 +10,7 @@ import {
 } from '../assets/styles/Utils'
 import { SectionInner } from './Section'
 import { useLazyLoadImages } from '../hooks/useLazyLoadImages'
+import AppContext from '../context/AppContext'
 
 const BgGradient = styled.div`
   background-image: linear-gradient(
@@ -49,7 +50,7 @@ interface HomeBannerProps {
 }
 const HomeBanner: FC<HomeBannerProps> = (props): JSX.Element => {
   const sectionRef = useRef<HTMLElement>(null)
-
+  const { pageTabIndex } = useContext(AppContext)
   const [bgSrc, setBgSrc] = useState<string>('')
   const [visibleText, setVisibleText] = useState(props.text)
   const [isLoaded] = useLazyLoadImages({
@@ -86,7 +87,11 @@ const HomeBanner: FC<HomeBannerProps> = (props): JSX.Element => {
         <HomeBannerInner>
           <h2>{props.title}</h2>
           <p>{visibleText}</p>
-          <Button label={'Find out more'} link={'/working-with-us'} />
+          <Button
+            label={'Find out more'}
+            link={'/working-with-us'}
+            tabIndex={pageTabIndex}
+          />
         </HomeBannerInner>
       </SectionInner>
     </section>

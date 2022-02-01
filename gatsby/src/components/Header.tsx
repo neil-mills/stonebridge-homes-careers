@@ -56,7 +56,8 @@ const Header: FC<HeaderProps> = ({
 }: {
   navOptions: NavigationLink[]
 }) => {
-  const { setActivePage, setMenuActive } = useContext(AppContext)
+  const { setActivePage, setMenuActive, pageTabIndex } = useContext(AppContext)
+
   const handleClick = (e: MouseEvent) => {
     e.preventDefault()
     if (setActivePage) {
@@ -67,10 +68,16 @@ const Header: FC<HeaderProps> = ({
     }
     navigate('/')
   }
+
   return (
     <HeaderStyles>
       <SkipLink href="#content">Skip to main content</SkipLink>
-      <StyledLogo onClick={handleClick}>
+      <StyledLogo
+        href={'#'}
+        tabIndex={pageTabIndex}
+        title={'Go to homepage'}
+        onClick={handleClick}
+      >
         <img src={Logo} alt="Stonebridge" />
       </StyledLogo>
       <Nav options={navOptions} />

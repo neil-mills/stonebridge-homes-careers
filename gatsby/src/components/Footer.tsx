@@ -82,7 +82,7 @@ interface FooterProps {
 }
 
 const Footer: FC<FooterProps> = ({ navOptions }): JSX.Element => {
-  const { address } = useContext(AppContext)
+  const { address, pageTabIndex } = useContext(AppContext)
   const list1: NavigationLink[] = navOptions.filter(
     (option, i) => i < navOptions.length / 2
   )
@@ -96,14 +96,18 @@ const Footer: FC<FooterProps> = ({ navOptions }): JSX.Element => {
           <ul>
             {list1.map(option => (
               <li key={option.slug.current}>
-                <Link to={`/${option.slug.current}`}>{option.title}</Link>
+                <Link to={`/${option.slug.current}`} tabIndex={pageTabIndex}>
+                  {option.title}
+                </Link>
               </li>
             ))}
           </ul>
           <ul>
             {list2.map(option => (
               <li key={option.slug.current}>
-                <Link to={`/${option.slug.current}`}>{option.title}</Link>
+                <Link to={`/${option.slug.current}`} tabIndex={pageTabIndex}>
+                  {option.title}
+                </Link>
               </li>
             ))}
           </ul>
@@ -111,7 +115,7 @@ const Footer: FC<FooterProps> = ({ navOptions }): JSX.Element => {
       </div>
       <aside>
         <address>{address}</address>
-        <SocialNav />
+        <SocialNav tabIndex={pageTabIndex} />
       </aside>
     </FooterStyles>
   )

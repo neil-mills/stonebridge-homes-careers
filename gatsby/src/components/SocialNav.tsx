@@ -8,6 +8,7 @@ import AppContext from '../context/AppContext'
 
 interface SocialNavProps {
   color?: string
+  tabIndex?: number
 }
 
 const SocialNavStyles = styled.nav<SocialNavProps>`
@@ -36,35 +37,58 @@ const SocialNavStyles = styled.nav<SocialNavProps>`
   }
 `
 
-const SocialNav: FC<SocialNavProps> = ({ color = 'white' }): JSX.Element => {
+const SocialNav: FC<SocialNavProps> = ({
+  color = 'white',
+  tabIndex,
+}): JSX.Element => {
   const { instagram, facebook, linkedin, twitter } = useContext(AppContext)
   return (
     <SocialNavStyles color={color}>
       <ul>
         {instagram && (
           <li>
-            <a href={instagram} target="_blank" rel="noreferrer">
+            <a
+              href={instagram}
+              target="_blank"
+              tabIndex={tabIndex}
+              rel="noreferrer"
+            >
               <Instagram />
             </a>
           </li>
         )}
         {facebook && (
           <li>
-            <a href={facebook} target="_blank" rel="noreferrer">
+            <a
+              href={facebook}
+              target="_blank"
+              tabIndex={tabIndex}
+              rel="noreferrer"
+            >
               <Facebook />
             </a>
           </li>
         )}
         {linkedin && (
           <li>
-            <a href={linkedin} target="_blank" rel="noreferrer">
+            <a
+              href={linkedin}
+              target="_blank"
+              tabIndex={tabIndex}
+              rel="noreferrer"
+            >
               <Linkedin />
             </a>
           </li>
         )}
         {twitter && (
           <li>
-            <a href={twitter} target="_blank" rel="noreferrer">
+            <a
+              href={twitter}
+              target="_blank"
+              tabIndex={tabIndex}
+              rel="noreferrer"
+            >
               <Twitter />
             </a>
           </li>
