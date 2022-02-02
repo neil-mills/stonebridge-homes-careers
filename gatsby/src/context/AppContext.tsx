@@ -79,6 +79,8 @@ export const AppContextProvider: FC = ({ children }): JSX.Element => {
     stopBodyScroll(true)
     setDialogContent(<Video src={src} />)
     setDialogActive(true)
+    setPageTabIndex(-1)
+    setModalTabIndex(0)
   }
 
   const stopBodyScroll = (state: boolean) => {

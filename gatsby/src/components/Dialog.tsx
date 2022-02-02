@@ -41,6 +41,9 @@ const StyledDialog = styled.div<{
     flex-direction: column;
     opacity: 0;
     background-color: var(--light-grey);
+    &:focus {
+      outline: 2px solid var(--black);
+    }
     ${({ centred }) =>
       centred &&
       css`
@@ -155,15 +158,15 @@ const Dialog: FC<DialogProps> = props => {
     <StyledDialog
       active={dialogActive}
       centred={centreDialog}
-      tabIndex={modalTabIndex}
+      tabIndex={-1}
       ref={dialogRef}
     >
-      <div tabIndex={-1}></div>
       <div
         role="dialog"
         aria-modal="true"
         aria-labelledby="dialogTitle"
         data-active={isAnimate}
+        tabIndex={modalTabIndex}
       >
         <CloseButton
           type="button"
