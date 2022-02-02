@@ -71,7 +71,9 @@ const Header: FC<HeaderProps> = ({
 
   return (
     <HeaderStyles>
-      <SkipLink href="#content">Skip to main content</SkipLink>
+      <SkipLink href="#content" tabIndex={pageTabIndex}>
+        Skip to main content
+      </SkipLink>
       <StyledLogo
         href={'#'}
         tabIndex={pageTabIndex}
