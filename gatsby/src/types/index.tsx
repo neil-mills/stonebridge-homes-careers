@@ -50,6 +50,7 @@ export interface ImageAndTextBlockType {
   src?: ImageType
   marginTop?: boolean
   marginBottom?: boolean
+  buttonRef?: React.MutableRefObject<HTMLButtonElement> | null
   buttonCallback?: (e: Event) => void | null
 }
 
