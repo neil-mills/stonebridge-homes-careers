@@ -130,7 +130,7 @@ const LinkWrapper: FC<LinkWrapperProps> = ({
         </button>
       )}
       {link && (
-        <Link to={link}>
+        <Link to={link} tabIndex={tabIndex}>
           {children.map((child: React.ReactElement) => child)}
         </Link>
       )}
