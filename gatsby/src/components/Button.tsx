@@ -57,44 +57,51 @@ const StyledButton = styled.button<Props>`
     height: 2.5rem;
   }
 `
+const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
+  (
+    {
+      label,
+      link,
+      type = 'button',
+      callback,
+      secondary = false,
+      className = '',
+      disabled = false,
+      icon,
+      tabIndex = 0,
+    },
+    ref
+  ) => {
+    const handleClick = (e: MouseEvent) => {
+      if (callback) {
+        console.log('calling back')
+        callback(e)
+      }
+      if (!callback && link) {
+        navigate(link)
+      }
+    }
 
-const Button = ({
-  label,
-  link,
-  type = 'button',
-  callback,
-  secondary = false,
-  className = '',
-  disabled = false,
-  icon,
-  tabIndex = 0,
-}: ButtonProps): JSX.Element => {
-  const handleClick = (e: MouseEvent) => {
-    if (callback) {
-      console.log('calling back')
-      callback(e)
-    }
-    if (!callback && link) {
-      navigate(link)
-    }
+    return (
+      <StyledButton
+        className={className}
+        type={type}
+        secondary={secondary}
+        onClick={handleClick}
+        disabled={disabled}
+        tabIndex={tabIndex}
+        ref={ref}
+      >
+        {label}
+        {icon && icon}
+      </StyledButton>
+    )
   }
+)
 
-  return (
-    <StyledButton
-      className={className}
-      type={type}
-      secondary={secondary}
-      onClick={handleClick}
-      disabled={disabled}
-      tabIndex={tabIndex}
-    >
-      {label}
-      {icon && icon}
-    </StyledButton>
-  )
-}
-
-StyledButton.defaultProps = {
+Button.displayName = 'CheckboxInput'
+Button.defaultProps = {
   type: 'button',
 }
+
 export default Button
