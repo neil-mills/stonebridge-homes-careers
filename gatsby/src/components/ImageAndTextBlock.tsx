@@ -94,6 +94,7 @@ const ImageAndTextBlock = ({
   marginTop = true,
   marginBottom = true,
   buttonCallback,
+  buttonRef,
 }: ImageAndTextBlockType): JSX.Element => {
   const [loadedSrc, setLoadedSrc] = useState('')
   const [loadedMobileSrc, setLoadedMobileSrc] = useState('')
@@ -192,6 +193,8 @@ const ImageAndTextBlock = ({
               link={buttonLink[0]?.slug?.current}
               icon={videoSrc ? <PlayIcon /> : null}
               callback={handleCallback}
+              tabIndex={pageTabIndex}
+              ref={buttonRef}
             />
           )}
         </aside>
