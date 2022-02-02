@@ -1,4 +1,4 @@
-import React, { FC, useContext } from 'react'
+import React, { FC, useContext, useRef } from 'react'
 import ImageAndTextBlock from './ImageAndTextBlock'
 import AppContext from '../context/AppContext'
 import { Block } from '../types'
@@ -18,8 +18,18 @@ const SubContractor: FC<Props> = ({
   buttonLabel,
   tint = false,
 }) => {
-  const { setDialogActive, setDialogContent, stopBodyScroll } =
-    useContext(AppContext)
+  const {
+    setDialogActive,
+    setDialogContent,
+    stopBodyScroll,
+    setPageTabIndex,
+    setModalTabIndex,
+    dialogRef,
+    setPageFocusRef,
+    modalTabIndex,
+  } = useContext(AppContext)
+
+  const buttonRef = useRef<HTMLElement>(null)
 
   const openDialog = (e: Event) => {
     e.preventDefault()
@@ -31,13 +41,26 @@ const SubContractor: FC<Props> = ({
             isSubContractor={true}
             vacancyReference={'VA6'}
             buttonLabel={'Register details'}
+            tabIndex={modalTabIndex}
           />
         </>
       )
       setDialogActive(true)
     }
+    if (setPageTabIndex) {
+      setPageTabIndex(-1)
+    }
+    if (setModalTabIndex) {
+      setModalTabIndex(0)
+    }
     if (stopBodyScroll) {
       stopBodyScroll(true)
+    }
+    if (dialogRef?.current) {
+      dialogRef?.current.focus()
+    }
+    if (setPageFocusRef) {
+      setPageFocusRef(buttonRef)
     }
   }
 
@@ -49,6 +72,7 @@ const SubContractor: FC<Props> = ({
         buttonLabel={buttonLabel}
         buttonCallback={openDialog}
         tint={tint}
+        buttonRef={buttonRef}
       />
     </>
   )
