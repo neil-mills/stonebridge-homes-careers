@@ -1,7 +1,8 @@
-import React, { FC } from 'react'
+import React, { FC, useContext } from 'react'
 import styled from 'styled-components'
 import SocialNav from '../components/SocialNav'
 import ArrowLink from '../components/ArrowLink'
+import AppContext from '../context/AppContext'
 
 const ArticleHeaderLinksStyles = styled.div`
   display: flex;
@@ -14,9 +15,15 @@ interface Props {
   backLink: string
 }
 const ArticleHeaderLinks: FC<Props> = ({ backLink }): JSX.Element => {
+  const { pageTabIndex } = useContext(AppContext)
   return (
     <ArticleHeaderLinksStyles>
-      <ArrowLink label={'Back'} link={backLink} direction={'left'} />
+      <ArrowLink
+        label={'Back'}
+        tabIndex={pageTabIndex}
+        link={backLink}
+        direction={'left'}
+      />
       <SocialNav color="black" />
     </ArticleHeaderLinksStyles>
   )
