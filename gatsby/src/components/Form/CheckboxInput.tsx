@@ -42,6 +42,11 @@ const StyledCheckboxInput = styled.div`
         opacity: 0;
       }
     }
+    &:focus {
+      + div {
+        outline: 2px solid var(--gold);
+      }
+    }
     &[checked] {
       & + div {
         background-color: var(--green);
@@ -75,7 +80,7 @@ export const CheckboxInput = React.forwardRef<HTMLInputElement, Props>(
           required={props.required}
           tabIndex={props.tabIndex}
         />
-        <div>
+        <div tabIndex={-1}>
           <CheckIcon />
         </div>
         <label htmlFor={props.id}>{props.label}</label>

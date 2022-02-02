@@ -41,6 +41,11 @@ const StyledFileInput = styled.div`
     ::-webkit-file-upload-button {
       cursor: pointer;
     }
+    &:focus {
+      + button {
+        outline: 2px solid var(--gold);
+      }
+    }
   }
 `
 
