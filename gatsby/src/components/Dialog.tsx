@@ -114,6 +114,11 @@ const Dialog: FC<DialogProps> = props => {
     stopBodyScroll,
     centreDialog,
     setCentreDialog,
+    setModalTabIndex,
+    modalTabIndex,
+    setPageTabIndex,
+    dialogRef,
+    pageFocusRef,
   } = useContext(AppContext)
 
   const handleClick = () => {
@@ -124,6 +129,15 @@ const Dialog: FC<DialogProps> = props => {
     }
     if (stopBodyScroll) {
       stopBodyScroll(false)
+    }
+    if (setModalTabIndex) {
+      setModalTabIndex(-1)
+    }
+    if (setPageTabIndex) {
+      setPageTabIndex(0)
+    }
+    if (pageFocusRef?.current) {
+      pageFocusRef.current.focus()
     }
   }
 
@@ -138,7 +152,12 @@ const Dialog: FC<DialogProps> = props => {
   }, [dialogActive])
 
   return (
-    <StyledDialog active={dialogActive} centred={centreDialog}>
+    <StyledDialog
+      active={dialogActive}
+      centred={centreDialog}
+      tabIndex={modalTabIndex}
+      ref={dialogRef}
+    >
       <div tabIndex={-1}></div>
       <div
         role="dialog"
@@ -146,10 +165,15 @@ const Dialog: FC<DialogProps> = props => {
         aria-labelledby="dialogTitle"
         data-active={isAnimate}
       >
-        {nodes.map(node => node)}
-        <CloseButton type="button" onClick={handleClick}>
+        <CloseButton
+          type="button"
+          aria-label="Close"
+          onClick={handleClick}
+          tabIndex={modalTabIndex}
+        >
           <CloseIcon />
         </CloseButton>
+        {nodes.map(node => node)}
       </div>
     </StyledDialog>
   )
