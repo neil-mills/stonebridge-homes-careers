@@ -4,7 +4,7 @@ import React, {
   ChangeEvent,
   FormEvent,
   useRef,
-  useContext,
+  useEffect,
 } from 'react'
 import styled from 'styled-components'
 import Form, {
@@ -22,12 +22,13 @@ import {
 } from '../types'
 import { FontMedium } from '../assets/styles/Typography'
 import { useScrollIntoView } from '../hooks/useScrollIntoView'
-import AppContext from '../context/AppContext'
 
 interface Props {
   buttonLabel: string
   vacancyReference: string
   isSubContractor: boolean
+  tabIndex: number
+  isFocussed?: boolean
 }
 const StyledNotification = styled.div`
   padding: 8px;
@@ -50,17 +51,23 @@ const ApplicationForm: FC<Props> = props => {
     Terms: 'false',
     VacancyReference: props.vacancyReference,
   }
-  const { modalTabIndex } = useContext(AppContext)
+
   const [formValues, setFormValues] = useState(defaultValues)
   const [isLoading, setIsLoading] = useState(false)
   const [isError, setIsError] = useState('')
-  const formRef = useRef(null)
+  const formRef = useRef<HTMLFormElement>(null)
   const fieldsRef = useRef<HTMLElement[]>([])
 
   const handleNotification = () => {
     const scrollToNotification = useScrollIntoView(formRef.current)
     scrollToNotification()
   }
+
+  useEffect(() => {
+    if (props.isFocussed && fieldsRef.current[0]) {
+      fieldsRef.current[0].focus()
+    }
+  }, [props.isFocussed])
 
   const {
     Title,
@@ -283,7 +290,7 @@ const ApplicationForm: FC<Props> = props => {
           value={formValues.Title}
           callback={handleChange}
           required={true}
-          tabIndex={modalTabIndex}
+          tabIndex={props.tabIndex}
           ref={(element: HTMLSelectElement) => (fieldsRef.current[0] = element)}
         />
       </div>
@@ -296,7 +303,7 @@ const ApplicationForm: FC<Props> = props => {
           required={true}
           onChange={handleChange}
           ref={(element: HTMLInputElement) => (fieldsRef.current[1] = element)}
-          tabIndex={modalTabIndex}
+          tabIndex={props.tabIndex}
         />
       </div>
       <div>
@@ -308,7 +315,7 @@ const ApplicationForm: FC<Props> = props => {
           required={true}
           onChange={handleChange}
           ref={(element: HTMLInputElement) => (fieldsRef.current[2] = element)}
-          tabIndex={modalTabIndex}
+          tabIndex={props.tabIndex}
         />
       </div>
       <div>
@@ -320,7 +327,7 @@ const ApplicationForm: FC<Props> = props => {
           required={true}
           onChange={handleChange}
           ref={(element: HTMLInputElement) => (fieldsRef.current[3] = element)}
-          tabIndex={modalTabIndex}
+          tabIndex={props.tabIndex}
         />
       </div>
       <div>
@@ -338,7 +345,7 @@ const ApplicationForm: FC<Props> = props => {
           onChange={handleChange}
           placeholder={'+447000000000'}
           ref={(element: HTMLInputElement) => (fieldsRef.current[4] = element)}
-          tabIndex={modalTabIndex}
+          tabIndex={props.tabIndex}
         />
       </div>
       {props.isSubContractor ? (
@@ -353,7 +360,7 @@ const ApplicationForm: FC<Props> = props => {
             ref={(element: HTMLInputElement) =>
               (fieldsRef.current[5] = element)
             }
-            tabIndex={modalTabIndex}
+            tabIndex={props.tabIndex}
           />
         </div>
       ) : (
@@ -367,7 +374,7 @@ const ApplicationForm: FC<Props> = props => {
             ref={(element: HTMLInputElement) =>
               (fieldsRef.current[5] = element)
             }
-            tabIndex={modalTabIndex}
+            tabIndex={props.tabIndex}
           />
         </div>
       )}
@@ -379,14 +386,14 @@ const ApplicationForm: FC<Props> = props => {
           required={true}
           callback={handleChange}
           ref={(element: HTMLInputElement) => (fieldsRef.current[6] = element)}
-          tabIndex={modalTabIndex}
+          tabIndex={props.tabIndex}
         />
       </div>
       <Button
         type="submit"
         label={isLoading ? 'Sending' : props.buttonLabel}
         disabled={isLoading}
-        tabIndex={modalTabIndex}
+        tabIndex={props.tabIndex}
       />
     </Form>
   )

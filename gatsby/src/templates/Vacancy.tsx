@@ -1,4 +1,4 @@
-import React, { FC, useRef } from 'react'
+import React, { FC, useRef, useContext, useState } from 'react'
 
 import { graphql } from 'gatsby'
 import styled from 'styled-components'
@@ -14,6 +14,7 @@ import { HeadingLarge } from '../assets/styles/Typography'
 import ApplicationForm from '../components/ApplicationForm'
 import { VacancyType } from '../types'
 import { useScrollIntoView } from '../hooks/useScrollIntoView'
+import AppContext from '../context/AppContext'
 
 const StyledPicture = styled.picture`
   display: block;
@@ -65,7 +66,8 @@ const SingleVacancyPage: FC<Props> = ({ data, className }) => {
     `Closing date: ${data.vacancy.ClosingDate}`,
   ]
   const formRef = useRef(null)
-  const scrollToForm = useScrollIntoView(formRef.current)
+  const [focusForm, setFocusForm] = useState(false)
+  const { pageTabIndex } = useContext(AppContext)
   const regex =
     /face="(.*?)"|style="(.*?)"|<font(.*?)>|<\/font>|&nbsp;|<p[^>]*><\/p[^>]*>/gi
   let description: string = data.vacancy.JobDescription.replaceAll(regex, '')
@@ -112,6 +114,15 @@ const SingleVacancyPage: FC<Props> = ({ data, className }) => {
       `<p class="bullet">${result[1]}</p>`
     )
   }
+
+  const handleClick = () => {
+    const scrollToForm = useScrollIntoView(formRef.current)
+    scrollToForm()
+    setTimeout(() => {
+      setFocusForm(true)
+    }, 1000)
+  }
+
   return (
     <div className={className}>
       <Section as={'div'} marginTop={false} marginBottom={true}>
@@ -127,7 +138,11 @@ const SingleVacancyPage: FC<Props> = ({ data, className }) => {
             />
             <MetaList meta={meta} />
           </div>
-          <Button label={'Apply now'} callback={scrollToForm} />
+          <Button
+            tabIndex={pageTabIndex}
+            label={'Apply now'}
+            callback={handleClick}
+          />
         </ArticleTitle>
         <h2>The role</h2>
         <div
@@ -150,6 +165,8 @@ const SingleVacancyPage: FC<Props> = ({ data, className }) => {
                 isSubContractor={false}
                 buttonLabel={'Send application'}
                 vacancyReference={data.vacancy.Reference}
+                tabIndex={pageTabIndex}
+                isFocussed={focusForm}
               />
             </div>
           </div>
