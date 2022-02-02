@@ -2,6 +2,7 @@ import React, {
   FC,
   createContext,
   useState,
+  useRef,
   Dispatch,
   SetStateAction,
   ReactNode,
@@ -19,6 +20,7 @@ type ContextType = {
   setActivePage: Dispatch<SetStateAction<boolean>> | null
   setPageTabIndex: Dispatch<SetStateAction<number>> | null
   setModalTabIndex: Dispatch<SetStateAction<number>> | null
+  setPageFocusRef: Dispatch<SetStateAction<React.RefObject<HTMLElement>>> | null
   centreDialog: false
   setVideoSrc: ((src: string) => void) | null
   dialogContent: ReactNode | null
@@ -32,6 +34,8 @@ type ContextType = {
   twitter?: string
   pageTabIndex: number
   modalTabIndex: number
+  dialogRef: React.MutableRefObject<HTMLDivElement> | null
+  pageFocusRef: React.RefObject<HTMLElement> | null
 }
 
 const AppContext = createContext<ContextType>({
@@ -52,6 +56,9 @@ const AppContext = createContext<ContextType>({
   setActivePage: null,
   pageTabIndex: 0,
   modalTabIndex: -1,
+  dialogRef: null,
+  setPageFocusRef: null,
+  pageFocusRef: null,
 })
 
 export const AppContextProvider: FC = ({ children }): JSX.Element => {
@@ -63,6 +70,9 @@ export const AppContextProvider: FC = ({ children }): JSX.Element => {
   const [activePage, setActivePage] = useState<ReactNode>(null)
   const [pageTabIndex, setPageTabIndex] = useState<number>(0)
   const [modalTabIndex, setModalTabIndex] = useState<number>(-1)
+  const dialogRef = useRef<HTMLDivElement>(null)
+  const [pageFocusRef, setPageFocusRef] =
+    useState<React.RefObject<HTMLElement> | null>(null)
 
   const setVideoSrc = (src: string) => {
     setCentreDialog(true)
@@ -118,6 +128,9 @@ export const AppContextProvider: FC = ({ children }): JSX.Element => {
         modalTabIndex,
         setPageTabIndex,
         setModalTabIndex,
+        dialogRef,
+        pageFocusRef,
+        setPageFocusRef,
         ...settings.nodes[1],
       }}
     >
