@@ -20,6 +20,7 @@ export default {
       name: 'text',
       type: 'text',
       description: 'Visible text',
+      validation: (Rule) => Rule.required(),
     },
     {
       title: 'Image',
@@ -28,6 +29,7 @@ export default {
       options: {
         hotspot: true,
       },
+      validation: (Rule) => Rule.required(),
     },
     {
       title: 'Image Desktop',
@@ -36,6 +38,13 @@ export default {
       options: {
         hotspot: true,
       },
+      validation: (Rule) => Rule.required(),
+    },
+    {
+      title: 'Image Description',
+      name: 'imageAlt',
+      type: 'string',
+      validation: (Rule) => Rule.required(),
     },
     {
       title: 'Button Label',

@@ -9,6 +9,20 @@ export default {
       type: 'file',
     },
     {
+      name: 'size',
+      title: 'Icon Size',
+      type: 'string',
+      options: {
+        list: [
+          { title: 'Small', value: 'sm' },
+          { title: 'Large', value: 'lg' },
+        ],
+        layout: 'radio',
+      },
+      description: 'The size of the icon',
+      initialValue: 'sm',
+    },
+    {
       name: 'subTitle',
       title: 'Sub title',
       type: 'string',
