@@ -52,8 +52,9 @@ const SocialNav: FC<SocialNavProps> = ({
               target="_blank"
               tabIndex={tabIndex}
               rel="noreferrer"
+              title="Instagram"
             >
-              <Instagram />
+              <Instagram aria-label="Instagram logo" />
             </a>
           </li>
         )}
@@ -64,8 +65,9 @@ const SocialNav: FC<SocialNavProps> = ({
               target="_blank"
               tabIndex={tabIndex}
               rel="noreferrer"
+              title="Facebook"
             >
-              <Facebook />
+              <Facebook aria-label="Facebook logo" />
             </a>
           </li>
         )}
@@ -76,8 +78,9 @@ const SocialNav: FC<SocialNavProps> = ({
               target="_blank"
               tabIndex={tabIndex}
               rel="noreferrer"
+              title="Linkedin"
             >
-              <Linkedin />
+              <Linkedin aria-label="Linkedin logo" />
             </a>
           </li>
         )}
@@ -88,8 +91,9 @@ const SocialNav: FC<SocialNavProps> = ({
               target="_blank"
               tabIndex={tabIndex}
               rel="noreferrer"
+              title="Twitter"
             >
-              <Twitter />
+              <Twitter aria-label="Twitter logo" />
             </a>
           </li>
         )}
