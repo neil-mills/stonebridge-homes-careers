@@ -7,11 +7,13 @@ interface Props {
   subTitle?: string
   title: string
   align?: string
+  size?: string
   id: string
 }
 
 interface StyleProps {
   align?: string
+  size?: string
 }
 const IconTitleStyles = styled.div<StyleProps>`
   text-align: ${props => props.align};
@@ -29,7 +31,7 @@ const IconTitleStyles = styled.div<StyleProps>`
     }
   }
   img {
-    height: 40px;
+    height: ${props => (props.size === 'lg' ? '80px' : '40px')};
     width: auto;
     margin-bottom: 2rem;
     display: inline-block;
@@ -52,10 +54,12 @@ const IconTitle: FC<Props> = ({
   title,
   subTitle = '',
   align = 'center',
+  size = 'sm',
   id = '',
 }) => {
+  console.log('size=', size)
   return (
-    <IconTitleStyles align={align}>
+    <IconTitleStyles align={align} size={size}>
       <img src={icon} />
       <h3 id={id}>
         {subTitle && <span>{subTitle}</span>}
