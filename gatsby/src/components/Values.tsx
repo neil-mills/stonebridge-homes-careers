@@ -70,7 +70,12 @@ const Values: FC<Props> = (props): JSX.Element => {
         <ValuesList>
           {props.items.map((item: Item) => (
             <li key={item._key}>
-              <IconTitle icon={item.icon.asset.url} title={item.title} />
+              <IconTitle
+                id={''}
+                size={'lg'}
+                icon={item.icon.asset.url}
+                title={item.title}
+              />
             </li>
           ))}
         </ValuesList>
