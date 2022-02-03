@@ -11,6 +11,7 @@ export default {
       title: 'Name',
       type: 'string',
       description: '',
+      validation: (Rule) => Rule.required(),
     },
     {
       name: 'subTitle',
@@ -26,6 +27,7 @@ export default {
         source: 'title',
         maxLength: 100,
       },
+      validation: (Rule) => Rule.required(),
     },
     {
       name: 'image',
@@ -34,12 +36,19 @@ export default {
       options: {
         hotspot: true,
       },
+      validation: (Rule) => Rule.required(),
     },
     {
       name: 'videoUrl',
       title: 'Video URL',
       type: 'string',
       description: '',
+    },
+    {
+      name: 'videoLinkLabel',
+      title: 'Video Link Label',
+      type: 'string',
+      description: 'A description of the video link',
     },
   ],
 };
