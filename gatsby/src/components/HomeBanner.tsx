@@ -47,6 +47,7 @@ interface HomeBannerProps {
   bgSrc: string
   bgSrcLg: string
   className?: string
+  imageAlt: string
 }
 const HomeBanner: FC<HomeBannerProps> = (props): JSX.Element => {
   const sectionRef = useRef<HTMLElement>(null)
@@ -80,12 +81,14 @@ const HomeBanner: FC<HomeBannerProps> = (props): JSX.Element => {
     <section
       className={props.className}
       ref={sectionRef}
+      role="banner"
+      aria-label={props.imageAlt}
       style={{ backgroundImage: `url(${bgSrc})` }}
     >
       <BgGradient />
       <SectionInner>
         <HomeBannerInner>
-          <h2>{props.title}</h2>
+          <h1>{props.title}</h1>
           <p>{visibleText}</p>
           <Button
             label={'Find out more'}
@@ -152,6 +155,7 @@ const StyledHomeBanner = styled(HomeBanner)`
     height: 68rem;
     max-height: 68rem;
   }
+  h1,
   h2 {
     ${HeadingStyle}
     ${HeadingXLarge}

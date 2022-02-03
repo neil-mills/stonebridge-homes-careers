@@ -24,6 +24,7 @@ const SectionStyles = styled.section`
 const ParallaxImage: FC<ParallaxImageBlockType> = ({
   src,
   srcLarge,
+  title,
 }): JSX.Element => {
   const sectionRef = useRef<HTMLElement | null>(null)
   const [bgSrc, setBgSrc] = useState<string>('')
@@ -56,6 +57,8 @@ const ParallaxImage: FC<ParallaxImageBlockType> = ({
     <SectionStyles
       ref={sectionRef}
       style={{ backgroundImage: `url(${bgSrc})` }}
+      role="img"
+      aria-label={title}
     />
   )
 }
