@@ -59,6 +59,7 @@ export interface ParallaxImageBlockType {
   _type?: string
   src?: ImageType
   srcLarge?: ImageType
+  title?: string
 }
 
 export interface ArticleType {
@@ -70,6 +71,7 @@ export interface ArticleType {
   author?: string
   image: ImageType
   videoUrl?: string
+  videoLinkLabel?: string
   imageAlt?: string
   categories?: CategoryType[]
   animateOnLoad?: boolean
