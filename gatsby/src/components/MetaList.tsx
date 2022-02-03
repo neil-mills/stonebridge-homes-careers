@@ -67,8 +67,8 @@ const MetaList: FC<MetaListProps> = ({
     <StyledMetaList>
       {author && (
         <div>
-          {author && avatar && <img src={avatar} />}
-          {author && !avatar && <AvatarIcon />}
+          {author && avatar && <img src={avatar} alt={meta[0]} />}
+          {author && !avatar && <AvatarIcon aria-label="author icon" />}
         </div>
       )}
       <ul>{meta.length && meta.map((value, i) => <li key={i}>{value}</li>)}</ul>
