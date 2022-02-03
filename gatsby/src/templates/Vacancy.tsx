@@ -155,7 +155,7 @@ const SingleVacancyPage: FC<Props> = ({ data, className }) => {
           <div>
             <StyledPicture>
               <source media="(min-width: 500px)" srcSet={VacancyImg} />
-              <img src={VacancyImg} />
+              <img src={VacancyImg} alt="Man looking at computer screen" />
             </StyledPicture>
           </div>
           <div aria-role="region">
