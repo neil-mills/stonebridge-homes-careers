@@ -99,6 +99,8 @@ const InsetBox = styled.div<{ willAnimate: boolean; isDesktop: boolean }>`
     transform: ${({ willAnimate, isDesktop }) =>
       willAnimate && !isDesktop ? 'translateX(50px)' : 'translateX(0)'};
   }
+  h1,
+  h2,
   h3 {
     ${HeadingLarge}
     color: var(--gold);
@@ -240,7 +242,7 @@ const ImageBanner: FC<ImageBannerProps> = ({
             data-active={animate}
           >
             <div>
-              <h3>{heading}</h3>
+              {top ? <h1>{heading}</h1> : <h2>{heading}</h2>}
               <p>{text}</p>
               {buttonLabel && buttonLink && buttonLink.length && (
                 <Button label={buttonLabel} tabIndex={pageTabIndex} />
