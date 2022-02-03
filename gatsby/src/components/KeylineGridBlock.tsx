@@ -14,6 +14,7 @@ interface IconCardProps {
   subTitle?: string
   title: string
   text: string
+  size: string
   index: number
 }
 
@@ -105,6 +106,7 @@ const MoreIcon = styled(ArrowLink)`
 `
 const IconCard: FC<IconCardProps> = ({
   icon,
+  size,
   title,
   subTitle,
   text,
@@ -140,6 +142,7 @@ const IconCard: FC<IconCardProps> = ({
           subTitle={subTitle}
           title={title}
           align={'left'}
+          size={size}
           id={`title-${index}`}
         />
         <MoreIcon
