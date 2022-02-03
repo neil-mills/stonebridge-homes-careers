@@ -192,7 +192,7 @@ const ImageAndTextBlock = ({
               label={buttonLabel}
               link={`/${buttonLink[0]?.slug?.current}`}
               icon={videoSrc ? <PlayIcon /> : null}
-              callback={videoSrc ? handleCallback : null}
+              callback={videoSrc || buttonCallback ? handleCallback : null}
               tabIndex={pageTabIndex}
               ref={buttonRef}
             />
