@@ -111,9 +111,17 @@ const ArticleItemStyles = styled.article<{
 interface ArticleLinkType {
   link?: string
   videoSrc?: string
+  videoLinkLabel?: string
+  title?: string
 }
 
-const ArticleLink: FC<ArticleLinkType> = ({ link, videoSrc, children }) => {
+const ArticleLink: FC<ArticleLinkType> = ({
+  link,
+  videoLinkLabel,
+  title,
+  videoSrc,
+  children,
+}) => {
   const { setVideoSrc, pageTabIndex } = useContext(AppContext)
   const handleClick = (e: MouseEvent): void => {
     e.preventDefault()
@@ -125,7 +133,12 @@ const ArticleLink: FC<ArticleLinkType> = ({ link, videoSrc, children }) => {
     }
   }
   return (
-    <a href={'#'} tabIndex={pageTabIndex} onClick={handleClick}>
+    <a
+      href={'#'}
+      tabIndex={pageTabIndex}
+      onClick={handleClick}
+      aria-label={videoSrc ? videoLinkLabel : title}
+    >
       {children}
     </a>
   )
@@ -138,6 +151,7 @@ const ArticleGridItem = forwardRef<HTMLElement, ArticleType>((props, ref) => {
     date = '',
     title,
     videoUrl = '',
+    videoLinkLabel = '',
     image,
     imageAlt = '',
     width = 'auto',
@@ -181,10 +195,15 @@ const ArticleGridItem = forwardRef<HTMLElement, ArticleType>((props, ref) => {
       style={{ width: `${width}` }}
       data-loaded={animate}
     >
-      <ArticleLink link={id ? `/articles/${id}` : ''} videoSrc={videoUrl}>
+      <ArticleLink
+        link={id ? `/articles/${id}` : ''}
+        videoSrc={videoUrl}
+        title={title}
+        videoLinkLabel={videoLinkLabel}
+      >
         <picture ref={imageRef}>
           <source srcSet={srcSet} />
-          <img src={src} alt={imageAlt} />
+          <img src={src} alt={videoUrl ? title : imageAlt} />
         </picture>
         <div>
           {date && <time dateTime="{date}">{date}</time>}
