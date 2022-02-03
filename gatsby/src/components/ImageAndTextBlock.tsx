@@ -179,7 +179,7 @@ const ImageAndTextBlock = ({
             data-loaded={animate}
           >
             <source srcSet={loadedSrc} media="(min-width: 500px)" />
-            <img src={loadedMobileSrc} alt="{srcAlt}" />
+            <img src={loadedMobileSrc} alt={srcAlt} />
           </Picture>
         )}
         <aside>
@@ -190,9 +190,9 @@ const ImageAndTextBlock = ({
           {buttonLabel && (
             <Button
               label={buttonLabel}
-              link={buttonLink[0]?.slug?.current}
+              link={`/${buttonLink[0]?.slug?.current}`}
               icon={videoSrc ? <PlayIcon /> : null}
-              callback={handleCallback}
+              callback={videoSrc ? handleCallback : null}
               tabIndex={pageTabIndex}
               ref={buttonRef}
             />

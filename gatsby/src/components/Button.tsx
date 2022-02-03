@@ -11,7 +11,7 @@ interface ButtonProps {
   label: string
   link?: string
   type?: 'button' | 'submit'
-  callback?: (e: Event) => void
+  callback?: ((e: Event) => void) | null
   secondary?: boolean
   className?: string
   disabled?: boolean
@@ -63,7 +63,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
       label,
       link,
       type = 'button',
-      callback,
+      callback = null,
       secondary = false,
       className = '',
       disabled = false,
@@ -74,7 +74,6 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
   ) => {
     const handleClick = (e: MouseEvent) => {
       if (callback) {
-        console.log('calling back')
         callback(e)
       }
       if (!callback && link) {
