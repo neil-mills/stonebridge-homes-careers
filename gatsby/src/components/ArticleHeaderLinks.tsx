@@ -23,6 +23,7 @@ const ArticleHeaderLinks: FC<Props> = ({ backLink }): JSX.Element => {
         tabIndex={pageTabIndex}
         link={backLink}
         direction={'left'}
+        aria-label="Back to previous page"
       />
       <SocialNav color="black" />
     </ArticleHeaderLinksStyles>
