@@ -1,4 +1,4 @@
-import React, { FC } from 'react'
+import React, { FC, useContext } from 'react'
 import styled, { css } from 'styled-components'
 import {
   GutterPaddingTop,
@@ -13,6 +13,7 @@ import ArticlesGrid from './ArticlesGrid'
 import Button from './Button'
 import { ArticleType } from '../types'
 import categoriesData from '../data/categories'
+import AppContext from '../context/AppContext'
 
 const StyledArticles = styled.section<{ showCategories: boolean }>`
   ${GutterPaddingTop}
@@ -101,6 +102,7 @@ const Articles: FC<ArticlesProps> = ({
   filteredArticles = filteredArticles.filter(
     (article, i) => i >= start && i < start + articlesPerPage
   )
+  const { pageTabIndex } = useContext(AppContext)
   return (
     <StyledArticles className={className} showCategories={showCategories}>
       <SectionInner>
@@ -124,12 +126,21 @@ const Articles: FC<ArticlesProps> = ({
       </ArticlesWrapper>
       {currentPage !== totalPages && (
         <ButtonWrapper showCategories={showCategories}>
-          <Button label={'Load more'} link={'/'} secondary={true} />
+          <Button
+            label={'Load more'}
+            link={'/'}
+            secondary={true}
+            tabIndex={pageTabIndex}
+          />
         </ButtonWrapper>
       )}
       {buttonLabel && buttonLink && (
         <SectionInner>
-          <Button label={buttonLabel} link={buttonLink} />
+          <Button
+            label={buttonLabel}
+            link={buttonLink}
+            tabIndex={pageTabIndex}
+          />
         </SectionInner>
       )}
     </StyledArticles>
