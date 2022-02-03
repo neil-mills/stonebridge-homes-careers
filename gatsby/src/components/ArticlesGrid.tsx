@@ -166,7 +166,6 @@ const ArticlesBlock = ({
             >
               <ArrowIcon />
             </button>
-
             <button
               data-dir="next"
               disabled={noScrollNext}

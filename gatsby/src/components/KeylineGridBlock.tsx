@@ -1,4 +1,11 @@
-import React, { FC, useState, useRef, useContext, useEffect } from 'react'
+import React, {
+  FC,
+  useState,
+  useRef,
+  useContext,
+  useEffect,
+  ReactNode,
+} from 'react'
 import styled, { css } from 'styled-components'
 import Section from './Section'
 import KeylineGrid, { KeylineGridItem } from './KeylineGrid'
@@ -78,12 +85,12 @@ const OverlayCard = styled.div<{ isActive: boolean }>`
   p {
     margin: 0;
   }
-  span[aria-hidden='true'] {
-    visibility: hidden;
-  }
+
   @media screen and (min-width: 768px) {
     align-items: center;
-
+    span[aria-hidden='true'] {
+      visibility: hidden;
+    }
     transform: ${({ isActive }) =>
       isActive ? 'translateY(0)' : 'translateY(99%)'};
     transition: all 200ms ease;
@@ -104,6 +111,47 @@ const MoreIcon = styled(ArrowLink)`
     display: flex;
   }
 `
+
+interface TitleCardWrapperProps {
+  children: ReactNode | ReactNode[]
+  isActive: boolean
+  title: string
+  isMobile: boolean
+  handleCardClick: () => void
+  handleCardFocus: () => void
+  handleCardBlur: () => void
+}
+const TitleCardWrapper = ({
+  children,
+  isActive,
+  title,
+  isMobile,
+  handleCardClick,
+  handleCardFocus,
+}: TitleCardWrapperProps): JSX.Element => {
+  const { pageTabIndex } = useContext(AppContext)
+  if (isMobile) {
+    return (
+      <TitleCard isActive={isActive} as={'div'}>
+        {children}
+      </TitleCard>
+    )
+  }
+  return (
+    <TitleCard
+      type="button"
+      tabIndex={isActive ? -1 : pageTabIndex}
+      onClick={handleCardClick}
+      isActive={isActive}
+      // onBlur={handleCardBlur}
+      onFocus={handleCardFocus}
+      aria-label={`Read more about ${title}`}
+    >
+      {children}
+    </TitleCard>
+  )
+}
+
 const IconCard: FC<IconCardProps> = ({
   icon,
   size,
@@ -115,6 +163,8 @@ const IconCard: FC<IconCardProps> = ({
   const [isActive, setIsActive] = useState(false)
   const cardRef = useRef<HTMLDivElement>(null)
   const { pageTabIndex } = useContext(AppContext)
+  const [isMobile, setIsMobile] = useState<boolean>(false)
+
   const handleCardClick = () => {
     setIsActive(true)
   }
@@ -126,16 +176,27 @@ const IconCard: FC<IconCardProps> = ({
   }
   useOnClickOutside(cardRef, handleCardBlur)
 
+  const handleResize = () => {
+    setIsMobile(window.innerWidth <= 767)
+  }
+
+  useEffect(() => {
+    handleResize()
+    window.addEventListener('resize', handleResize)
+    return () => {
+      window.removeEventListener('resize', handleResize)
+    }
+  }, [])
+
   return (
     <IconCardStyles ref={cardRef}>
-      <TitleCard
-        type="button"
-        tabIndex={isActive ? -1 : pageTabIndex}
-        onClick={handleCardClick}
+      <TitleCardWrapper
         isActive={isActive}
-        // onBlur={handleCardBlur}
-        onFocus={handleCardFocus}
-        aria-label={`Read more about ${title}`}
+        title={title}
+        isMobile={isMobile}
+        handleCardClick={handleCardClick}
+        handleCardFocus={handleCardFocus}
+        handleCardBlur={handleCardBlur}
       >
         <IconTitle
           icon={icon.asset.url}
@@ -151,7 +212,7 @@ const IconCard: FC<IconCardProps> = ({
           visibleLabel={false}
           tabIndex={-1}
         />
-      </TitleCard>
+      </TitleCardWrapper>
       <OverlayCard isActive={isActive} tabIndex={-1}>
         <p>
           {!isActive && <span aria-hidden="true">{text}</span>}
