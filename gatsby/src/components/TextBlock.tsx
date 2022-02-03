@@ -1,4 +1,4 @@
-import React, { FC } from 'react'
+import React, { FC, ReactElement, ReactNode } from 'react'
 import styled from 'styled-components'
 import { TextBlockType } from '../types'
 import { HeadingMediumKeyline } from '../assets/styles/Typography'
@@ -15,28 +15,35 @@ interface TextBlockItemProps {
   blockChildren: { text: string; _type: string }[]
 }
 
-const TextBlockElement: FC<TextBlockElementProps> = ({ tag, text }) => {
+const TextBlockElement: FC<TextBlockElementProps> = ({
+  tag,
+  text,
+}): ReactElement => {
   return React.createElement(tag, {}, text)
 }
 
-const TextBlockItem = ({ style, blockChildren }: TextBlockItemProps) => {
+const TextBlockItem = ({
+  style,
+  blockChildren,
+}: TextBlockItemProps): ReactElement<HTMLElement> => {
   const tag: string = style === 'normal' ? 'p' : style
-  return blockChildren.map(({ text }, i) => (
+  const textBlock = blockChildren.map(({ text }, i) => (
     <TextBlockElement key={i} tag={tag} text={text} />
   ))
+  return <>{textBlock}</>
 }
 
 const TextBlock: FC<TextBlockType> = props => {
   return (
-    <Section
-      className={props.className}
-      marginTop={props.marginTop}
-      marginBottom={props.marginBottom}
-    >
-      <Heading heading={props.heading} />
-      {props.text.map(({ children, style }, i) => (
-        <TextBlockItem key={i} blockChildren={children} style={style} />
-      ))}
+    <Section className={props.className} marginTop={true} marginBottom={true}>
+      {props.heading && <Heading heading={props.heading} />}
+      {props.text && (
+        <>
+          {props.text.map(({ children, style }, i) => (
+            <TextBlockItem key={i} blockChildren={children} style={style} />
+          ))}
+        </>
+      )}
     </Section>
   )
 }

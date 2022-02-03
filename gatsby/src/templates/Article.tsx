@@ -28,7 +28,6 @@ interface Props {
 
 const StyledPicture = styled.picture`
   ${VerticalSpacingTop}
-  ${VerticalSpacingBottom}
   position: relative;
   display: block;
   max-height: 650px;
@@ -76,7 +75,10 @@ const SingleArticlePage: FC<Props> = ({ data, className }): JSX.Element => {
               media="(min-width: 500px)"
               srcSet={data.article.image.asset.fluid.srcSet}
             />
-            <img src={data.article.image.asset.fluid.src} />
+            <img
+              src={data.article.image.asset.fluid.src}
+              alt={data.article.imageAlt}
+            />
           </StyledPicture>
         )}
       </Section>
@@ -100,6 +102,7 @@ const SingleArticlePage: FC<Props> = ({ data, className }): JSX.Element => {
                 />
               )
             case 'parallaxImageBlock':
+              console.log(section)
               return <ParallaxImage key={section._key} {...section} />
             default:
               return null
@@ -199,6 +202,7 @@ export const query = graphql`
               }
             }
           }
+          title
         }
         ... on SanityTextBlock {
           _key
