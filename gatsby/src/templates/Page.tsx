@@ -34,6 +34,7 @@ const PageTemplate: FC<Props> = ({ data, pageContext }) => {
                 bgSrcLg={contentType[0].imageDesktop.asset.fluid.src}
                 btnLabel={contentType[0].buttonLabel}
                 btnLink={contentType[0].buttonLink[0].slug.current}
+                imageAlt={contentType[0].imageAlt}
               />
             )
           case 'imageAndTextBlock':
@@ -95,6 +96,7 @@ const PageTemplate: FC<Props> = ({ data, pageContext }) => {
             return (
               <ParallaxImage
                 key={i}
+                title={contentType[0].title}
                 src={contentType[0].src}
                 srcLarge={contentType[0].srcLarge}
               />
@@ -164,6 +166,7 @@ export const query = graphql`
                   originalFilename
                 }
               }
+              imageAlt
             }
             ... on SanityImageAndTextBlock {
               _key
@@ -262,6 +265,7 @@ export const query = graphql`
             ... on SanityParallaxImageBlock {
               _key
               _type
+              title
               src {
                 asset {
                   fluid(maxWidth: 500) {
@@ -299,6 +303,7 @@ export const query = graphql`
                     title
                   }
                 }
+                size
               }
             }
             ... on SanityValuesBlock {
@@ -388,6 +393,7 @@ export const query = graphql`
         subTitle
         title
         videoUrl
+        videoLinkLabel
         slug {
           current
         }
