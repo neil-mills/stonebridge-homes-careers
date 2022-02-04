@@ -10,7 +10,7 @@ import MetaList from '../components/MetaList'
 import VacancyImg from '../assets/images/vacancy-image.jpg'
 import { GapMargin } from '../assets/styles/Utils'
 import ArticleTitle from '../components/ArticleTitle'
-import { HeadingLarge } from '../assets/styles/Typography'
+import { HeadingLarge, BulletItem } from '../assets/styles/Typography'
 import ApplicationForm from '../components/ApplicationForm'
 import { VacancyType } from '../types'
 import { useScrollIntoView } from '../hooks/useScrollIntoView'
@@ -208,17 +208,8 @@ const StyledSingleVacancyPage = styled(SingleVacancyPage)`
     }
   }
   .description {
-    p.bullet,
     li {
-      padding-left: 1.5rem;
-      position: relative;
-      &:before {
-        content: '•';
-        position: absolute;
-        left: 0;
-        top: 0;
-        color: var(--gold);
-      }
+      ${BulletItem}
     }
   }
 `
