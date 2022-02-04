@@ -144,9 +144,10 @@ const StyledHomeBanner = styled(HomeBanner)`
   }
   @media screen and (min-width: 768px) {
     background-position: 70% top;
-    height: calc(60vw - 7.6rem);
+    /* height: calc(60vw - 7.6rem); */
+    height: auto;
     min-height: 54rem;
-    max-height: 60rem;
+    max-height: 70rem;
   }
   @media screen and (min-width: 1400px) {
     background-size: 1390px auto;
