@@ -131,6 +131,9 @@ const Typography = createGlobalStyle`
     ${HeadingStyle}
     margin-bottom: 2rem;
   }
+  h1 {
+    ${HeadingLarger}
+  }
   h2 {
     ${HeadingLarge}
   }
@@ -138,7 +141,7 @@ const Typography = createGlobalStyle`
     ${HeadingMedium}
   }
   p {
-    margin: 1rem 0;
+    margin: 2rem 0;
     @media screen and (min-width: 768px) {
       margin: 2rem 0;
     }

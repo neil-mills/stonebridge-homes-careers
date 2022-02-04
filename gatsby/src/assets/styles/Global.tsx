@@ -16,9 +16,9 @@ const GlobalStyles = createGlobalStyle`
     --white-hover: #cccccc;
     --font-xlarge: 3rem;
     --font-xlarge-desktop: 6.5rem;
-    --font-larger: 2.4rem;
-    --font-larger-desktop: 4.6rem;
-    --font-large: 2.4rem;
+    --font-larger: 2.8rem;
+    --font-larger-desktop: 4rem;
+    --font-large: 2.2rem;
     --font-large-desktop: 3.5rem;
     --font-base: 1.6rem;
     --font-base-desktop: 1.8rem;
