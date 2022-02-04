@@ -127,14 +127,14 @@ const BgImage = styled.picture<{
   willAnimate: boolean
   top: boolean
 }>`
-  background-color: var(--light-grey);
+  background-color: var(--keyline-grey);
   img {
     object-fit: cover;
     object-position: center top;
     ${({ top }) =>
       !top &&
       css`
-        transition: opacity 200ms ease;
+        transition: opacity 500ms ease;
       `};
     width: 100%;
     height: 100%;
