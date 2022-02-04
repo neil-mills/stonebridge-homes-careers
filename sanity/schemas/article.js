@@ -61,6 +61,12 @@ export default {
       name: 'articleSectionType',
       title: 'Article sections',
     },
+    {
+      title: 'Show Image',
+      name: 'showImage',
+      type: 'boolean',
+      description: 'Display image on article page',
+    },
   ],
   preview: {
     select: {

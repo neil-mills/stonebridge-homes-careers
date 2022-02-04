@@ -3,7 +3,7 @@ import { BsFillLayersFill as icon } from 'react-icons/bs';
 export default {
   name: 'articleSectionBlock',
   title: 'Article Section Block',
-  type: 'objec',
+  type: 'object',
   icon,
   fields: [
     {
