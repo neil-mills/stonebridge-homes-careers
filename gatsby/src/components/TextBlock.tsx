@@ -1,46 +1,95 @@
 import React, { FC, ReactElement, ReactNode } from 'react'
 import styled from 'styled-components'
-import { TextBlockType } from '../types'
+import { TextBlockType, MarkDefsType } from '../types'
 import { HeadingMediumKeyline } from '../assets/styles/Typography'
 import Section from './Section'
 import Heading from './Heading'
 
 interface TextBlockElementProps {
-  tag: string
+  listItem?: string
   text: string
+  marks: string[]
+  style: string
+  markDefs?: MarkDefsType[]
 }
+
 interface TextBlockItemProps {
   list?: null
   style: string
-  blockChildren: { text: string; _type: string }[]
+  blockChildren: { text: string; _type: string; marks: string[] }[]
+  listItem?: string
+  markDefs?: MarkDefsType[]
 }
 
 const TextBlockElement: FC<TextBlockElementProps> = ({
-  tag,
+  listItem,
   text,
+  marks,
+  style,
+  markDefs,
 }): ReactElement => {
-  return React.createElement(tag, {}, text)
+  const markDef = marks[0] ? markDefs?.find(def => def._key === marks[0]) : null
+  const classes: string[] = []
+  const options: { className?: string; href?: string; target?: string } = {}
+  let tag = style === 'normal' ? 'p' : style
+  if (markDef?._type === 'link') {
+    options.href = markDef.href
+    options.target = '_blank'
+    tag = 'a'
+  }
+  if (marks.includes('strong')) classes.push('bold')
+  if (listItem) classes.push('bullet')
+  if (classes.length) options.className = classes.join(' ')
+  return React.createElement(tag, options, text)
 }
 
 const TextBlockItem = ({
-  style,
   blockChildren,
+  listItem,
+  style,
+  markDefs,
 }: TextBlockItemProps): ReactElement<HTMLElement> => {
-  const tag: string = style === 'normal' ? 'p' : style
-  const textBlock = blockChildren.map(({ text }, i) => (
-    <TextBlockElement key={i} tag={tag} text={text} />
-  ))
-  return <>{textBlock}</>
+  if (blockChildren.length > 1) {
+    return (
+      <p>
+        {blockChildren.map(({ text, marks }, i) => (
+          <TextBlockElement
+            key={i}
+            marks={marks}
+            style={'span'}
+            text={text}
+            listItem={listItem}
+            markDefs={markDefs}
+          />
+        ))}
+      </p>
+    )
+  } else {
+    return (
+      <TextBlockElement
+        marks={blockChildren[0].marks}
+        style={style}
+        text={blockChildren[0].text}
+        listItem={listItem}
+      />
+    )
+  }
 }
 
 const TextBlock: FC<TextBlockType> = props => {
   return (
     <Section className={props.className} marginTop={true} marginBottom={true}>
       {props.heading && <Heading heading={props.heading} />}
-      {props.text && (
+      {props._rawText && (
         <>
-          {props.text.map(({ children, style }, i) => (
-            <TextBlockItem key={i} blockChildren={children} style={style} />
+          {props._rawText.map(({ children, listItem, style, markDefs }, i) => (
+            <TextBlockItem
+              key={i}
+              blockChildren={children}
+              style={style}
+              listItem={listItem}
+              markDefs={markDefs}
+            />
           ))}
         </>
       )}
