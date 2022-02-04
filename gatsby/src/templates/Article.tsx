@@ -1,4 +1,4 @@
-import React, { FC, useState, useEffect } from 'react'
+import React, { FC, useState, useEffect, useRef } from 'react'
 import styled from 'styled-components'
 import { graphql } from 'gatsby'
 import ArticleHeaderLinks from '../components/ArticleHeaderLinks'
@@ -12,6 +12,7 @@ import TextBlock from '../components/TextBlock'
 import { ArticleType } from '../types'
 import { VerticalSpacingTop } from '../assets/styles/Utils'
 import ParallaxImage from '../components/ParallaxImage'
+import { useLazyLoadImages } from '../hooks/useLazyLoadImages'
 
 interface Props {
   data: {
@@ -23,9 +24,10 @@ interface Props {
   className: string
 }
 
-const StyledPicture = styled.picture<{ imageY: number }>`
+const StyledPicture = styled.picture<{ imageY: number; isLoaded: boolean }>`
   ${VerticalSpacingTop}
   position: relative;
+  background-color: var(--keyline-grey);
   display: block;
   max-height: 650px;
   height: auto;
@@ -35,8 +37,13 @@ const StyledPicture = styled.picture<{ imageY: number }>`
     padding-top: 50%;
     display: block;
   }
+  div {
+    opacity: ${({ isLoaded }) => (isLoaded ? 1 : 0)};
+    transition: opacity 500ms ease;
+  }
   img {
     position: absolute;
+    opacity: ${({ isLoaded }) => (isLoaded ? 1 : 0)};
     top: 0;
     left: 0;
     width: 100%;
@@ -47,14 +54,37 @@ const StyledPicture = styled.picture<{ imageY: number }>`
 `
 const SingleArticlePage: FC<Props> = ({ data, className }): JSX.Element => {
   const [imageY, setImageY] = useState(50)
+  const imageRef = useRef<HTMLDivElement>(null)
+  const [loadedSrc, setLoadedSrc] = useState('')
+  const [loadedSrcSet, setLoadedSrcSet] = useState('')
 
+  const [isLoaded] = useLazyLoadImages({
+    ref: imageRef,
+    srcSet: data.article.image.asset.fluid.srcSet,
+    options: {
+      threshold: 0,
+      rootMargin: '0px',
+    },
+  })
   useEffect(() => {
     if (data.article.image.crop) {
       const { top, bottom } = data.article.image.crop
       setImageY(Math.ceil(top * 100 + bottom * 100))
     }
   }, [])
-  // console.log(data.relatedArticles.nodes)
+
+  useEffect(() => {
+    if (isLoaded) {
+      console.log('image is loaded')
+      if (data.article.image.asset.fluid.srcSet) {
+        setLoadedSrcSet(data.article.image.asset.fluid.srcSet)
+      }
+      if (data.article.image.asset.fluid.src) {
+        setLoadedSrc(data.article.image.asset.fluid.src)
+      }
+    }
+  }, [isLoaded])
+
   return (
     <div className={className}>
       <Section as={'div'} marginTop={false} marginBottom={false}>
@@ -75,15 +105,11 @@ const SingleArticlePage: FC<Props> = ({ data, className }): JSX.Element => {
           </div>
         </ArticleTitle>
         {data.article.showImage && data.article.image && (
-          <StyledPicture imageY={imageY}>
-            <source
-              media="(min-width: 500px)"
-              srcSet={data.article.image.asset.fluid.srcSet}
-            />
-            <img
-              src={data.article.image.asset.fluid.src}
-              alt={data.article.imageAlt}
-            />
+          <StyledPicture imageY={imageY} ref={imageRef} isLoaded={isLoaded}>
+            <div>
+              <source media="(min-width: 500px)" srcSet={loadedSrcSet} />
+              <img src={loadedSrc} alt={data.article.imageAlt} />
+            </div>
           </StyledPicture>
         )}
       </Section>
