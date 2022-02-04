@@ -377,6 +377,13 @@ export const query = graphql`
         slug {
           current
         }
+        categories {
+          title
+          slug {
+            current
+          }
+          id
+        }
         image {
           asset {
             fluid(maxWidth: 500) {

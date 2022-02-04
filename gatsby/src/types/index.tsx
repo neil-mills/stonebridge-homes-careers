@@ -1,5 +1,6 @@
 export interface CategoryType {
-  slug: string
+  id: string
+  slug: { current: string }
   title: string
 }
 

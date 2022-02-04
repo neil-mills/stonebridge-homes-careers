@@ -1,4 +1,4 @@
-import React, { FC, useContext } from 'react'
+import React, { FC, useContext, useEffect, useState } from 'react'
 import styled, { css } from 'styled-components'
 import {
   GutterPaddingTop,
@@ -11,8 +11,7 @@ import ArticleCategoryMenu from './ArticleCategoryMenu'
 import Heading from './Heading'
 import ArticlesGrid from './ArticlesGrid'
 import Button from './Button'
-import { ArticleType } from '../types'
-import categoriesData from '../data/categories'
+import { ArticleType, CategoryType } from '../types'
 import AppContext from '../context/AppContext'
 
 const StyledArticles = styled.section<{ showCategories: boolean }>`
@@ -89,7 +88,8 @@ const Articles: FC<ArticlesProps> = ({
   perPage = 'all',
   className = '',
 }) => {
-  const categories = categoriesData
+  const [categories, setCategories] = useState<CategoryType[]>([])
+
   let filteredArticles: ArticleType[] =
     showArticles === 'selected' ? selectedArticles : articles
   const totalPages =
@@ -103,6 +103,24 @@ const Articles: FC<ArticlesProps> = ({
     (article, i) => i >= start && i < start + articlesPerPage
   )
   const { pageTabIndex } = useContext(AppContext)
+
+  useEffect(() => {
+    const categories: CategoryType[] = articles.reduce(
+      (acc: CategoryType[], article: ArticleType) => {
+        if (article.categories) {
+          const uniqueCats = article.categories.filter(
+            ({ id }) => !acc.map(cat => cat.id).includes(id)
+          )
+          if (uniqueCats.length) {
+            acc = [...acc, ...uniqueCats]
+          }
+        }
+        return acc
+      },
+      []
+    )
+    setCategories(categories)
+  }, [])
   return (
     <StyledArticles className={className} showCategories={showCategories}>
       <SectionInner>
