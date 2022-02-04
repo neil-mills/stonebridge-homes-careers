@@ -8,7 +8,7 @@ import React, {
   MouseEvent,
 } from 'react'
 import styled from 'styled-components'
-import { navigate } from 'gatsby'
+import { navigate, Link } from 'gatsby'
 import { HeadingStyle, HeadingMedium } from '../assets/styles/Typography'
 import PlayIcon from '../assets/svg/play.svg'
 import { ArticleType } from '../types'
@@ -19,6 +19,7 @@ import AppContext from '../context/AppContext'
 const ArticleItemStyles = styled.article<{
   willAnimate: boolean
   isLoaded: boolean
+  imageY: number
 }>`
   background-color: var(--white);
   scroll-snap-align: start;
@@ -37,6 +38,18 @@ const ArticleItemStyles = styled.article<{
   }
   a {
     cursor: pointer;
+    display: block;
+  }
+  button {
+    border: none;
+    border-radius: 0;
+    background-color: transparent;
+    cursor: pointer;
+    display: block;
+    text-align: left;
+    padding: 0;
+    width: 100%;
+    display: block;
   }
   picture {
     margin: 0;
@@ -65,12 +78,13 @@ const ArticleItemStyles = styled.article<{
       left: 0;
       height: 100%;
       object-fit: cover;
-      object-position: center 20%;
+      object-position: ${({ imageY }) => `center ${imageY}%`};
     }
   }
   div {
     padding: 2rem 4rem 2rem 2rem;
     position: relative;
+    white-space: break-spaces;
     svg {
       width: 2.5rem;
       height: 2.5rem;
@@ -132,16 +146,30 @@ const ArticleLink: FC<ArticleLinkType> = ({
       setVideoSrc(videoSrc)
     }
   }
-  return (
-    <a
-      href={'#'}
-      tabIndex={pageTabIndex}
-      onClick={handleClick}
-      aria-label={videoSrc ? videoLinkLabel : title}
-    >
-      {children}
-    </a>
-  )
+  if (link) {
+    return (
+      <Link
+        to={link || ''}
+        tabIndex={pageTabIndex}
+        onClick={handleClick}
+        aria-label={videoSrc ? videoLinkLabel : title}
+      >
+        {children}
+      </Link>
+    )
+  }
+  if (videoSrc && setVideoSrc) {
+    return (
+      <button
+        type="button"
+        tabIndex={pageTabIndex}
+        onClick={handleClick}
+        aria-label={videoSrc ? videoLinkLabel : title}
+      >
+        {children}
+      </button>
+    )
+  }
 }
 
 const ArticleGridItem = forwardRef<HTMLElement, ArticleType>((props, ref) => {
@@ -167,10 +195,17 @@ const ArticleGridItem = forwardRef<HTMLElement, ArticleType>((props, ref) => {
     srcSet: image.asset.fluid.srcSet,
   })
 
+  const [imageY, setImageY] = useState(50)
+
   useEffect(() => {
     const inViewport = isInViewport()
     const setToAnimate = !inViewport && props.animateOnLoad
     setWillAnimate(setToAnimate || false)
+
+    if (image.crop) {
+      const { top, bottom } = image.crop
+      setImageY(Math.ceil(top * 100 + bottom * 100))
+    }
   }, [])
 
   useEffect(() => {
@@ -194,6 +229,7 @@ const ArticleGridItem = forwardRef<HTMLElement, ArticleType>((props, ref) => {
       ref={ref}
       style={{ width: `${width}` }}
       data-loaded={animate}
+      imageY={imageY}
     >
       <ArticleLink
         link={id ? `/articles/${id}` : ''}

@@ -1,4 +1,4 @@
-import React, { FC } from 'react'
+import React, { FC, useState, useEffect } from 'react'
 import styled from 'styled-components'
 import { graphql } from 'gatsby'
 import ArticleHeaderLinks from '../components/ArticleHeaderLinks'
@@ -10,10 +10,7 @@ import MetaList from '../components/MetaList'
 import ArticlesBlock from '../components/ArticlesBlock'
 import TextBlock from '../components/TextBlock'
 import { ArticleType } from '../types'
-import {
-  VerticalSpacingTop,
-  VerticalSpacingBottom,
-} from '../assets/styles/Utils'
+import { VerticalSpacingTop } from '../assets/styles/Utils'
 import ParallaxImage from '../components/ParallaxImage'
 
 interface Props {
@@ -26,7 +23,7 @@ interface Props {
   className: string
 }
 
-const StyledPicture = styled.picture`
+const StyledPicture = styled.picture<{ imageY: number }>`
   ${VerticalSpacingTop}
   position: relative;
   display: block;
@@ -35,7 +32,7 @@ const StyledPicture = styled.picture`
   width: 100%;
   &:before {
     content: '';
-    padding-top: 77%;
+    padding-top: 50%;
     display: block;
   }
   img {
@@ -45,15 +42,24 @@ const StyledPicture = styled.picture`
     width: 100%;
     height: 100%;
     object-fit: cover;
-    object-position: center center;
+    object-position: ${({ imageY }) => `center ${imageY}%`};
   }
 `
 const SingleArticlePage: FC<Props> = ({ data, className }): JSX.Element => {
+  const [imageY, setImageY] = useState(50)
+
+  useEffect(() => {
+    if (data.article.image.crop) {
+      const { top, bottom } = data.article.image.crop
+      setImageY(Math.ceil(top * 100 + bottom * 100))
+    }
+  }, [])
+  // console.log(data.relatedArticles.nodes)
   return (
     <div className={className}>
       <Section as={'div'} marginTop={false} marginBottom={false}>
         <ArticleHeaderLinks backLink={'/our-community'} />
-        <ArticleTitle keyline={false}>
+        <ArticleTitle keyline={!data.article.showImage}>
           <div>
             <Heading
               subHeading={data.article.date}
@@ -63,14 +69,13 @@ const SingleArticlePage: FC<Props> = ({ data, className }): JSX.Element => {
               headingLarger={true}
               level={1}
             />
-            <MetaList
-              meta={[`by ${data.article.author}`, '5 mins']}
-              author={true}
-            />
+            {data.article.author && (
+              <MetaList meta={[`by ${data.article.author}`]} author={true} />
+            )}
           </div>
         </ArticleTitle>
-        {data.article.image && (
-          <StyledPicture>
+        {data.article.showImage && data.article.image && (
+          <StyledPicture imageY={imageY}>
             <source
               media="(min-width: 500px)"
               srcSet={data.article.image.asset.fluid.srcSet}
@@ -102,7 +107,6 @@ const SingleArticlePage: FC<Props> = ({ data, className }): JSX.Element => {
                 />
               )
             case 'parallaxImageBlock':
-              console.log(section)
               return <ParallaxImage key={section._key} {...section} />
             default:
               return null
@@ -123,10 +127,13 @@ export const query = graphql`
   query ($id: String!) {
     relatedArticles: allSanityArticle(limit: 3, filter: { _id: { ne: $id } }) {
       nodes {
-        _id
+        id
         imageAlt
         date(formatString: "D MMM YYYY")
         title
+        slug {
+          current
+        }
         image {
           asset {
             fluid {
@@ -141,6 +148,7 @@ export const query = graphql`
       id
       title
       date(formatString: "D MMM YYYY")
+      showImage
       slug {
         current
       }
@@ -151,6 +159,12 @@ export const query = graphql`
             src
             srcSet
           }
+        }
+        crop {
+          left
+          right
+          top
+          bottom
         }
       }
       _id
@@ -209,14 +223,7 @@ export const query = graphql`
           _type
           heading
           subHeading
-          text {
-            list
-            style
-            children {
-              text
-              _type
-            }
-          }
+          _rawText
         }
       }
     }

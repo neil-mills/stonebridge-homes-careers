@@ -11,39 +11,38 @@ import { ArticleType } from '../types'
 import ArrowIcon from '../assets/svg/arrow-icon.svg'
 import AppContext from '../context/AppContext'
 
-const StyledArticleGrid = styled.div`
-  button {
-    background: var(--white);
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    border: none;
-    position: absolute;
-    top: 50%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 4;
-    cursor: pointer;
-    &[data-dir='prev'] {
-      left: 0;
-      transform: translate(-50%, -50%) rotate(-180deg);
-    }
-    &[data-dir='next'] {
-      transform: translateY(-50%);
-      right: -20px;
-    }
+const StyledCarouselButton = styled.button`
+  background: var(--white);
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: none;
+  position: absolute;
+  top: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 4;
+  cursor: pointer;
+  &[data-dir='prev'] {
+    left: 0;
+    transform: translate(-50%, -50%) rotate(-180deg);
+  }
+  &[data-dir='next'] {
+    transform: translateY(-50%);
+    right: -20px;
+  }
+  svg path {
+    fill: var(--grey);
+  }
+  &[disabled] {
     svg path {
-      fill: var(--grey);
+      fill: var(--keyline-grey);
     }
-    &[disabled] {
-      svg path {
-        fill: var(--keyline-grey);
-      }
-      cursor: default;
-    }
+    cursor: default;
   }
 `
+const StyledArticleGrid = styled.div``
 const Track = styled.div`
   [data-carousel='false'] & {
     display: grid;
@@ -63,7 +62,8 @@ const Track = styled.div`
     width: 100%;
   }
   [data-carousel='true'] & {
-    display: block;
+    display: grid;
+    grid-auto-flow: column;
     overflow-x: scroll;
     overflow-y: hidden;
     white-space: nowrap;
@@ -158,22 +158,22 @@ const ArticlesBlock = ({
       <StyledArticleGrid data-carousel={carousel}>
         {carousel && (
           <>
-            <button
+            <StyledCarouselButton
               data-dir="prev"
               disabled={noScrollPrev}
               onClick={e => handleClick(e, 'prev')}
               tabIndex={pageTabIndex}
             >
               <ArrowIcon />
-            </button>
-            <button
+            </StyledCarouselButton>
+            <StyledCarouselButton
               data-dir="next"
               disabled={noScrollNext}
               onClick={e => handleClick(e, 'next')}
               tabIndex={pageTabIndex}
             >
               <ArrowIcon />
-            </button>
+            </StyledCarouselButton>
           </>
         )}
 
