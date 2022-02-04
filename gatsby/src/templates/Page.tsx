@@ -384,6 +384,12 @@ export const query = graphql`
               src
             }
           }
+          crop {
+            left
+            right
+            top
+            bottom
+          }
         }
         imageAlt
       }
