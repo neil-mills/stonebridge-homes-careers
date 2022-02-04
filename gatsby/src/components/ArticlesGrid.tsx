@@ -76,16 +76,16 @@ const Track = styled.div`
     scrollbar-width: none;
   }
 `
-interface ArticlesBlockProps {
+interface ArticlesGridProps {
   carousel?: boolean
   articles: ArticleType[]
   perPage?: number
 }
 
-const ArticlesBlock = ({
+const ArticlesGrid = ({
   carousel = false,
   articles = [],
-}: ArticlesBlockProps): JSX.Element => {
+}: ArticlesGridProps): JSX.Element => {
   const trackRef = useRef<HTMLDivElement | null>(null)
   const articleRefs = useRef<HTMLElement[]>([])
   const [articleWidth, setArticleWidth] = useState(0)
@@ -104,7 +104,6 @@ const ArticlesBlock = ({
       }
     }
   }
-
   const handleScroll = () => {
     if (trackRef.current) {
       setScrollLeft(trackRef.current.scrollLeft)
@@ -196,4 +195,4 @@ const ArticlesBlock = ({
   )
 }
 
-export default ArticlesBlock
+export default ArticlesGrid
