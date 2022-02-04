@@ -51,8 +51,7 @@ const Picture = styled.picture<{
 }>`
   display: grid;
   transition: opacity 500ms ease, transform 1s ease;
-  opacity: ${({ willAnimate, isDesktop }) =>
-    willAnimate && isDesktop ? 0 : 1};
+  opacity: ${({ isLoaded, isDesktop }) => (isLoaded && isDesktop ? 1 : 0)};
   transform: ${({ willAnimate, isDesktop }) =>
     willAnimate && isDesktop ? 'translateY(50px)' : 'translateY(0)'};
   align-items: center;
@@ -144,9 +143,9 @@ const ImageAndTextBlock = ({
     if (isLoaded && src && srcMobile) {
       setLoadedMobileSrc(srcMobile.asset.fluid.src)
       setLoadedSrc(src.asset.fluid.src)
-      setTimeout(() => {
-        setAnimate(true)
-      }, 200)
+      //  setTimeout(() => {
+      setAnimate(true)
+      // }, 0)
     }
   }, [isLoaded])
 
