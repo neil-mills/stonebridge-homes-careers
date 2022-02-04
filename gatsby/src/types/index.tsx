@@ -10,6 +10,28 @@ export interface ImageType {
       src: string
     }
   }
+  crop?: {
+    left: number
+    right: number
+    top: number
+    bottom: number
+  }
+}
+
+export interface MarkDefsType {
+  _key: string
+  _type: string
+  href?: string
+}
+
+export interface RawTextType {
+  _key: string
+  _type: string
+  children: { _key: string; _type: string; marks: string[]; text: string }[]
+  markDefs: MarkDefsType[]
+  level?: number
+  listItem?: string
+  style: string
 }
 
 export interface TextBlockType {
@@ -17,11 +39,7 @@ export interface TextBlockType {
   _type?: string
   heading?: string
   subHeading?: string
-  text?: {
-    list: null
-    style: string
-    children: { text: string; _type: string }[]
-  }[]
+  _rawText?: RawTextType[]
   marginTop?: boolean
   marginBottom?: boolean
   className?: string
@@ -75,6 +93,7 @@ export interface ArticleType {
   imageAlt?: string
   categories?: CategoryType[]
   animateOnLoad?: boolean
+  showImage?: boolean
   articleSectionType?: Array<
     TextBlockType | ImageAndTextBlockType | ParallaxImageBlockType
   >
