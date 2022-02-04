@@ -80,13 +80,7 @@ const GlobalStyles = createGlobalStyle`
   a {
     text-decoration: none;
     outline: 3px solid transparent;
-    display: block;
   }
-  /* a, button {
-    &:focus {
-      outline: 3px solid var(--black);
-    }
-  } */
   * {
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;

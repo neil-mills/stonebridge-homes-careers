@@ -99,6 +99,18 @@ export const FontBold = css`
   font-weight: 400;
 `
 
+export const BulletItem = css`
+  padding-left: 1.5rem;
+  position: relative;
+  &:before {
+    content: '•';
+    position: absolute;
+    left: 0;
+    top: 0;
+    color: var(--gold);
+  }
+`
+
 const Typography = createGlobalStyle`
   @font-face {
     font-family: effraregular;
@@ -115,8 +127,6 @@ const Typography = createGlobalStyle`
   html {
     font-family: effraregular, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
   }
-
-
   h1,h2,h3,h4 {
     ${HeadingStyle}
     margin-bottom: 2rem;
@@ -141,7 +151,24 @@ const Typography = createGlobalStyle`
     &:last-child {
       margin-bottom: 0;
     }
+    &.bullet {
+      ${BulletItem}
+    }
+    &.bold {
+      ${FontBold}
+    }
+    a {
+    &:link {
+      color: var(--gold);
+      border-bottom: 1px dotted var(--gold);
+      text-decoration: none;
+    }
+    &:hover {
+      border-bottom: 1px solid var(--gold);
+    }
   }
+  }
+  
 `
 
 export default Typography
