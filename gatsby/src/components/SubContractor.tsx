@@ -32,25 +32,14 @@ const SubContractor: FC<Props> = ({
   const buttonRef = useRef<HTMLElement>(null)
 
   const openDialog = (e: Event) => {
+    console.log(modalTabIndex)
     e.preventDefault()
-    if (setDialogActive && setDialogContent) {
-      setDialogContent(
-        <>
-          <h3>Register as a subcontractor</h3>
-          <ApplicationForm
-            isSubContractor={true}
-            vacancyReference={'VA6'}
-            buttonLabel={'Register details'}
-            tabIndex={modalTabIndex}
-          />
-        </>
-      )
-      setDialogActive(true)
-    }
+
     if (setPageTabIndex) {
       setPageTabIndex(-1)
     }
     if (setModalTabIndex) {
+      console.log('setting')
       setModalTabIndex(0)
     }
     if (stopBodyScroll) {
@@ -61,6 +50,20 @@ const SubContractor: FC<Props> = ({
     }
     if (setPageFocusRef) {
       setPageFocusRef(buttonRef)
+    }
+    if (setDialogActive && setDialogContent) {
+      setDialogContent(
+        <>
+          <h3>Register as a subcontractor</h3>
+          <ApplicationForm
+            isSubContractor={true}
+            vacancyReference={'VA6'}
+            buttonLabel={'Register details'}
+            tabIndex={0}
+          />
+        </>
+      )
+      setDialogActive(true)
     }
   }
 
