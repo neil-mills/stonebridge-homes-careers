@@ -136,7 +136,7 @@ const ArticleLink = ({
   videoLinkLabel,
   title,
   children,
-}: ArticleLinkType) => {
+}: ArticleLinkType): JSX.Element => {
   const { setVideoSrc, pageTabIndex } = useContext(AppContext)
   const handleClick = (e: MouseEvent): void => {
     e.preventDefault()
@@ -146,18 +146,6 @@ const ArticleLink = ({
     if (videoSrc && setVideoSrc) {
       setVideoSrc(videoSrc)
     }
-  }
-  if (link) {
-    return (
-      <Link
-        to={link || ''}
-        tabIndex={pageTabIndex}
-        onClick={handleClick}
-        aria-label={videoSrc ? videoLinkLabel : title}
-      >
-        {children}
-      </Link>
-    )
   }
   if (videoSrc && setVideoSrc) {
     return (
@@ -171,6 +159,16 @@ const ArticleLink = ({
       </button>
     )
   }
+  return (
+    <Link
+      to={link || ''}
+      tabIndex={pageTabIndex}
+      onClick={handleClick}
+      aria-label={videoSrc ? videoLinkLabel : title}
+    >
+      {children}
+    </Link>
+  )
 }
 
 const ArticleGridItem = forwardRef<HTMLElement, ArticleType>((props, ref) => {
