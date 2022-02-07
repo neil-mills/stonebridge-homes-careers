@@ -14,10 +14,8 @@ export function usePeopleHRFetch<S>(
     : 'Vacancy'
 
   const makeRequest = async (): Promise<ResponseType<S> | string> => {
-    console.log('API KEY=', process.env.APIKEY)
-    console.log('G API KEY=', process.env.GATSBY_APIKEY)
     let jsonData = {
-      APIKey: process.env.APIKEY,
+      APIKey: process.env.GATSBY_APIKEY,
       Action: action,
     }
     if (data) {
