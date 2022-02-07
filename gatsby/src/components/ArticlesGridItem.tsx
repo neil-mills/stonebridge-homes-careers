@@ -127,15 +127,16 @@ interface ArticleLinkType {
   videoSrc?: string
   videoLinkLabel?: string
   title?: string
+  children: React.ReactNode
 }
 
-const ArticleLink: FC<ArticleLinkType> = ({
+const ArticleLink = ({
   link,
+  videoSrc,
   videoLinkLabel,
   title,
-  videoSrc,
   children,
-}) => {
+}: ArticleLinkType) => {
   const { setVideoSrc, pageTabIndex } = useContext(AppContext)
   const handleClick = (e: MouseEvent): void => {
     e.preventDefault()
