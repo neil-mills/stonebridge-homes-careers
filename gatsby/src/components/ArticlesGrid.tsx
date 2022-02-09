@@ -68,6 +68,7 @@ const Track = styled.div`
     overflow-y: hidden;
     white-space: nowrap;
     scroll-snap-type: x mandatory;
+    justify-content: flex-start;
     scroll-snap-align: start;
     scroll-behavior: smooth;
     &::-webkit-scrollbar {
