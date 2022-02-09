@@ -167,6 +167,11 @@ const Articles: FC<ArticlesProps> = ({
     }
   }, [scrollY, ArticlesGrid])
 
+  useEffect(() => {
+    if (!categoryIdCxt && setCategoryId) {
+      setCategoryId(null)
+    }
+  })
   return (
     <StyledArticles className={className} showCategories={showCategories}>
       <SectionInner>
@@ -206,7 +211,7 @@ const Articles: FC<ArticlesProps> = ({
           <Button
             label={buttonLabel}
             tabIndex={pageTabIndex}
-            callback={() => showMore}
+            link={buttonLink}
           />
         </SectionInner>
       )}
