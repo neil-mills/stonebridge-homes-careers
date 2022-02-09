@@ -9,6 +9,7 @@ import React, {
 } from 'react'
 import { useStaticQuery, graphql } from 'gatsby'
 import Video from '../components/Video'
+import { ArticleType } from '../types'
 
 type ContextType = {
   dialogActive: boolean
@@ -21,6 +22,10 @@ type ContextType = {
   setPageTabIndex: Dispatch<SetStateAction<number>> | null
   setModalTabIndex: Dispatch<SetStateAction<number>> | null
   setPageFocusRef: Dispatch<SetStateAction<React.RefObject<HTMLElement>>> | null
+  setCategoryId: Dispatch<SetStateAction<string[] | null>> | null
+  categoryId: string[] | null
+  setCurrentPage: Dispatch<SetStateAction<number>> | null
+  currentPage: number
   centreDialog: false
   setVideoSrc: ((src: string) => void) | null
   dialogContent: ReactNode | null
@@ -36,6 +41,8 @@ type ContextType = {
   modalTabIndex: number
   dialogRef: React.MutableRefObject<HTMLDivElement> | null
   pageFocusRef: React.RefObject<HTMLElement> | null
+  setFilteredArticles: Dispatch<SetStateAction<ArticleType[]>> | null
+  filteredArticles: ArticleType[]
 }
 
 const AppContext = createContext<ContextType>({
@@ -59,6 +66,12 @@ const AppContext = createContext<ContextType>({
   dialogRef: null,
   setPageFocusRef: null,
   pageFocusRef: null,
+  setCategoryId: null,
+  categoryId: null,
+  setCurrentPage: null,
+  currentPage: 1,
+  setFilteredArticles: null,
+  filteredArticles: [],
 })
 
 export const AppContextProvider: FC = ({ children }): JSX.Element => {
@@ -70,7 +83,10 @@ export const AppContextProvider: FC = ({ children }): JSX.Element => {
   const [activePage, setActivePage] = useState<ReactNode>(null)
   const [pageTabIndex, setPageTabIndex] = useState<number>(0)
   const [modalTabIndex, setModalTabIndex] = useState<number>(-1)
+  const [categoryId, setCategoryId] = useState<string[] | null>(null)
+  const [currentPage, setCurrentPage] = useState<number>(1)
   const dialogRef = useRef<HTMLDivElement>(null)
+  const [filteredArticles, setFilteredArticles] = useState<ArticleType[]>([])
   const [pageFocusRef, setPageFocusRef] =
     useState<React.RefObject<HTMLElement> | null>(null)
 
@@ -130,9 +146,15 @@ export const AppContextProvider: FC = ({ children }): JSX.Element => {
         modalTabIndex,
         setPageTabIndex,
         setModalTabIndex,
+        setCategoryId,
+        categoryId,
+        setCurrentPage,
+        currentPage,
         dialogRef,
         pageFocusRef,
         setPageFocusRef,
+        setFilteredArticles,
+        filteredArticles,
         ...settings.nodes[1],
       }}
     >

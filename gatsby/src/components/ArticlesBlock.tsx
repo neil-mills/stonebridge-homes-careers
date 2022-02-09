@@ -1,4 +1,12 @@
-import React, { FC, useContext, useEffect, useState } from 'react'
+import React, {
+  FC,
+  useContext,
+  useMemo,
+  useLayoutEffect,
+  useRef,
+  useEffect,
+  useState,
+} from 'react'
 import styled, { css } from 'styled-components'
 import {
   GutterPaddingTop,
@@ -13,6 +21,7 @@ import ArticlesGrid from './ArticlesGrid'
 import Button from './Button'
 import { ArticleType, CategoryType } from '../types'
 import AppContext from '../context/AppContext'
+import { navigate } from 'gatsby'
 
 const StyledArticles = styled.section<{ showCategories: boolean }>`
   ${GutterPaddingTop}
@@ -63,13 +72,16 @@ interface ArticlesProps {
   showArticles?: string
   selectedArticles?: ArticleType[]
   articles?: ArticleType[]
+  categories: CategoryType[]
   showCategories?: boolean
   buttonLabel?: string
   buttonLink?: string
   carousel?: boolean
-  currentPage?: number
+  currentPageCxt?: number
   className?: string
-  perPage?: string
+  isPaginated?: boolean
+  dataSource: string
+  categoryIdCxt: string[] | null
 }
 
 const Articles: FC<ArticlesProps> = ({
@@ -81,46 +93,83 @@ const Articles: FC<ArticlesProps> = ({
   selectedArticles = [],
   articles = [],
   showCategories = false,
+  categories = [],
   buttonLabel = '',
   buttonLink = '',
   carousel = false,
-  currentPage = 1,
-  perPage = 'all',
   className = '',
+  // currentPageCxt = null,
+  categoryIdCxt = null,
+  // dataSource = '',
 }) => {
-  const [categories, setCategories] = useState<CategoryType[]>([])
+  const { pageTabIndex, categoryId, setCategoryId } = useContext(AppContext)
 
-  let filteredArticles: ArticleType[] =
-    showArticles === 'selected' ? selectedArticles : articles
-  const totalPages =
-    perPage !== 'all'
-      ? Math.ceil(filteredArticles.length / parseInt(perPage))
-      : 1
-  const articlesPerPage =
-    perPage === 'all' ? filteredArticles.length : parseInt(perPage)
-  const start = (currentPage - 1) * articlesPerPage
-  filteredArticles = filteredArticles.filter(
-    (article, i) => i >= start && i < start + articlesPerPage
-  )
-  const { pageTabIndex } = useContext(AppContext)
+  const gridRef = useRef<HTMLDivElement | null>(null)
 
-  useEffect(() => {
-    const categories: CategoryType[] = articles.reduce(
-      (acc: CategoryType[], article: ArticleType) => {
-        if (article.categories) {
-          const uniqueCats = article.categories.filter(
-            ({ id }) => !acc.map(cat => cat.id).includes(id)
-          )
-          if (uniqueCats.length) {
-            acc = [...acc, ...uniqueCats]
-          }
+  const getFilteredArticles = (): ArticleType[] => {
+    const pageSize: number = process.env.GATSBY_PAGE_SIZE
+      ? parseInt(process.env.GATSBY_PAGE_SIZE)
+      : 9
+
+    let filtered: ArticleType[] =
+      showArticles === 'selected' ? selectedArticles : articles
+    const catId = !categoryId && categoryIdCxt ? categoryIdCxt : categoryId
+    // if (catId && setCategoryId) setCategoryId(catId)
+    if (showCategories) {
+      //filter by category if set
+      if (catId !== null && catId.length) {
+        filtered = articles.filter(({ categories }) =>
+          categories
+            ? categories.map(c => c.id).some(id => catId.includes(id))
+            : false
+        )
+      }
+
+      const totalPages = Math.ceil(filtered.length / pageSize)
+      let pagedArticles: ArticleType[][] = []
+
+      //define the pages
+      Array.from({ length: totalPages }).forEach((_, i) => {
+        const skip = i * pageSize
+        const limit = skip + pageSize
+        pagedArticles = [
+          ...pagedArticles,
+          filtered.filter((_, index) => index >= skip && index < limit),
+        ]
+      })
+    }
+    // if (append) {
+    //   setFilteredArticles()
+    // }
+    return filtered
+  }
+
+  const showMore = () => {
+    navigate('/our-community/page/3')
+    // if (setCurrentPage) {
+    //   console.log('show more')
+    //   setCurrentPage(prevState => prevState + 1)
+    // }
+    // setFilteredArticles([...filteredArticles, filteredArticles[0]])
+  }
+
+  const scrollY = useMemo(() => {
+    if (typeof document !== 'undefined') {
+      return document.documentElement.scrollTop
+    }
+    return 0
+  }, [ArticlesGrid])
+
+  useLayoutEffect(() => {
+    if (scrollY) {
+      setTimeout(() => {
+        if (typeof document !== 'undefined') {
+          document.documentElement.scrollTop = scrollY
         }
-        return acc
-      },
-      []
-    )
-    setCategories(categories)
-  }, [])
+      }, 0)
+    }
+  }, [scrollY, ArticlesGrid])
+
   return (
     <StyledArticles className={className} showCategories={showCategories}>
       <SectionInner>
@@ -134,30 +183,35 @@ const Articles: FC<ArticlesProps> = ({
           />
         )}
       </SectionInner>
-      {showCategories && categories.length && (
-        <ArticleCategoryMenu categories={categories} />
-      )}
+      {showCategories && <ArticleCategoryMenu categories={categories} />}
       <ArticlesWrapper showCategories={showCategories}>
         <SectionInner>
-          <ArticlesGrid carousel={carousel} articles={filteredArticles} />
+          {articles.length && (
+            <ArticlesGrid
+              carousel={carousel}
+              articles={getFilteredArticles()}
+              ref={gridRef}
+            />
+          )}
         </SectionInner>
       </ArticlesWrapper>
-      {currentPage !== totalPages && (
-        <ButtonWrapper showCategories={showCategories}>
-          <Button
-            label={'Load more'}
-            link={'/'}
-            secondary={true}
-            tabIndex={pageTabIndex}
-          />
-        </ButtonWrapper>
-      )}
+
+      {/* <ButtonWrapper showCategories={showCategories}>
+        <Button
+          label={'Load more'}
+          link={'/'}
+          secondary={true}
+          tabIndex={pageTabIndex}
+          callback={showMore}
+        />
+      </ButtonWrapper> */}
+
       {buttonLabel && buttonLink && (
         <SectionInner>
           <Button
             label={buttonLabel}
-            link={buttonLink}
             tabIndex={pageTabIndex}
+            callback={() => showMore}
           />
         </SectionInner>
       )}

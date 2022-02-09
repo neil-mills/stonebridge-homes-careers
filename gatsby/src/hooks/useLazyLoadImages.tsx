@@ -62,7 +62,8 @@ export const useLazyLoadImages = ({
     if (isInViewport && (srcSet || src)) {
       preloadImages()
     }
-  }, [isInViewport])
+    return () => setIsLoaded(false)
+  }, [isInViewport, srcSet])
 
   return [isLoaded, isError]
 }

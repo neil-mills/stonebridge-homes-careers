@@ -7,6 +7,7 @@ export const SecondaryButton = css`
   display: block;
   line-height: 3.2rem;
   height: 3.2rem;
+  margin: 2px;
   font-size: var(--font-xsmall);
   ${FontMedium}
   background-color: transparent;
@@ -18,10 +19,17 @@ export const SecondaryButton = css`
   &:visited {
     color: var(--green);
   }
+  &:focus {
+    outline: 2px solid var(--black);
+  }
   &:hover,
   &:active,
-  &[aria-current='true'] {
+  &[aria-selected='true'] {
     color: var(--white);
     background-color: var(--green);
+  }
+  &[aria-selected='true'] {
+    pointer-events: none;
+    cursor: pointer;
   }
 `

@@ -137,7 +137,6 @@ const sitePages = async ({ graphql, actions }) => {
   const pageSize = parseInt(process.env.GATSBY_PAGE_SIZE)
   const pageCount = Math.ceil(data.articles.totalCount / pageSize)
   const categories = getArticleCategories(data.articles.nodes)
-  const categoryIds = categories.map(cat => cat.id)
 
   //loop to create the paginated pages
   Array.from({ length: pageCount }).forEach((_, i) => {
@@ -145,11 +144,9 @@ const sitePages = async ({ graphql, actions }) => {
       path: `/our-community/page/${i + 1}`,
       component: pageTemplate,
       context: {
-        skip: i * pageSize,
         currentPage: i + 1,
-        pageSize,
         title: 'Our community',
-        categoryIds,
+        categoryId: null,
         categories,
       },
     })
@@ -161,12 +158,9 @@ const sitePages = async ({ graphql, actions }) => {
       path: `/our-community/category/${slug.current}`,
       component: pageTemplate,
       context: {
-        categoryIds: [id],
+        categoryId: [id],
         categories,
         title: 'Our community',
-        skip: 0,
-        currentPage: 1,
-        pageSize: data.articles.totalCount,
       },
     })
   })
@@ -177,10 +171,7 @@ const sitePages = async ({ graphql, actions }) => {
       component: articleTemplate,
       context: {
         id: article.id,
-        skip: 0,
-        currentPage: 1,
-        pageSize: data.articles.totalCount,
-        categoryIds,
+        categoryId: null,
         categories,
       },
     })
@@ -194,10 +185,7 @@ const sitePages = async ({ graphql, actions }) => {
         id: page.id,
         title: page.title,
         slug: page.slug.current,
-        skip: 0,
-        currentPage: 1,
-        pageSize: data.articles.totalCount,
-        categoryIds,
+        categoryId: null,
         categories,
       },
     })

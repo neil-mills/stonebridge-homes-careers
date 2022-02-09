@@ -189,12 +189,47 @@ const ArticleGridItem = forwardRef<HTMLElement, ArticleType>((props, ref) => {
   const [animate, setAnimate] = useState(false)
   const imageRef = useRef<HTMLElement | null>(null)
   const isInViewport = useIsInViewport(imageRef)
+
+  const [imageY, setImageY] = useState(50)
   const [isLoaded] = useLazyLoadImages({
     ref: imageRef,
     srcSet: image.asset.fluid.srcSet,
   })
 
-  const [imageY, setImageY] = useState(50)
+  // useEffect(() => {
+  //   const inViewport = isInViewport()
+  //   const setToAnimate = !inViewport && props.animateOnLoad
+  //   setWillAnimate(setToAnimate || false)
+  //   if (image.crop) {
+  //     const { top, bottom } = image.crop
+  //     setImageY(Math.ceil(top * 100 + bottom * 100))
+  //   }
+  // }, [])
+
+  // useEffect(() => {
+  //   console.log('is loaded=', isLoaded)
+  //   const inViewport = isInViewport()
+  //   console.log('is in viewport=', inViewport)
+  //   const setToAnimate = !inViewport && props.animateOnLoad
+  //   setWillAnimate(setToAnimate || false)
+  //   // setSrc('')
+  //   // setSrcSet('')
+  //   // setAnimate(false)
+  //   if (isLoaded) {
+  //     if (image.asset.fluid.srcSet) {
+  //       setSrcSet(image.asset.fluid.srcSet)
+  //     }
+  //     if (image.asset.fluid.src) {
+  //       setSrc(image.asset.fluid.src)
+  //     }
+  //     setTimeout(() => {
+  //       setAnimate(true)
+  //     }, 200)
+  //   }
+  //   return () => {
+  //     clearTimeout()
+  //   }
+  // }, [isLoaded, image.asset.fluid.srcSet])
 
   useEffect(() => {
     const inViewport = isInViewport()
@@ -209,6 +244,7 @@ const ArticleGridItem = forwardRef<HTMLElement, ArticleType>((props, ref) => {
 
   useEffect(() => {
     if (isLoaded) {
+      console.log('loaded')
       if (image.asset.fluid.srcSet) {
         setSrcSet(image.asset.fluid.srcSet)
       }
@@ -219,7 +255,7 @@ const ArticleGridItem = forwardRef<HTMLElement, ArticleType>((props, ref) => {
         setAnimate(true)
       }, 200)
     }
-  }, [isLoaded])
+  }, [isLoaded, image.asset.fluid.srcSet])
 
   return (
     <ArticleItemStyles
@@ -237,8 +273,12 @@ const ArticleGridItem = forwardRef<HTMLElement, ArticleType>((props, ref) => {
         videoLinkLabel={videoLinkLabel}
       >
         <picture ref={imageRef}>
-          <source srcSet={srcSet} />
-          <img src={src} alt={videoUrl ? title : imageAlt} />
+          {isLoaded && (
+            <>
+              <source srcSet={srcSet} />
+              <img src={src} alt={videoUrl ? title : imageAlt} />
+            </>
+          )}
         </picture>
         <div>
           {date && <time dateTime="{date}">{date}</time>}

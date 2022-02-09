@@ -1,4 +1,4 @@
-import React, { FC, useContext } from 'react'
+import React, { FC } from 'react'
 import { graphql } from 'gatsby'
 import HomeBanner from '../components/HomeBanner'
 import ImageAndTextBlock from '../components/ImageAndTextBlock'
@@ -11,13 +11,23 @@ import Values from '../components/Values'
 import SubContractor from '../components/SubContractor'
 import VacancyList from '../components/VacancyList'
 import Quotes from '../components/Quotes'
-import AppContext from '../context/AppContext'
+import { CategoryType } from '../types'
+
 interface Props {
-  pageContext: { id: string; title: string; slug: string }
+  pageContext: {
+    id: string
+    title: string
+    slug: string
+    skip: number
+    currentPage?: number
+    pageSize: number
+    categoryId: string[] | null
+    categories: CategoryType[]
+  }
 }
+
 const PageTemplate: FC<Props> = ({ data, pageContext }) => {
-  const { title } = pageContext
-  const { setDialogActive } = useContext(AppContext)
+  const { categories, categoryId, currentPage = null } = pageContext
 
   return (
     <>
@@ -79,17 +89,20 @@ const PageTemplate: FC<Props> = ({ data, pageContext }) => {
                 headingLevel={contentType[0].headingLevel}
                 showArticles={contentType[0].showArticles}
                 selectedArticles={contentType[0].selectedArticles}
+                dataSource={contentType[0].dataSource}
                 articles={
                   contentType[0].dataSource === 'articles'
                     ? data.articles.nodes
                     : data.people.nodes
                 }
                 showCategories={contentType[0].showCategories}
+                categories={categories}
+                categoryIdCxt={categoryId}
                 buttonLabel={contentType[0].buttonLabel}
                 buttonLink={contentType[0].buttonLink}
                 carousel={contentType[0].carousel}
-                currentPage={contentType[0].currentPage}
-                perPage={contentType[0].perPage}
+                currentPageCxt={currentPage}
+                isPaginated={contentType[0].isPaginated}
               />
             )
           case 'parallaxImageBlock':
@@ -245,7 +258,7 @@ export const query = graphql`
               dataSource
               showArticles
               carousel
-              perPage
+              isPaginated
               showCategories
               buttonLabel
             }

@@ -67,21 +67,11 @@ export default {
       initialValue: false,
     },
     {
-      title: 'Items per page',
-      name: 'perPage',
-      description: 'The number of items to display on each page',
-      type: 'string',
-      options: {
-        list: [
-          { title: '3', value: '3' },
-          { title: '6', value: '6' },
-          { title: '9', value: '9' },
-          { title: '12', value: '12' },
-          { title: 'All', value: 'all' },
-        ],
-        layout: 'dropdown',
-      },
-      initialValue: 'all',
+      title: 'Paginated',
+      name: 'isPaginated',
+      type: 'boolean',
+      description: 'Articles are paginated',
+      initialValue: false,
       hidden: ({ parent }) =>
         parent?.showArticles === 'selected' || parent.carousel,
     },
