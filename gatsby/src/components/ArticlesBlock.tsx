@@ -72,7 +72,7 @@ interface ArticlesProps {
   showArticles?: string
   selectedArticles?: ArticleType[]
   articles?: ArticleType[]
-  categories: CategoryType[]
+  categories?: CategoryType[]
   showCategories?: boolean
   buttonLabel?: string
   buttonLink?: string
@@ -80,8 +80,8 @@ interface ArticlesProps {
   currentPageCxt?: number
   className?: string
   isPaginated?: boolean
-  dataSource: string
-  categoryIdCxt: string[] | null
+  dataSource?: string
+  categoryIdCxt?: string[] | null
 }
 
 const Articles: FC<ArticlesProps> = ({
@@ -110,7 +110,6 @@ const Articles: FC<ArticlesProps> = ({
     const pageSize: number = process.env.GATSBY_PAGE_SIZE
       ? parseInt(process.env.GATSBY_PAGE_SIZE)
       : 9
-
     let filtered: ArticleType[] =
       showArticles === 'selected' ? selectedArticles : articles
     const catId = !categoryId && categoryIdCxt ? categoryIdCxt : categoryId
@@ -138,9 +137,7 @@ const Articles: FC<ArticlesProps> = ({
         ]
       })
     }
-    // if (append) {
-    //   setFilteredArticles()
-    // }
+
     return filtered
   }
 
@@ -186,13 +183,11 @@ const Articles: FC<ArticlesProps> = ({
       {showCategories && <ArticleCategoryMenu categories={categories} />}
       <ArticlesWrapper showCategories={showCategories}>
         <SectionInner>
-          {articles.length && (
-            <ArticlesGrid
-              carousel={carousel}
-              articles={getFilteredArticles()}
-              ref={gridRef}
-            />
-          )}
+          <ArticlesGrid
+            carousel={carousel}
+            articles={getFilteredArticles()}
+            ref={gridRef}
+          />
         </SectionInner>
       </ArticlesWrapper>
 
