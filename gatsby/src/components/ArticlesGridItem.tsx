@@ -39,6 +39,8 @@ const ArticleItemStyles = styled.article<{
   a {
     cursor: pointer;
     display: block;
+    width: 100%;
+    height: 100%;
   }
   button {
     border: none;
