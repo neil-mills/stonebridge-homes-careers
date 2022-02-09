@@ -117,7 +117,7 @@ const ArticleItemStyles = styled.article<{
     display: inline-block;
     margin-right: 2rem;
     &:last-child {
-      margin: 0;
+      margin-right: 0;
     }
   }
 `
@@ -240,11 +240,14 @@ const ArticleGridItem = forwardRef<HTMLElement, ArticleType>((props, ref) => {
       const { top, bottom } = image.crop
       setImageY(Math.ceil(top * 100 + bottom * 100))
     }
+    return () => {
+      // setWillAnimate(false)
+      // setAnimate(false)
+    }
   }, [])
 
   useEffect(() => {
     if (isLoaded) {
-      console.log('loaded')
       if (image.asset.fluid.srcSet) {
         setSrcSet(image.asset.fluid.srcSet)
       }
@@ -254,6 +257,9 @@ const ArticleGridItem = forwardRef<HTMLElement, ArticleType>((props, ref) => {
       setTimeout(() => {
         setAnimate(true)
       }, 200)
+      return () => {
+        clearTimeout()
+      }
     }
   }, [isLoaded, image.asset.fluid.srcSet])
 
