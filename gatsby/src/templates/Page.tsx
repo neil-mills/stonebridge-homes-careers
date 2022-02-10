@@ -1,4 +1,4 @@
-import React, { FC } from 'react'
+import React, { FC, useEffect } from 'react'
 import { graphql } from 'gatsby'
 import HomeBanner from '../components/HomeBanner'
 import ImageAndTextBlock from '../components/ImageAndTextBlock'
@@ -28,7 +28,14 @@ interface Props {
 
 const PageTemplate: FC<Props> = ({ data, pageContext }) => {
   const { categories, categoryId, currentPage = null } = pageContext
-
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      setTimeout(() => {
+        window.scrollTo(0, 0)
+      }, 0)
+    }
+    return () => clearTimeout()
+  }, [])
   return (
     <>
       {data.pages.nodes[0].content.map(({ contentType }, i: number) => {

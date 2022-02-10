@@ -71,6 +71,12 @@ const SingleArticlePage: FC<Props> = ({ data, className }): JSX.Element => {
       const { top, bottom } = data.article.image.crop
       setImageY(Math.ceil(top * 100 + bottom * 100))
     }
+    if (typeof window !== 'undefined') {
+      setTimeout(() => {
+        window.scrollTo(0, 0)
+      }, 0)
+    }
+    return () => clearTimeout()
   }, [])
 
   useEffect(() => {

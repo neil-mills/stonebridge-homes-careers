@@ -1,4 +1,4 @@
-import React, { FC, useRef, useContext, useState } from 'react'
+import React, { FC, useRef, useContext, useState, useEffect } from 'react'
 
 import { graphql } from 'gatsby'
 import styled from 'styled-components'
@@ -68,6 +68,14 @@ const SingleVacancyPage: FC<Props> = ({ data, className }) => {
   const formRef = useRef(null)
   const [focusForm, setFocusForm] = useState(false)
   const { pageTabIndex } = useContext(AppContext)
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      setTimeout(() => {
+        window.scrollTo(0, 0)
+      }, 0)
+    }
+    return () => clearTimeout()
+  })
   const regex =
     /face="(.*?)"|style="(.*?)"|<font(.*?)>|<\/font>|&nbsp;|<p[^>]*><\/p[^>]*>/gi
   let description: string = data.vacancy.JobDescription.replaceAll(regex, '')
