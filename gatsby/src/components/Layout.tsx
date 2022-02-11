@@ -10,6 +10,7 @@ import AppContext from '../context/AppContext'
 import Dialog from '../components/Dialog'
 import { useStaticQuery, graphql } from 'gatsby'
 import { NavigationLink } from '../types/navigation'
+import { VacancyType, ArticleType } from '../types'
 
 interface PageProps {
   seoTitle: string
@@ -17,10 +18,22 @@ interface PageProps {
 }
 interface LayoutProps {
   data: {
-    pages: { nodes: PageProps[] }
+    pages?: { nodes: PageProps[] }
+    vacancy?: VacancyType
+    article?: ArticleType
   }
 }
 const Layout: FC<LayoutProps> = ({ data, children }) => {
+  let title = data?.pages?.nodes[0]?.seoTitle
+  let desc = data?.pages?.nodes[0]?.seoDescription
+  if (data.vacancy) {
+    title = data.vacancy.VacancyName
+    desc = data.vacancy.VacancyDescription
+  }
+  if (data.article) {
+    title = data.article.title
+    desc = ''
+  }
   const { bodyNoScroll, dialogContent } = useContext(AppContext)
   const { menus } = useStaticQuery(graphql`
     query {
@@ -57,7 +70,8 @@ const Layout: FC<LayoutProps> = ({ data, children }) => {
           type="image/png"
           href="https://stonebridgehomes.co.uk/_protected/logo-emblem.png"
         />
-        <meta name="description" content={data.pages.nodes[0].seoDescription} />
+        <title>{title}</title>
+        <meta name="description" content={desc} />
         <meta property="og:locale" content="en_GB" />
         <meta property="og:type" content="website" />
         <meta
