@@ -11,7 +11,16 @@ import Dialog from '../components/Dialog'
 import { useStaticQuery, graphql } from 'gatsby'
 import { NavigationLink } from '../types/navigation'
 
-const Layout: FC = ({ children }) => {
+interface PageProps {
+  seoTitle: string
+  seoDescription: string
+}
+interface LayoutProps {
+  data: {
+    pages: { nodes: PageProps[] }
+  }
+}
+const Layout: FC<LayoutProps> = ({ data, children }) => {
   const { bodyNoScroll, dialogContent } = useContext(AppContext)
   const { menus } = useStaticQuery(graphql`
     query {
@@ -42,7 +51,10 @@ const Layout: FC = ({ children }) => {
     <>
       <GlobalStyles />
       <Typography />
-      <Helmet bodyAttributes={{ 'data-noscroll': bodyNoScroll }} />
+      <Helmet bodyAttributes={{ 'data-noscroll': bodyNoScroll }}>
+        <title>{data.pages.nodes[0].seoTitle}</title>
+        <meta name="description" content={data.pages.nodes[0].seoDescription} />
+      </Helmet>
       <Dialog centred={true}>{dialogContent}</Dialog>
       <Header navOptions={headerNav} />
       <MobileNav />

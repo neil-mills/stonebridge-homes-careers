@@ -152,6 +152,8 @@ export const query = graphql`
       nodes {
         id
         title
+        seoTitle
+        seoDescription
         content {
           contentType {
             ... on SanityHomeBanner {
