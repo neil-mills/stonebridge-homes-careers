@@ -52,8 +52,38 @@ const Layout: FC<LayoutProps> = ({ data, children }) => {
       <GlobalStyles />
       <Typography />
       <Helmet bodyAttributes={{ 'data-noscroll': bodyNoScroll }}>
-        <title>{data.pages.nodes[0].seoTitle}</title>
+        <link
+          rel="icon"
+          type="image/png"
+          href="https://stonebridgehomes.co.uk/_protected/logo-emblem.png"
+        />
         <meta name="description" content={data.pages.nodes[0].seoDescription} />
+        <meta property="og:locale" content="en_GB" />
+        <meta property="og:type" content="website" />
+        <meta
+          property="og:title"
+          content="Careers in Yorkshire with Stonebridge Homes"
+        />
+        <meta
+          property="og:description"
+          content="There has never been a more exciting time to join the house building industry or Stonebridge as we embark on our ambitious growth plan to become a multi-regional house builder."
+        />
+        <meta
+          property="og:url"
+          content="https://careers.stonebridgehomes.co.uk/"
+        />
+        <meta property="og:site_name" content="Stonebridge Homes Careers" />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta
+          name="twitter:description"
+          content="There has never been a more exciting time to join the house building industry or Stonebridge as we embark on our ambitious growth plan to become a multi-regional house builder."
+        />
+        <meta
+          name="twitter:title"
+          content="Careers in Yorkshire with Stonebridge Homes"
+        />
+        <meta name="twitter:site" content="@StonebridgeHome" />
+        <meta name="twitter:creator" content="@StonebridgeHome" />
       </Helmet>
       <Dialog centred={true}>{dialogContent}</Dialog>
       <Header navOptions={headerNav} />
