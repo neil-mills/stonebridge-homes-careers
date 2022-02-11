@@ -11,6 +11,7 @@ import Values from '../components/Values'
 import SubContractor from '../components/SubContractor'
 import VacancyList from '../components/VacancyList'
 import Quotes from '../components/Quotes'
+import TextBlock from '../components/TextBlock'
 import { CategoryType } from '../types'
 
 interface Props {
@@ -138,6 +139,14 @@ const PageTemplate: FC<Props> = ({ data, pageContext }) => {
             return <VacancyList key={i} {...contentType[0]} />
           case 'quoteListBlock':
             return <Quotes key={i} {...contentType[0]} />
+          case 'textBlock':
+            return (
+              <TextBlock
+                key={i}
+                {...contentType[0]}
+                text={contentType[0].textBlock}
+              />
+            )
           default:
             return null
         }
@@ -373,6 +382,18 @@ export const query = graphql`
                       src
                     }
                   }
+                }
+              }
+            }
+            ... on SanityTextBlock {
+              _key
+              _type
+              heading
+              subHeading
+              _rawText
+              textBlock: text {
+                children {
+                  text
                 }
               }
             }

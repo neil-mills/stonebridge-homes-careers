@@ -61,5 +61,10 @@ export default {
       name: 'quoteListBlock',
       type: 'quoteListBlock',
     },
+    {
+      title: 'Text block',
+      name: 'textBlock',
+      type: 'textBlock',
+    },
   ],
 };

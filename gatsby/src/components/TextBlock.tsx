@@ -77,6 +77,7 @@ const TextBlockItem = ({
 }
 
 const TextBlock: FC<TextBlockType> = props => {
+  console.log('props=', props)
   return (
     <Section className={props.className} marginTop={true} marginBottom={true}>
       {props.heading && <Heading heading={props.heading} />}
