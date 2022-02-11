@@ -17,7 +17,7 @@ import AppContext from '../context/AppContext'
 
 interface IconCardProps {
   _key: string
-  icon: { asset: { originalFilename: string; url: string; title: string } }
+  icon: string
   subTitle?: string
   title: string
   text: string
@@ -187,7 +187,6 @@ const IconCard: FC<IconCardProps> = ({
       window.removeEventListener('resize', handleResize)
     }
   }, [])
-
   return (
     <IconCardStyles ref={cardRef}>
       <TitleCardWrapper
@@ -199,7 +198,7 @@ const IconCard: FC<IconCardProps> = ({
         handleCardBlur={handleCardBlur}
       >
         <IconTitle
-          icon={icon.asset.url}
+          icon={icon}
           subTitle={subTitle}
           title={title}
           align={'left'}
