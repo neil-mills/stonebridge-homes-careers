@@ -61,7 +61,6 @@ const IconTitle: FC<Props> = ({
   size = 'sm',
   id = '',
 }) => {
-  console.log(icon)
   return (
     <IconTitleStyles align={align} size={size}>
       {icon && <div dangerouslySetInnerHTML={{ __html: icon }} />}
