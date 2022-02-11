@@ -1,4 +1,10 @@
-import React, { useState, useEffect, useRef, useContext } from 'react'
+import React, {
+  useState,
+  useEffect,
+  useRef,
+  useContext,
+  MouseEvent,
+} from 'react'
 import styled from 'styled-components'
 import PlayIcon from '../assets/svg/play.svg'
 import { MarginBottomNone } from '../assets/styles/Utils'
@@ -117,7 +123,7 @@ const ImageAndTextBlock = ({
     },
   })
 
-  const handleCallback = (e: Event): void => {
+  const handleCallback = (e: MouseEvent): void => {
     if (videoSrc && setVideoSrc) {
       setVideoSrc(videoSrc)
     }
