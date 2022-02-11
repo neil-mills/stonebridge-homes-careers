@@ -11,7 +11,7 @@ interface ButtonProps {
   label: string
   link?: string
   type?: 'button' | 'submit'
-  callback?: ((e: Event) => void) | null
+  callback?: ((e: MouseEvent) => void) | null
   secondary?: boolean
   className?: string
   disabled?: boolean
@@ -58,41 +58,28 @@ const StyledButton = styled.button<Props>`
   }
 `
 const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
-  (
-    {
-      label,
-      link,
-      type = 'button',
-      callback = null,
-      secondary = false,
-      className = '',
-      disabled = false,
-      icon,
-      tabIndex = 0,
-    },
-    ref
-  ) => {
+  (props, ref) => {
     const handleClick = (e: MouseEvent) => {
-      if (callback) {
-        callback(e)
+      if (props.callback) {
+        props.callback(e)
       }
-      if (!callback && link) {
-        navigate(link)
+      if (!props.callback && props.link) {
+        navigate(props.link)
       }
     }
 
     return (
       <StyledButton
-        className={className}
-        type={type}
-        secondary={secondary}
+        className={props.className}
+        type={props.type}
+        secondary={props.secondary}
         onClick={handleClick}
-        disabled={disabled}
-        tabIndex={tabIndex}
+        disabled={props.disabled}
+        tabIndex={props.tabIndex}
         ref={ref}
       >
-        {label}
-        {icon && icon}
+        {props.label}
+        {props.icon && props.icon}
       </StyledButton>
     )
   }
