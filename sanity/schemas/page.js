@@ -8,9 +8,21 @@ export default {
   fields: [
     {
       name: 'title',
+      title: 'Name',
+      type: 'string',
+      description: 'Name of page',
+    },
+    {
+      name: 'seoTitle',
       title: 'Title',
       type: 'string',
-      description: 'Title of page',
+      description: 'Title of page for SEO',
+    },
+    {
+      name: 'seoDescription',
+      title: 'Description',
+      type: 'text',
+      description: 'Description of page for SEO',
     },
     {
       name: 'slug',

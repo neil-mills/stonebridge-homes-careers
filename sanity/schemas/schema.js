@@ -3,6 +3,7 @@ import createSchema from 'part:@sanity/base/schema-creator';
 
 // Then import schema types from any plugins that might expose them
 import schemaTypes from 'all:part:@sanity/base/schema-type';
+import svgUploadPreview from 'sanity-plugin-inline-svg';
 import article from './article';
 import newsCategory from './newsCategory';
 import person from './person';
@@ -68,5 +69,6 @@ export default createSchema({
     valuesBlock,
     valuesItem,
     subContractorBlock,
+    svgUploadPreview,
   ]),
 });

@@ -6,7 +6,7 @@ export default {
     {
       name: 'icon',
       title: 'Icon',
-      type: 'file',
+      type: 'svgUploadPreview',
     },
     {
       name: 'title',

@@ -3,7 +3,7 @@ import styled from 'styled-components'
 import { HeadingMedium, FontRegular } from '../assets/styles/Typography'
 
 interface Props {
-  icon: string
+  icon?: string
   subTitle?: string
   title: string
   align?: string
@@ -30,11 +30,15 @@ const IconTitleStyles = styled.div<StyleProps>`
       ${FontRegular}
     }
   }
-  img {
+  div {
     height: ${props => (props.size === 'lg' ? '80px' : '40px')};
     width: auto;
     margin-bottom: 2rem;
     display: inline-block;
+    svg {
+      height: 100%;
+      width: auto;
+    }
   }
   @media screen and (min-width: 768px) {
     max-width: 215px;
@@ -57,10 +61,10 @@ const IconTitle: FC<Props> = ({
   size = 'sm',
   id = '',
 }) => {
-  console.log('size=', size)
+  console.log(icon)
   return (
     <IconTitleStyles align={align} size={size}>
-      <img src={icon} />
+      {icon && <div dangerouslySetInnerHTML={{ __html: icon }} />}
       <h3 id={id}>
         {subTitle && <span>{subTitle}</span>}
         {title}

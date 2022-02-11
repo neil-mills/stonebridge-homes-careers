@@ -316,13 +316,7 @@ export const query = graphql`
                 text
                 title
                 subTitle
-                icon {
-                  asset {
-                    originalFilename
-                    url
-                    title
-                  }
-                }
+                icon
                 size
               }
             }
@@ -331,11 +325,7 @@ export const query = graphql`
               items {
                 _key
                 title
-                icon {
-                  asset {
-                    url
-                  }
-                }
+                icon
               }
               heading
               headingLevel

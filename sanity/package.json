@@ -32,6 +32,7 @@
     "react-dom": "^17.0",
     "react-icons": "^3.11.0",
     "sanity": "^2.20.0",
+    "sanity-plugin-inline-svg": "^1.0.3",
     "styled-components": "^5.3.3"
   },
   "devDependencies": {
