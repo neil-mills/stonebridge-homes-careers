@@ -86,15 +86,15 @@ export const GutterPaddingLeft = css`
   }
 `
 export const GapMargin = css`
-  gap: 2rem;
+  grid-gap: 2rem;
   @media screen and (min-width: 768px) {
-    gap: var(--gutter-h);
+    grid-gap: var(--gutter-h);
   }
   @media screen and (min-width: 1024px) {
-    gap: calc(var(--gutter-h) * 1.5);
+    grid-gap: calc(var(--gutter-h) * 1.5);
   }
   @media screen and (min-width: 1600px) {
-    gap: 11rem;
+    grid-gap: 11rem;
   }
 `
 

@@ -21,12 +21,12 @@ const FooterStyles = styled.footer`
   aside {
     display: grid;
     grid-template-rows: auto 20px;
-    gap: 4rem;
+    grid-gap: 4rem;
     border-top: 1px solid var(--white);
     padding-top: 2rem;
     @media screen and (min-width: 768px) {
       justify-content: right;
-      gap: 2.5rem;
+      grid-gap: 2.5rem;
       border: 0;
       padding: 0;
     }

@@ -1,5 +1,4 @@
 import React, {
-  FC,
   forwardRef,
   useRef,
   useEffect,
@@ -58,7 +57,6 @@ const ArticleItemStyles = styled.article<{
     width: 100%;
     background-color: var(--keyline-grey);
     align-items: center;
-
     position: relative;
     display: block;
     &:before {
@@ -86,7 +84,7 @@ const ArticleItemStyles = styled.article<{
   div {
     padding: 2rem 4rem 2rem 2rem;
     position: relative;
-    white-space: break-spaces;
+    white-space: normal;
     svg {
       width: 2.5rem;
       height: 2.5rem;

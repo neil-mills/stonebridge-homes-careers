@@ -95,10 +95,10 @@ const Filters = styled.div`
   display: grid;
   grid-template-rows: repeat(2, auto);
   margin-bottom: 4rem;
-  gap: 2rem;
+  grid-gap: 2rem;
   form {
     display: grid;
-    gap: 1rem;
+    grid-gap: 1rem;
     grid-template-columns: 1fr;
     grid-template-rows: repeat(2, auto);
     justify-content: space-between;
@@ -112,7 +112,7 @@ const Filters = styled.div`
   @media screen and (min-width: 768px) {
     grid-template-columns: 0.3fr 0.7fr;
     grid-template-rows: auto;
-    gap: 0;
+    grid-gap: 0;
     align-items: center;
   }
   @media screen and (min-width: 1024px) {

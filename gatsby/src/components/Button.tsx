@@ -55,6 +55,7 @@ const StyledButton = styled.button<Props>`
   svg {
     width: 2.5rem;
     height: 2.5rem;
+    margin-left: 1rem;
   }
 `
 const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
@@ -78,7 +79,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
         tabIndex={props.tabIndex}
         ref={ref}
       >
-        {props.label}
+        <span>{props.label}</span>
         {props.icon && props.icon}
       </StyledButton>
     )

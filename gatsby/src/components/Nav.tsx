@@ -26,8 +26,9 @@ const NavStyles = styled.nav<{
     display: block;
   }
   ul {
-    display: flex;
-    gap: 4rem;
+    display: grid;
+    grid-auto-flow: column;
+    grid-gap: 4rem;
     height: 100%;
     justify-content: flex-end;
     align-items: center;

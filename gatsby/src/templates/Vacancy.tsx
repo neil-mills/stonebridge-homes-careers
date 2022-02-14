@@ -78,13 +78,13 @@ const SingleVacancyPage: FC<Props> = ({ data, className }) => {
   })
   const regex =
     /face="(.*?)"|style="(.*?)"|<font(.*?)>|<\/font>|&nbsp;|<p[^>]*><\/p[^>]*>/gi
-  let description: string = data.vacancy.JobDescription.replaceAll(regex, '')
+  let description: string = data.vacancy.JobDescription.replace(regex, '')
 
-  description = description.replaceAll('class="paragraph', '')
-  description = description.replaceAll('<p >​</p>', '')
-  description = description.replaceAll(/<span\s?>\s?<\/span>/g, '')
-  description = description.replaceAll('<p>​</p>', '')
-  description = description.replaceAll(/\u200B/g, '')
+  description = description.replace(/class="paragraph/g, '')
+  description = description.replace(/<p\s?>\s?<\/p>/g, '')
+  description = description.replace(/<span\s?>\s?<\/span>/g, '')
+  description = description.replace(/<p[^>]*?><\/p>/g, '')
+  description = description.replace(/\u200B/g, '')
   const headingRegex = /<\s*p[^>]*>([A-Z&\s']+)<\s*\/\s*p\s*>/g
   const headingRegex2 =
     /<\s*p[^>]*>(<span\s?><\/span>)?(<span\s?>)?([A-Z&\s']+)(<\/span>)?<\s*\/\s*p\s*>/g
@@ -102,7 +102,7 @@ const SingleVacancyPage: FC<Props> = ({ data, className }) => {
   while ((result = spanRegex.exec(description)) !== null) {
     description = description.replace(result[0], result[1])
   }
-  description = description.replaceAll(spanRegex2, '• ')
+  description = description.replace(spanRegex2, '• ')
 
   while ((result = spanRegex.exec(description)) !== null) {
     description = description.replace(result[0], result[1])
@@ -114,7 +114,7 @@ const SingleVacancyPage: FC<Props> = ({ data, className }) => {
     )
   }
 
-  description = description.replaceAll('·', '• ')
+  description = description.replace(/·/g, '• ')
 
   while ((result = bulletRegex.exec(description)) !== null) {
     description = description.replace(

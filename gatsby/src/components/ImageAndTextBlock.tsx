@@ -18,9 +18,9 @@ import { useIsInViewport } from '../hooks/useIsInViewport'
 import AppContext from '../context/AppContext'
 const SectionStyles = styled.section`
   display: grid;
-  gap: 2rem;
+  grid-gap: 2rem;
   @media screen and (min-width: 768px) {
-    gap: 0;
+    grid-gap: 0;
   }
   grid-template-rows: repeat(auto, 2);
   align-items: center;

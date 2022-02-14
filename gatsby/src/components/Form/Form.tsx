@@ -17,9 +17,9 @@ const StyledForm = styled.form`
   grid-auto-rows: auto;
   grid-template-columns: 1fr;
   justify-content: start;
-  gap: 1rem;
+  grid-gap: 1rem;
   @media screen and (min-width: 768px) {
-    gap: 2rem;
+    grid-gap: 2rem;
   }
   p.hint {
     font-size: var(--font-xsmall);

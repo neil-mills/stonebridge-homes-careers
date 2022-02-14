@@ -40,14 +40,14 @@ const StyledMobileNav = styled.div<{ active: boolean | undefined }>`
     align-self: flex-end;
     justify-self: flex-start;
     display: grid;
-    gap: 1.5rem;
+    grid-gap: 1.5rem;
     grid-auto-rows: auto;
   }
-  z-index: 2;
+  z-index: 3;
   ul {
     display: grid;
     grid-auto-rows: auto;
-    gap: 1.5rem;
+    grid-gap: 1.5rem;
   }
   a {
     ${HeadingStyle}

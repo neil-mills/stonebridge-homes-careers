@@ -17,7 +17,7 @@ const SocialNavStyles = styled.nav<SocialNavProps>`
     grid-auto-flow: column;
     grid-auto-columns: 20px;
     align-items: top;
-    gap: 2rem;
+    grid-gap: 2rem;
     ${({ color }) =>
       color === 'black' &&
       css`

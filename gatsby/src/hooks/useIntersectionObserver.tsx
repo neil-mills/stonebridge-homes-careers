@@ -30,17 +30,21 @@ export function useIntersectionObserver({
     })
   }
   useEffect(() => {
-    const observer: IntersectionObserver = new IntersectionObserver(
-      callback,
-      observerOptions
-    )
-    if (ref?.current) {
-      observer.observe(ref.current)
-    }
-    return () => {
+    if (typeof window !== 'undefined' && 'IntersectionObserver' in window) {
+      const observer: IntersectionObserver = new IntersectionObserver(
+        callback,
+        observerOptions
+      )
       if (ref?.current) {
-        observer.unobserve(ref.current)
+        observer.observe(ref.current)
       }
+      return () => {
+        if (ref?.current) {
+          observer.unobserve(ref.current)
+        }
+      }
+    } else {
+      setIsInViewport(true)
     }
   }, [])
   return isInViewport

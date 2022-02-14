@@ -27,6 +27,9 @@ const StyledFileInput = styled.div`
   button {
     z-index: 1;
     position: relative;
+    span {
+      padding: 0;
+    }
   }
   input[type='file'] {
     opacity: 0;

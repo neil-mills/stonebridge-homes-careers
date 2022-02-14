@@ -46,7 +46,7 @@ const StyledArticleGrid = styled.div``
 const Track = styled.div`
   [data-carousel='false'] & {
     display: grid;
-    gap: 2rem;
+    grid-gap: 2rem;
     row-gap: 2rem;
     grid-auto-rows: auto;
     grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));

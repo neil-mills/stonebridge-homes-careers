@@ -28,6 +28,7 @@ const StyledDialog = styled.div<{
   h3 {
     padding-bottom: 2rem;
     margin-bottom: 2rem;
+    margin-top: 0;
     border-bottom: 1px solid var(--keyline-grey);
   }
 
