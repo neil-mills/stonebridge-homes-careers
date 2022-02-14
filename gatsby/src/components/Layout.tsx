@@ -71,6 +71,7 @@ const Layout: FC<LayoutProps> = ({ data, children }) => {
           href="https://stonebridgehomes.co.uk/_protected/logo-emblem.png"
         />
         <title>{title}</title>
+        <meta name="robots" content="noindex" />
         <meta name="description" content={desc} />
         <meta property="og:locale" content="en_GB" />
         <meta property="og:type" content="website" />
