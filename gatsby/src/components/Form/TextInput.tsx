@@ -12,6 +12,7 @@ interface Props {
   placeholder?: string
   onChange: (e: ChangeEvent<HTMLInputElement>) => void
   tabIndex?: number
+  ariaDescribedBy?: string
 }
 
 export const StyledTextInput = styled.input`
@@ -46,6 +47,7 @@ export const TextInput = React.forwardRef<HTMLInputElement, Props>(
       value = '',
       placeholder = '',
       tabIndex = 0,
+      ariaDescribedBy = '',
     },
     ref
   ) => {
@@ -64,6 +66,7 @@ export const TextInput = React.forwardRef<HTMLInputElement, Props>(
         autoComplete={'off'}
         placeholder={placeholder}
         tabIndex={tabIndex}
+        aria-describedby={ariaDescribedBy}
       />
     )
   }

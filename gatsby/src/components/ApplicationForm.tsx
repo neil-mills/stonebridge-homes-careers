@@ -332,7 +332,7 @@ const ApplicationForm: FC<Props> = props => {
       </div>
       <div>
         <label htmlFor={'PhoneNumber'}>Phone</label>
-        <p className="hint">
+        <p id={'PhoneNumberHint'} className="hint">
           Include country code and remove first zero from number
         </p>
         <TextInput
@@ -346,6 +346,7 @@ const ApplicationForm: FC<Props> = props => {
           placeholder={'+447000000000'}
           ref={(element: HTMLInputElement) => (fieldsRef.current[4] = element)}
           tabIndex={props.tabIndex}
+          ariaDescribedBy={'PhoneNumberHint'}
         />
       </div>
       {props.isSubContractor ? (
