@@ -57,10 +57,6 @@ const fetchVacanciesAndTurnIntoNodes = async ({
     console.log('ERROR=', err)
   }
 }
-export const sourceNodes = async params => {
-  //fetch list of beers and source them into gatsby api
-  await Promise.all([fetchVacanciesAndTurnIntoNodes(params)])
-}
 
 const vacancyPages = async ({ graphql, actions }) => {
   const pageTemplate = path.resolve('./src/templates/Vacancy.tsx')
@@ -191,7 +187,10 @@ const sitePages = async ({ graphql, actions }) => {
     })
   })
 }
-
+export const sourceNodes = async params => {
+  //fetch list of vacancies and source them into gatsby api
+  await Promise.all([fetchVacanciesAndTurnIntoNodes(params)])
+}
 export const createPages = async params => {
   await Promise.all([sitePages(params), vacancyPages(params)])
 }
