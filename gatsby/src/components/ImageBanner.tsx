@@ -248,7 +248,7 @@ const ImageBanner: FC<ImageBannerProps> = ({
                 <Button
                   label={buttonLabel}
                   tabIndex={pageTabIndex}
-                  link={buttonLink[0].slug.current}
+                  link={buttonLink[0]?.slug?.current}
                 />
               )}
             </div>
