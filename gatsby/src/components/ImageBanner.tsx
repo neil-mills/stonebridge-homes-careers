@@ -245,7 +245,11 @@ const ImageBanner: FC<ImageBannerProps> = ({
               {top ? <h1>{heading}</h1> : <h2>{heading}</h2>}
               <p>{text}</p>
               {buttonLabel && buttonLink && buttonLink.length && (
-                <Button label={buttonLabel} tabIndex={pageTabIndex} />
+                <Button
+                  label={buttonLabel}
+                  tabIndex={pageTabIndex}
+                  link={buttonLink[0].slug.current}
+                />
               )}
             </div>
           </InsetBox>
