@@ -81,7 +81,7 @@ const SingleArticlePage: FC<Props> = ({ data, className }): JSX.Element => {
 
   useEffect(() => {
     if (isLoaded) {
-      console.log('image is loaded')
+      // console.log('image is loaded')
       if (data.article.image.asset.fluid.srcSet) {
         setLoadedSrcSet(data.article.image.asset.fluid.srcSet)
       }

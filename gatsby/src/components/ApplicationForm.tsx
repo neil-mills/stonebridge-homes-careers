@@ -117,7 +117,7 @@ const ApplicationForm: FC<Props> = props => {
     for (const ref of fieldsRef.current) {
       const el = ref as HTMLSelectElement
       if (!el.validity.valid) {
-        console.log(`${el.id} is not valid`)
+        // console.log(`${el.id} is not valid`)
         el.reportValidity()
         error = true
         const scrollToField = useScrollIntoView(el)
@@ -144,14 +144,14 @@ const ApplicationForm: FC<Props> = props => {
     setIsLoading(true)
     const response = await postCheckDuplicateApplicant()
     if (typeof response === 'object' && response.Result) {
-      console.log(response)
+      // console.log(response)
       if (!response.isError) {
         if (response.Result.IsDuplicate === 'False') {
           //post applicant
-          console.log('create new applicant')
+          // console.log('create new applicant')
           const response = await postCreateNewApplicant()
           if (typeof response === 'object' && response.Result) {
-            console.log(response)
+            // console.log(response)
             if (!response.isError) {
               //post applicant cv file
               const { ApplicantId } = response.Result
@@ -167,9 +167,9 @@ const ApplicationForm: FC<Props> = props => {
                       ''
                     ),
                   }))
-                  console.log('upload cv file')
+                  // console.log('upload cv file')
                   const response = await postUploadApplicantDocument()
-                  console.log(response)
+                  // console.log(response)
                   if (typeof response === 'object' && response.Result) {
                     if (!response.isError) {
                       //post application successful
@@ -182,7 +182,7 @@ const ApplicationForm: FC<Props> = props => {
                     } else {
                       //is api error with post upload document
                       setIsLoading(false)
-                      console.log('error with uploading cv')
+                      // console.log('error with uploading cv')
                       setIsError(
                         'There was an error posting your application, please try again.'
                       )
@@ -209,7 +209,7 @@ const ApplicationForm: FC<Props> = props => {
               }
             } else {
               //is api response error with post new applicant request
-              console.log('error with new applicant post')
+              // console.log('error with new applicant post')
               setIsLoading(false)
               setIsError(
                 'There was an error posting your application, please try again.'
@@ -231,7 +231,7 @@ const ApplicationForm: FC<Props> = props => {
       } else {
         //is api response error with check duplicate post
         setIsLoading(false)
-        console.log('error checking duplicate')
+        //  console.log('error checking duplicate')
         setIsError(
           'There was an error posting your application, please try again.'
         )

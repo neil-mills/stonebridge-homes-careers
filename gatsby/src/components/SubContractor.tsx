@@ -32,14 +32,12 @@ const SubContractor: FC<Props> = ({
   const buttonRef = useRef<HTMLElement>(null)
 
   const openDialog = (e: Event) => {
-    console.log(modalTabIndex)
     e.preventDefault()
 
     if (setPageTabIndex) {
       setPageTabIndex(-1)
     }
     if (setModalTabIndex) {
-      console.log('setting')
       setModalTabIndex(0)
     }
     if (stopBodyScroll) {
