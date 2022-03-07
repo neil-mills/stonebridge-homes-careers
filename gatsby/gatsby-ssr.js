@@ -1,6 +1,6 @@
-import React from 'react'
-import Layout from './src/components/Layout'
-import { AppContextProvider } from './src/context/AppContext'
+const React = require('react')
+const Layout = require('./src/components/Layout')
+const { AppContextProvider } = require('./src/context/AppContext')
 
 export const wrapPageElement = ({ element, props }) => {
   return <Layout {...props}>{element}</Layout>
