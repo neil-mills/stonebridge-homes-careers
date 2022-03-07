@@ -142,7 +142,9 @@ const Nav: FC<NavProps> = ({ options }) => {
       }
     })
   }, [])
-
+  if (typeof window === 'undefined') {
+    return
+  }
   return (
     <>
       <MenuButton />
