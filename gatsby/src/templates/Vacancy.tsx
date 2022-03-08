@@ -61,10 +61,10 @@ interface Props {
 }
 
 const SingleVacancyPage: FC<Props> = ({ data, className }) => {
-  const meta = [
-    `Reference: ${data.vacancy.Reference}`,
-    `Closing date: ${data.vacancy.ClosingDate}`,
-  ]
+  const meta = []
+  if (data.vacancy.Reference) meta.push(`Reference: ${data.vacancy.Reference}`)
+  if (data.vacancy.ClosingDate)
+    meta.push(`Closing date: ${data.vacancy.ClosingDate}`)
   const formRef = useRef(null)
   const [focusForm, setFocusForm] = useState(false)
   const { pageTabIndex } = useContext(AppContext)
