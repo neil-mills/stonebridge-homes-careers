@@ -13,7 +13,14 @@ const defaultConfig = {
     'gatsby-plugin-typescript',
     'gatsby-plugin-react-svg',
     'gatsby-plugin-react-helmet',
-    'gatsby-plugin-styled-components',
+    {
+      resolve: 'gatsby-plugin-styled-components',
+      options: {
+        displayName: false,
+        minify: true,
+        ssr: true,
+      },
+    },
     {
       resolve: 'gatsby-source-sanity',
       options: {
