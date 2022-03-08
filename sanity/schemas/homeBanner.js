@@ -23,7 +23,8 @@ export default {
       validation: (Rule) => Rule.required(),
     },
     {
-      title: 'Image',
+      title: 'Mobile image',
+      description: '500px width',
       name: 'image',
       type: 'image',
       options: {
@@ -32,7 +33,8 @@ export default {
       validation: (Rule) => Rule.required(),
     },
     {
-      title: 'Image Desktop',
+      title: 'Large image',
+      description: '1400px width',
       name: 'imageDesktop',
       type: 'image',
       options: {

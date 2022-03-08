@@ -17,6 +17,7 @@ export default {
     },
     {
       title: 'Mobile Image',
+      description: '500px width',
       name: 'srcMobile',
       type: 'image',
       options: {
@@ -25,7 +26,8 @@ export default {
       validation: (Rule) => Rule.required(),
     },
     {
-      title: 'Image',
+      title: 'Large image',
+      description: '1400px width',
       name: 'src',
       type: 'image',
       options: {

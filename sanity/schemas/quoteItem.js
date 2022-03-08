@@ -1,7 +1,10 @@
+import { MdChat as icon } from 'react-icons/md';
+
 export default {
   title: 'Quotes',
   name: 'quoteItem',
   type: 'document',
+  icon,
   fields: [
     {
       title: 'Heading',

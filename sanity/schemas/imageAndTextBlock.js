@@ -30,6 +30,7 @@ export default {
     },
     {
       title: 'Mobile image',
+      description: '500px width',
       name: 'srcMobile',
       type: 'image',
       options: {
@@ -37,7 +38,8 @@ export default {
       },
     },
     {
-      title: 'Image',
+      title: 'Large image',
+      description: '580px width',
       name: 'src',
       type: 'image',
       options: {

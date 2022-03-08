@@ -1,4 +1,4 @@
-import { MdPerson as icon } from 'react-icons/md';
+import { MdOutlineSettings as icon } from 'react-icons/md';
 
 export default {
   name: 'settings',

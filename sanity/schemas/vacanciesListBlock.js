@@ -45,4 +45,12 @@ export default {
       description: 'Visible label of button',
     },
   ],
+  preview: {
+    select: {
+      heading: 'heading',
+    },
+    prepare: ({ heading = 'Vacancies' }) => ({
+      title: heading,
+    }),
+  },
 };

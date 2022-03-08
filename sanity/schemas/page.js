@@ -1,4 +1,4 @@
-import { RiArticleFill as icon } from 'react-icons/ri';
+import { MdPages as icon } from 'react-icons/md';
 
 export default {
   name: 'page',

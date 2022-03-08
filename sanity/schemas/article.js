@@ -1,4 +1,4 @@
-import { MdPerson as icon } from 'react-icons/md';
+import { MdDescription as icon } from 'react-icons/md';
 
 export default {
   name: 'article',
@@ -66,6 +66,13 @@ export default {
       name: 'showImage',
       type: 'boolean',
       description: 'Display image on article page',
+    },
+  ],
+  orderings: [
+    {
+      title: 'Date',
+      name: 'date',
+      by: [{ field: 'date', direction: 'desc' }],
     },
   ],
   preview: {

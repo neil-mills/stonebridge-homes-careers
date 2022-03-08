@@ -10,8 +10,9 @@ export default {
       validation: (Rule) => Rule.required(),
     },
     {
-      title: 'Image',
+      title: 'Mobile image',
       name: 'src',
+      description: '500px width',
       type: 'image',
       options: {
         hotspot: true,
@@ -21,6 +22,7 @@ export default {
     {
       title: 'Large image',
       name: 'srcLarge',
+      description: '1400px width',
       type: 'image',
       options: {
         hotspot: true,

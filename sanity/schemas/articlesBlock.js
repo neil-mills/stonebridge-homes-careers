@@ -116,10 +116,10 @@ export default {
   ],
   preview: {
     select: {
-      title: 'name',
+      title: 'heading',
       contentType: 'contentType.0.title',
     },
-    prepare({ title }) {
+    prepare({ title = 'Articles' }) {
       return {
         title,
       };

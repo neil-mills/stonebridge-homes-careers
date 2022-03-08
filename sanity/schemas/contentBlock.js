@@ -1,4 +1,4 @@
-import { BsFillLayersFill as icon } from 'react-icons/bs';
+import { MdLayers as icon } from 'react-icons/md';
 
 export default {
   name: 'contentBlock',
