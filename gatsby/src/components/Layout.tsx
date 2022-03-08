@@ -26,11 +26,11 @@ interface LayoutProps {
 const Layout: FC<LayoutProps> = ({ data, children }) => {
   let title = data?.pages?.nodes[0]?.seoTitle
   let desc = data?.pages?.nodes[0]?.seoDescription
-  if (data.vacancy) {
+  if (data?.vacancy) {
     title = data.vacancy.VacancyName
     desc = data.vacancy.VacancyDescription
   }
-  if (data.article) {
+  if (data?.article) {
     title = data.article.title
     desc = ''
   }
