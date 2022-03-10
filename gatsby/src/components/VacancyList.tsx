@@ -175,12 +175,14 @@ const VacancyList: FC<Props> = props => {
             i < parseInt(props.limit) &&
             vacancy.Reference !== 'VA6' &&
             (new Date(vacancy.ClosingDate).getTime() >= new Date().getTime() ||
-              vacancy.Reference === 'VA7')
+              vacancy.Reference === 'VA7' ||
+              !vacancy.ClosingDate)
         )
       : vacancies.nodes.filter(
           (vacancy: VacancyType) =>
             (new Date(vacancy.ClosingDate).getTime() >= new Date().getTime() ||
-              vacancy.Reference === 'VA7') &&
+              vacancy.Reference === 'VA7' ||
+              !vacancy.ClosingDate) &&
             vacancy.Reference !== 'VA6'
         )
   )
