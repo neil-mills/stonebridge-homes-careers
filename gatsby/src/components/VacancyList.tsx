@@ -174,9 +174,7 @@ const VacancyList: FC<Props> = props => {
           },
           body: JSON.stringify(jsonData),
         })
-        console.log('here')
         const vacanciesResult = await res.json()
-        console.log(vacanciesResult)
         setIsLoading(false)
         const { isError, Status, Result } = vacanciesResult
         setIsError(Status === 6 || isError)
@@ -210,7 +208,6 @@ const VacancyList: FC<Props> = props => {
 
   useEffect(() => {
     if (vacancies.length) {
-      console.log(`filtering ${vacancies.length} vacancies`)
       const locations = [
         ...new Set(vacancies.map(({ Location }: VacancyType) => Location)),
       ].map(location => ({ label: location, value: location }))
@@ -235,7 +232,7 @@ const VacancyList: FC<Props> = props => {
         )
       setFilteredVacancies(filteredResults)
     }
-  }, [vacancies])
+  }, [vacancies, selectedFilters])
 
   return (
     <Section tint={true} marginTop={true} marginBottom={true}>
@@ -293,7 +290,7 @@ const VacancyList: FC<Props> = props => {
             </thead>
             <tbody>
               {filteredVacancies.map((vacancy: VacancyType) => (
-                <tr key={vacancy.id}>
+                <tr key={vacancy.Reference.toLowerCase()}>
                   <td>
                     <Link
                       tabIndex={pageTabIndex}
