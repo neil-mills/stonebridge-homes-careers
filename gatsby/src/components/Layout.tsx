@@ -24,8 +24,13 @@ interface LayoutProps {
   }
 }
 const Layout: FC<LayoutProps> = ({ data, children }) => {
-  let title = data?.pages?.nodes[0]?.seoTitle
-  let desc = data?.pages?.nodes[0]?.seoDescription
+  const { bodyNoScroll, dialogContent, pageTitle } = useContext(AppContext)
+  let title = pageTitle
+  let desc = ''
+  if (data?.pages) {
+    title = data?.pages?.nodes[0]?.seoTitle
+    desc = data?.pages?.nodes[0]?.seoDescription
+  }
   if (data?.vacancy) {
     title = data.vacancy.VacancyName
     desc = data.vacancy.VacancyDescription
@@ -34,7 +39,6 @@ const Layout: FC<LayoutProps> = ({ data, children }) => {
     title = data.article.title
     desc = ''
   }
-  const { bodyNoScroll, dialogContent } = useContext(AppContext)
   const { menus } = useStaticQuery(graphql`
     query {
       menus: allSanityNavigation {

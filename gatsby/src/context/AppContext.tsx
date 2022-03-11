@@ -42,6 +42,8 @@ type ContextType = {
   dialogRef: React.MutableRefObject<HTMLDivElement> | null
   pageFocusRef: React.RefObject<HTMLElement> | null
   setFilteredArticles: Dispatch<SetStateAction<ArticleType[]>> | null
+  pageTitle: string
+  setPageTitle: Dispatch<SetStateAction<string>> | null
   filteredArticles: ArticleType[]
 }
 
@@ -72,6 +74,8 @@ const AppContext = createContext<ContextType>({
   currentPage: 1,
   setFilteredArticles: null,
   filteredArticles: [],
+  pageTitle: '',
+  setPageTitle: null,
 })
 
 export const AppContextProvider: FC = ({ children }): JSX.Element => {
@@ -87,6 +91,7 @@ export const AppContextProvider: FC = ({ children }): JSX.Element => {
   const [currentPage, setCurrentPage] = useState<number>(1)
   const dialogRef = useRef<HTMLDivElement>(null)
   const [filteredArticles, setFilteredArticles] = useState<ArticleType[]>([])
+  const [pageTitle, setPageTitle] = useState('')
   const [pageFocusRef, setPageFocusRef] =
     useState<React.RefObject<HTMLElement> | null>(null)
 
@@ -155,6 +160,8 @@ export const AppContextProvider: FC = ({ children }): JSX.Element => {
         setPageFocusRef,
         setFilteredArticles,
         filteredArticles,
+        pageTitle,
+        setPageTitle,
         ...settings.nodes[1],
       }}
     >
