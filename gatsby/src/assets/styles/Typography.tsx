@@ -161,6 +161,7 @@ const Typography = createGlobalStyle`
       ${FontBold}
     }
     a {
+      color: var(--gold);
     &:link {
       color: var(--gold);
       border-bottom: 1px dotted var(--gold);
