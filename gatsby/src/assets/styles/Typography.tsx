@@ -112,18 +112,7 @@ export const BulletItem = css`
 `
 
 const Typography = createGlobalStyle`
-  @font-face {
-    font-family: effraregular;
-    src: url(${EffraRegular});
-  }
-  @font-face {
-    font-family: efframedium;
-    src: url(${EffraMedium});
-  }
-  @font-face {
-    font-family: effrabold;
-    src: url(${EffraBold});
-  }
+  
   html {
     font-family: effraregular, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
   }

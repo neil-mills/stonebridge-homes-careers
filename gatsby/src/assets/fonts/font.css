@@ -1,0 +1,21 @@
+@font-face {
+  font-family: effraregular;
+  font-display: fallback;
+  src: url("effra_std_rg-webfont.woff") format("woff");
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: efframedium;
+  font-display: fallback;
+  src: url("effra_medium-webfont.woff") format("woff");
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: effrabold;
+  font-display: fallback;
+  src: url("effra_std_bd-webfont.woff") format("woff");
+  font-weight: normal;
+  font-style: normal;
+}

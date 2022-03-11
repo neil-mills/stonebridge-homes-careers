@@ -1,5 +1,6 @@
 import React, { FC, useContext } from 'react'
 import GlobalStyles from '../assets/styles/Global'
+import '../assets/fonts/font.css'
 import Typography from '../assets/styles/Typography'
 import 'normalize.css'
 import Helmet from 'react-helmet'
