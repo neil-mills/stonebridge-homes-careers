@@ -1,6 +1,6 @@
 import React, { FC, useContext } from 'react'
-import GlobalStyles from '../assets/styles/Global'
-import Typography from '../assets/styles/Typography'
+// import GlobalStyles from '../assets/styles/Global'
+// import Typography from '../assets/styles/Typography'
 import 'normalize.css'
 import Helmet from 'react-helmet'
 import Header from './Header'
@@ -66,8 +66,8 @@ const Layout: FC<LayoutProps> = ({ data, children }) => {
   ).navigationLink
   return (
     <>
-      <GlobalStyles />
-      <Typography />
+      {/* <GlobalStyles />
+      <Typography /> */}
       <Helmet bodyAttributes={{ 'data-noscroll': bodyNoScroll }}>
         <link
           rel="icon"
