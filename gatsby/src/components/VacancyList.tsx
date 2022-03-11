@@ -10,6 +10,7 @@ import { VacancyType } from '../types'
 import Heading from './Heading'
 import Button from './Button'
 import AppContext from '../context/AppContext'
+import { FiAlertCircle } from 'react-icons/fi'
 
 const TableStyles = styled.table`
   border-collapse: collapse;
@@ -129,81 +130,23 @@ interface Props {
   buttonLabel?: string
 }
 
-interface Filter {
-  [key: string]: string
-}
 interface Option {
   label: string
   value: string
 }
 
 const VacancyList: FC<Props> = props => {
-  const { vacancies } = useStaticQuery(graphql`
-    query {
-      vacancies: allVacancy {
-        nodes {
-          id
-          City
-          ClosingDate
-          Company
-          Country
-          Department
-          Experience
-          Reference
-          IsHideSalary
-          JobBordUrl
-          JobDescription
-          JobTitle
-          Location
-          Reference
-          SalaryRange
-          Status
-          VacancyDescription
-          VacancyName
-          VacancyType
-        }
-      }
-    }
-  `)
-
-  const { pageTabIndex } = useContext(AppContext)
-
-  const [activeVacancies] = useState<VacancyType[]>(
-    props.limit !== 'all'
-      ? vacancies.nodes.filter(
-          (vacancy: VacancyType, i: number) =>
-            i < parseInt(props.limit) &&
-            vacancy.Reference !== 'VA6' &&
-            (new Date(vacancy.ClosingDate).getTime() >= new Date().getTime() ||
-              vacancy.Reference === 'VA7' ||
-              !vacancy.ClosingDate)
-        )
-      : vacancies.nodes.filter(
-          (vacancy: VacancyType) =>
-            (new Date(vacancy.ClosingDate).getTime() >= new Date().getTime() ||
-              vacancy.Reference === 'VA7' ||
-              !vacancy.ClosingDate) &&
-            vacancy.Reference !== 'VA6'
-        )
-  )
-
-  const [filteredVacancies, setFilteredVacancies] =
-    useState<VacancyType[]>(activeVacancies)
-
-  const locations = [
-    ...new Set(activeVacancies.map(({ Location }: VacancyType) => Location)),
-  ].map(location => ({ label: location, value: location }))
-
-  const departments = [
-    ...new Set(
-      activeVacancies.map(({ Department }: VacancyType) => Department)
-    ),
-  ].map(department => ({ label: department, value: department }))
-
+  const [isLoading, setIsLoading] = useState(false)
+  const [isError, setIsError] = useState(false)
+  const [vacancies, setVacancies] = useState<VacancyType[]>([])
+  const [locations, setLocations] = useState<Option[]>([])
+  const [departments, setDepartments] = useState<Option[]>([])
+  const [filteredVacancies, setFilteredVacancies] = useState<VacancyType[]>([])
   const [selectedFilters, setSelectedFilters] = useState({
     location: '',
     department: '',
   })
+  const { pageTabIndex } = useContext(AppContext)
 
   const handleFilter = (
     e: ChangeEvent<HTMLInputElement | HTMLSelectElement>
@@ -216,20 +159,83 @@ const VacancyList: FC<Props> = props => {
   }
 
   useEffect(() => {
-    const { location: selectedLocation, department: selectedDepartment } =
-      selectedFilters
+    const fetchVacancies = async () => {
+      const jsonData = {
+        APIKey: process.env.GATSBY_APIKEY,
+        Action: 'GetAllVacancies',
+      }
+      try {
+        setIsError(false)
+        setIsLoading(true)
+        const res = await fetch('https://api.peoplehr.net/Vacancy/', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'text/json',
+          },
+          body: JSON.stringify(jsonData),
+        })
+        console.log('here')
+        const vacanciesResult = await res.json()
+        console.log(vacanciesResult)
+        setIsLoading(false)
+        const { isError, Status, Result } = vacanciesResult
+        setIsError(Status === 6 || isError)
 
-    let filteredResults = activeVacancies
-    if (selectedLocation)
-      filteredResults = filteredResults.filter(
-        ({ Location }: VacancyType) => Location === selectedLocation
-      )
-    if (selectedDepartment)
-      filteredResults = filteredResults.filter(
-        ({ Department }: VacancyType) => Department === selectedDepartment
-      )
-    setFilteredVacancies(filteredResults)
-  }, [selectedFilters])
+        setVacancies(
+          props.limit !== 'all'
+            ? Result.filter(
+                (vacancy: VacancyType, i: number) =>
+                  i < parseInt(props.limit) &&
+                  vacancy.Reference !== 'VA6' &&
+                  (new Date(vacancy.ClosingDate).getTime() >=
+                    new Date().getTime() ||
+                    vacancy.Reference === 'VA7' ||
+                    !vacancy.ClosingDate)
+              )
+            : Result.filter(
+                (vacancy: VacancyType) =>
+                  (new Date(vacancy.ClosingDate).getTime() >=
+                    new Date().getTime() ||
+                    vacancy.Reference === 'VA7' ||
+                    !vacancy.ClosingDate) &&
+                  vacancy.Reference !== 'VA6'
+              )
+        )
+      } catch (err) {
+        setIsError(true)
+      }
+    }
+    fetchVacancies()
+  }, [])
+
+  useEffect(() => {
+    if (vacancies.length) {
+      console.log(`filtering ${vacancies.length} vacancies`)
+      const locations = [
+        ...new Set(vacancies.map(({ Location }: VacancyType) => Location)),
+      ].map(location => ({ label: location, value: location }))
+      setLocations(locations)
+
+      const departments = [
+        ...new Set(vacancies.map(({ Department }: VacancyType) => Department)),
+      ].map(department => ({ label: department, value: department }))
+      setDepartments(departments)
+
+      const { location: selectedLocation, department: selectedDepartment } =
+        selectedFilters
+
+      let filteredResults = vacancies
+      if (selectedLocation)
+        filteredResults = filteredResults.filter(
+          ({ Location }: VacancyType) => Location === selectedLocation
+        )
+      if (selectedDepartment)
+        filteredResults = filteredResults.filter(
+          ({ Department }: VacancyType) => Department === selectedDepartment
+        )
+      setFilteredVacancies(filteredResults)
+    }
+  }, [vacancies])
 
   return (
     <Section tint={true} marginTop={true} marginBottom={true}>
@@ -239,6 +245,13 @@ const VacancyList: FC<Props> = props => {
           subHeading={props.subHeading}
           text={props.text}
         />
+      )}
+      {isLoading && <p>Loading current vacancies, please wait.</p>}
+      {isError && (
+        <p>
+          <FiAlertCircle /> There was an error loading our current vacancies at
+          this time. Please try again later.
+        </p>
       )}
       {filteredVacancies.length ? (
         <>
@@ -282,7 +295,11 @@ const VacancyList: FC<Props> = props => {
               {filteredVacancies.map((vacancy: VacancyType) => (
                 <tr key={vacancy.id}>
                   <td>
-                    <Link tabIndex={pageTabIndex} to={`/vacancy/${vacancy.id}`}>
+                    <Link
+                      tabIndex={pageTabIndex}
+                      to={`/vacancy/${vacancy.Reference.toLowerCase()}`}
+                      rel={'nofollow'}
+                    >
                       {vacancy.VacancyName}
                     </Link>
                   </td>
@@ -292,7 +309,8 @@ const VacancyList: FC<Props> = props => {
                   <td>
                     <ArrowLink
                       tabIndex={pageTabIndex}
-                      to={`/vacancy/${vacancy.id}`}
+                      to={`/vacancy/${vacancy.Reference.toLowerCase()}`}
+                      rel={'nofollow'}
                     >
                       Apply
                       <ArrowIcon />

@@ -1,4 +1,4 @@
-import React, { FC } from 'react'
+import React, { FC, useState, useEffect } from 'react'
 import styled from 'styled-components'
 import AvatarIcon from '../assets/svg/icon-avatar.svg'
 
@@ -20,7 +20,7 @@ const StyledMetaList = styled.div`
       content: '';
       position: absolute;
       display: block;
-      background-color: var(--grey);
+      background-color: var(--keyline-grey);
       width: 1px;
       height: 100%;
       top: 0;
@@ -57,21 +57,38 @@ interface MetaListProps {
   avatar?: string
   meta: string[]
   author?: boolean
+  isLoading?: boolean
 }
 const MetaList: FC<MetaListProps> = ({
   avatar,
   meta,
   author = false,
+  isLoading = false,
 }): JSX.Element => {
+  const [metaData, setMetaData] = useState<string[]>(['xxxxxx', 'xxxxxx'])
+
+  useEffect(() => {
+    if (!isLoading) {
+      setMetaData(meta)
+    }
+  }, [isLoading])
+
   return (
     <StyledMetaList>
       {author && (
         <div>
-          {author && avatar && <img src={avatar} alt={meta[0]} />}
+          {author && avatar && <img src={avatar} alt={metaData[0]} />}
           {author && !avatar && <AvatarIcon aria-label="author icon" />}
         </div>
       )}
-      <ul>{meta.length && meta.map((value, i) => <li key={i}>{value}</li>)}</ul>
+      <ul data-skeleton={isLoading}>
+        {metaData.length &&
+          metaData.map((value, i) => (
+            <li key={i}>
+              <span>{value}</span>
+            </li>
+          ))}
+      </ul>
     </StyledMetaList>
   )
 }

@@ -99,5 +99,25 @@ const GlobalStyles = createGlobalStyle`
   *:focus {
     outline: 2px solid var(--black)
   }
+
+ [data-skeleton='true'] {
+    p,
+    span,
+    h1,h2,h3,h4 {
+      background-color: var(--keyline-grey) !important;
+      color: transparent !important;
+    }
+    span {
+      display: inline-block !important ;
+      margin-bottom: 5px !important;
+    }
+  }
+  h1,h2,h3,h4 {
+    &[data-skeleton='true'] {
+      background-color: var(--keyline-grey);
+      color: transparent;
+      display: inline-block;
+    }
+  }
 `
 export default GlobalStyles

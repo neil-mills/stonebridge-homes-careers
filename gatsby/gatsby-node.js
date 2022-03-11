@@ -192,5 +192,5 @@ export const sourceNodes = async params => {
   await Promise.all([fetchVacanciesAndTurnIntoNodes(params)])
 }
 export const createPages = async params => {
-  await Promise.all([sitePages(params), vacancyPages(params)])
+  await Promise.all([sitePages(params)])
 }
