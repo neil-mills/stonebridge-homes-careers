@@ -66,6 +66,8 @@ const Layout: FC<LayoutProps> = ({ data, children }) => {
   ).navigationLink
   return (
     <>
+      <GlobalStyles />
+      <Typography />
       <Helmet bodyAttributes={{ 'data-noscroll': bodyNoScroll }}>
         <link
           rel="icon"

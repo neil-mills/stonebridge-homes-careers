@@ -19,8 +19,6 @@ const defaultConfig = {
         displayName: false,
         minify: true,
         ssr: true,
-        fileName: false,
-        pure: true,
       },
     },
     {
