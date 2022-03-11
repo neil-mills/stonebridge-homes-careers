@@ -52,6 +52,7 @@ const ApplicationForm: FC<Props> = props => {
     VacancyReference: props.vacancyReference,
   }
 
+  const [isUploadError, setIsUploadError] = useState(false)
   const [formValues, setFormValues] = useState(defaultValues)
   const [isLoading, setIsLoading] = useState(false)
   const [isError, setIsError] = useState('')
@@ -117,7 +118,6 @@ const ApplicationForm: FC<Props> = props => {
     for (const ref of fieldsRef.current) {
       const el = ref as HTMLSelectElement
       if (!el.validity.valid) {
-        // console.log(`${el.id} is not valid`)
         el.reportValidity()
         error = true
         const scrollToField = useScrollIntoView(el)
@@ -132,116 +132,102 @@ const ApplicationForm: FC<Props> = props => {
     }
   }
 
-  const handleSubmit = async () => {
-    const toBase64 = (file: File) =>
-      new Promise((resolve, reject) => {
-        const reader = new FileReader()
-        reader.readAsDataURL(file)
-        reader.onload = () => resolve(reader.result)
-        reader.onerror = error => reject(error)
-      })
-    setIsError('')
-    setIsLoading(true)
-    const response = await postCheckDuplicateApplicant()
-    if (typeof response === 'object' && response.Result) {
-      // console.log(response)
-      if (!response.isError) {
-        if (response.Result.IsDuplicate === 'False') {
-          //post applicant
-          // console.log('create new applicant')
-          const response = await postCreateNewApplicant()
-          if (typeof response === 'object' && response.Result) {
-            // console.log(response)
-            if (!response.isError) {
-              //post applicant cv file
-              const { ApplicantId } = response.Result
-              setFormValues(prevState => ({ ...prevState, ApplicantId }))
-              //convert file to base64
-              if (!props.isSubContractor) {
-                if (FileRef) {
-                  const base64File: unknown = await toBase64(FileRef)
-                  setFormValues(prevState => ({
-                    ...prevState,
-                    File: String(base64File).replace(
-                      /^(data:)(.*)(base64,)/g,
-                      ''
-                    ),
-                  }))
-                  // console.log('upload cv file')
-                  const response = await postUploadApplicantDocument()
-                  // console.log(response)
-                  if (typeof response === 'object' && response.Result) {
-                    if (!response.isError) {
-                      //post application successful
-                      setIsLoading(false)
-                      setFormValues({ ...defaultValues })
-                      setIsError(
-                        'Your application has been submitted successfully'
-                      )
-                      handleNotification()
-                    } else {
-                      //is api error with post upload document
-                      setIsLoading(false)
-                      // console.log('error with uploading cv')
-                      setIsError(
-                        'There was an error posting your application, please try again.'
-                      )
-                      handleNotification()
-                    }
-                  } else {
-                    //is server error with post upload document
-                    setIsLoading(false)
-                    setIsError('Server error, please try again.')
-                    handleNotification()
-                  }
-                } else {
-                  //file wasnt selected
-                  setIsLoading(false)
-                  setIsError('Server error, please try again.')
-                  handleNotification()
-                }
-              } else {
-                //is subcontractor form, no cv to upload, so finish here
-                setIsLoading(false)
-                setFormValues({ ...defaultValues })
-                setIsError('Your application has been submitted successfully')
-                handleNotification()
-              }
-            } else {
-              //is api response error with post new applicant request
-              // console.log('error with new applicant post')
-              setIsLoading(false)
-              setIsError(
-                'There was an error posting your application, please try again.'
-              )
-              handleNotification()
-            }
-          } else {
-            //is server error with post new applicant request
-            setIsLoading(false)
-            setIsError('Server error, please try again.')
-            handleNotification()
-          }
-        } else {
-          //is duplicate application
-          setIsLoading(false)
-          setIsError('You have already applied for this vacancy.')
-          handleNotification()
-        }
-      } else {
-        //is api response error with check duplicate post
+  useEffect(() => {
+    const uploadFile = async () => {
+      const response = await postUploadApplicantDocument()
+      if (
+        typeof response === 'object' &&
+        response.Result &&
+        !response.isError &&
+        response.Status === 0
+      ) {
         setIsLoading(false)
-        //  console.log('error checking duplicate')
-        setIsError(
-          'There was an error posting your application, please try again.'
-        )
-        handleNotification()
+        setFormValues({ ...defaultValues })
+        setIsError('Your application has been submitted successfully')
+      } else {
+        setIsLoading(false)
+        setIsUploadError(true)
+        setIsError('There was an error uploading your cv, please try again.')
       }
+      handleNotification()
+    }
+    if (formValues.File) {
+      uploadFile()
+    }
+  }, [formValues])
+
+  const toBase64 = (file: File) =>
+    new Promise((resolve, reject) => {
+      const reader = new FileReader()
+      reader.readAsDataURL(file)
+      reader.onload = () => resolve(reader.result)
+      reader.onerror = error => reject(error)
+    })
+
+  const processFile = async () => {
+    if (FileRef) {
+      const base64File: unknown = await toBase64(FileRef)
+      setFormValues(prevState => ({
+        ...prevState,
+        File: String(base64File).replace(/^(data:)(.*)(base64,)/g, ''),
+      }))
     } else {
-      //is server error with check duplicate applicant request
       setIsLoading(false)
       setIsError('Server error, please try again.')
       handleNotification()
+    }
+  }
+
+  const handleSubmit = async () => {
+    setIsError('')
+    setIsLoading(true)
+    //Route 1
+    //do this if first submit
+    if (!formValues.ApplicantId && !isUploadError) {
+      //check for duplicate application
+      const response = await postCheckDuplicateApplicant()
+      if (
+        typeof response === 'object' &&
+        response.Result &&
+        response.Status === 0 &&
+        !response.isError &&
+        response.Result.IsDuplicate === 'False'
+      ) {
+        //post application
+        const response = await postCreateNewApplicant()
+        if (
+          typeof response === 'object' &&
+          response.Result &&
+          !response.isError &&
+          response.Status === 0
+        ) {
+          const { ApplicantId } = response.Result
+          setFormValues(prevState => ({ ...prevState, ApplicantId }))
+          //upload the file
+          if (!props.isSubContractor) {
+            processFile()
+          } else {
+            setIsLoading(false)
+            setIsError('Your application has been submitted successfully')
+          }
+        } else {
+          //post application failed
+          setIsLoading(false)
+          setIsError(
+            'There was an error posting your application, please try again.'
+          )
+        }
+      } else {
+        //is a duplicate application
+        setIsLoading(false)
+        setIsError('You have already applied for this vacancy.')
+      }
+      handleNotification()
+    }
+    //Route 2
+    //just upload the file, if the application was submitted ok, but there was an upload error.
+    if (formValues.ApplicantId && isUploadError && !props.isSubContractor) {
+      processFile()
     }
   }
 
@@ -289,6 +275,7 @@ const ApplicationForm: FC<Props> = props => {
           ]}
           value={formValues.Title}
           callback={handleChange}
+          disabled={isLoading}
           required={true}
           tabIndex={props.tabIndex}
           ref={(element: HTMLSelectElement) => (fieldsRef.current[0] = element)}
@@ -304,6 +291,7 @@ const ApplicationForm: FC<Props> = props => {
           onChange={handleChange}
           ref={(element: HTMLInputElement) => (fieldsRef.current[1] = element)}
           tabIndex={props.tabIndex}
+          disabled={isLoading}
         />
       </div>
       <div>
@@ -316,6 +304,7 @@ const ApplicationForm: FC<Props> = props => {
           onChange={handleChange}
           ref={(element: HTMLInputElement) => (fieldsRef.current[2] = element)}
           tabIndex={props.tabIndex}
+          disabled={isLoading}
         />
       </div>
       <div>
@@ -328,6 +317,7 @@ const ApplicationForm: FC<Props> = props => {
           onChange={handleChange}
           ref={(element: HTMLInputElement) => (fieldsRef.current[3] = element)}
           tabIndex={props.tabIndex}
+          disabled={isLoading}
         />
       </div>
       <div>
@@ -347,6 +337,7 @@ const ApplicationForm: FC<Props> = props => {
           ref={(element: HTMLInputElement) => (fieldsRef.current[4] = element)}
           tabIndex={props.tabIndex}
           ariaDescribedBy={'PhoneNumberHint'}
+          disabled={isLoading}
         />
       </div>
       {props.isSubContractor ? (
@@ -362,11 +353,15 @@ const ApplicationForm: FC<Props> = props => {
               (fieldsRef.current[5] = element)
             }
             tabIndex={props.tabIndex}
+            disabled={isLoading}
           />
         </div>
       ) : (
         <div>
           <label htmlFor={'CV'}>CV</label>
+          <p id={'CVHint'} className="hint">
+            Document file size must be 15mb or under
+          </p>
           <FileInput
             id={'CV'}
             value={formValues.DocumentName}
@@ -376,6 +371,8 @@ const ApplicationForm: FC<Props> = props => {
               (fieldsRef.current[5] = element)
             }
             tabIndex={props.tabIndex}
+            ariaDescribedBy={'CVHint'}
+            disabled={isLoading}
           />
         </div>
       )}
@@ -388,6 +385,7 @@ const ApplicationForm: FC<Props> = props => {
           callback={handleChange}
           ref={(element: HTMLInputElement) => (fieldsRef.current[6] = element)}
           tabIndex={props.tabIndex}
+          disabled={isLoading}
         />
       </div>
       <Button

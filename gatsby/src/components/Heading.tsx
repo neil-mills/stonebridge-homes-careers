@@ -1,4 +1,4 @@
-import React, { FC } from 'react'
+import React, { FC, useState, useEffect } from 'react'
 import styled, { css } from 'styled-components'
 import {
   HeadingLarge,
@@ -15,6 +15,7 @@ interface HeadingProps {
   as?: React.ElementType
   text?: string
   level?: number
+  isLoading?: boolean
 }
 
 const HeadingStyles = styled.div<HeadingProps>`
@@ -97,14 +98,26 @@ const Heading: FC<HeadingProps> = ({
   heading,
   level = 2,
   text = '',
+  isLoading = false,
 }): JSX.Element => {
+  const [visibleHeading, setVisibleHeading] = useState('xxxxxxxxxxxxxxxxxxx')
+  const [visibleSubHeading, setVisibleSubHeading] = useState('xxxxxx')
+
+  useEffect(() => {
+    if (!isLoading) {
+      setVisibleHeading(heading)
+      setVisibleSubHeading(subHeading)
+    }
+  }, [isLoading])
+
   return (
     <HeadingStyles
-      subHeading={subHeading}
+      subHeading={visibleSubHeading}
       marginBottom={marginBottom}
-      heading={heading}
+      heading={visibleHeading}
       text={text}
       headingLarger={headingLarger}
+      data-skeleton={isLoading}
     >
       {subHeading && (
         <>

@@ -10,6 +10,7 @@ interface Props {
   callback: (e: ChangeEvent<HTMLInputElement>) => void
   required?: boolean
   tabIndex?: number
+  disabled?: boolean
 }
 
 const StyledCheckboxInput = styled.div`
@@ -79,6 +80,7 @@ export const CheckboxInput = React.forwardRef<HTMLInputElement, Props>(
           onChange={handleChange}
           required={props.required}
           tabIndex={props.tabIndex}
+          disabled={props.disabled}
         />
         <div tabIndex={-1}>
           <CheckIcon />

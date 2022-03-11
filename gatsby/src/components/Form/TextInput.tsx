@@ -13,6 +13,7 @@ interface Props {
   onChange: (e: ChangeEvent<HTMLInputElement>) => void
   tabIndex?: number
   ariaDescribedBy?: string
+  disabled?: boolean
 }
 
 export const StyledTextInput = styled.input`
@@ -48,6 +49,7 @@ export const TextInput = React.forwardRef<HTMLInputElement, Props>(
       placeholder = '',
       tabIndex = 0,
       ariaDescribedBy = '',
+      disabled = false,
     },
     ref
   ) => {
@@ -66,6 +68,7 @@ export const TextInput = React.forwardRef<HTMLInputElement, Props>(
         autoComplete={'off'}
         placeholder={placeholder}
         tabIndex={tabIndex}
+        disabled={disabled}
         aria-describedby={ariaDescribedBy}
       />
     )

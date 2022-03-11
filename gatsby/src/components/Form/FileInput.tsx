@@ -9,6 +9,8 @@ interface Props {
   required?: boolean
   callback: (e: ChangeEvent<HTMLInputElement>) => void
   tabIndex?: number
+  disabled?: boolean
+  ariaDescribedBy?: string
 }
 
 const StyledFileInput = styled.div`
@@ -64,6 +66,8 @@ export const FileInput = React.forwardRef<HTMLInputElement, Props>(
           required={props.required}
           onChange={e => props.callback(e)}
           tabIndex={props.tabIndex}
+          disabled={props.disabled}
+          aria-describedby={props.ariaDescribedBy}
         />
         <Button tabIndex={-1} secondary={true} label={'Choose file'} />
         <span>{props.value || 'No file chosen'}</span>

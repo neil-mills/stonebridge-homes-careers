@@ -5,6 +5,7 @@ export function usePeopleHRFetch<S>(
   data?: ApplicantData
 ): [() => Promise<ResponseType<S> | string>, boolean] {
   const [isLoading, setIsLoading] = useState<boolean>(false)
+  const [isError, setIsError] = useState<boolean>(false)
   const dir = [
     'CreateNewApplicant',
     'CheckDuplicateApplicant',
@@ -35,7 +36,8 @@ export function usePeopleHRFetch<S>(
       return jsonResponse
     } catch (err) {
       setIsLoading(false)
-      return 'Error'
+      setIsError(true)
+      return 'error'
     }
   }
 
