@@ -15,6 +15,7 @@ import Form, {
 } from '../components/Form'
 import Button from './Button'
 import { usePeopleHRFetch } from '../hooks/usePeopleHRFetch'
+import { useHoneyPot } from '../hooks/useHoneyPot'
 import {
   ApplicantData,
   CheckDuplicateApplicantResult,
@@ -50,8 +51,9 @@ const ApplicationForm: FC<Props> = props => {
     TradeOrProfession: '',
     Terms: 'false',
     VacancyReference: props.vacancyReference,
+    HoneyPot: '',
   }
-
+  const [first, second, answer, refreshHoneyPot] = useHoneyPot()
   const [isUploadError, setIsUploadError] = useState(false)
   const [formValues, setFormValues] = useState(defaultValues)
   const [isLoading, setIsLoading] = useState(false)
@@ -82,6 +84,7 @@ const ApplicationForm: FC<Props> = props => {
     File,
     TradeOrProfession,
     FileRef,
+    HoneyPot,
   } = formValues
 
   const [postCheckDuplicateApplicant, isLoadingPostCheckDuplicateApplicant] =
@@ -143,6 +146,7 @@ const ApplicationForm: FC<Props> = props => {
       ) {
         setIsLoading(false)
         setFormValues({ ...defaultValues })
+        refreshHoneyPot()
         setIsError('Your application has been submitted successfully')
       } else {
         setIsLoading(false)
@@ -181,54 +185,63 @@ const ApplicationForm: FC<Props> = props => {
   const handleSubmit = async () => {
     setIsError('')
     setIsLoading(true)
-    //Route 1
-    //do this if first submit
-    if (!formValues.ApplicantId && !isUploadError) {
-      //check for duplicate application
-      const response = await postCheckDuplicateApplicant()
-      if (
-        typeof response === 'object' &&
-        response.Result &&
-        response.Status === 0 &&
-        !response.isError &&
-        response.Result.IsDuplicate === 'False'
-      ) {
-        //post application
-        const response = await postCreateNewApplicant()
+    //check honeypot answer
+    if (formValues.HoneyPot && parseInt(formValues.HoneyPot) !== answer) {
+      setIsLoading(false)
+      setIsError('Please answer the question correctly')
+      handleNotification()
+      fieldsRef.current[6].focus()
+    } else {
+      //Route 1
+      //do this if first submit
+      if (!formValues.ApplicantId && !isUploadError) {
+        //check for duplicate application
+        const response = await postCheckDuplicateApplicant()
         if (
           typeof response === 'object' &&
           response.Result &&
+          response.Status === 0 &&
           !response.isError &&
-          response.Status === 0
+          response.Result.IsDuplicate === 'False'
         ) {
-          const { ApplicantId } = response.Result
-          setFormValues(prevState => ({ ...prevState, ApplicantId }))
-          //upload the file
-          if (!props.isSubContractor) {
-            processFile()
+          //post application
+          const response = await postCreateNewApplicant()
+          if (
+            typeof response === 'object' &&
+            response.Result &&
+            !response.isError &&
+            response.Status === 0
+          ) {
+            const { ApplicantId } = response.Result
+            setFormValues(prevState => ({ ...prevState, ApplicantId }))
+            //upload the file
+            if (!props.isSubContractor) {
+              processFile()
+            } else {
+              setIsLoading(false)
+              setIsError('Your application has been submitted successfully')
+              setFormValues({ ...defaultValues })
+              refreshHoneyPot()
+            }
           } else {
+            //post application failed
             setIsLoading(false)
-            setIsError('Your application has been submitted successfully')
-            setFormValues({ ...defaultValues })
+            setIsError(
+              'There was an error posting your application, please try again.'
+            )
           }
         } else {
-          //post application failed
+          //is a duplicate application
           setIsLoading(false)
-          setIsError(
-            'There was an error posting your application, please try again.'
-          )
+          setIsError('You have already applied for this vacancy.')
         }
-      } else {
-        //is a duplicate application
-        setIsLoading(false)
-        setIsError('You have already applied for this vacancy.')
+        handleNotification()
       }
-      handleNotification()
-    }
-    //Route 2
-    //just upload the file, if the application was submitted ok, but there was an upload error.
-    if (formValues.ApplicantId && isUploadError && !props.isSubContractor) {
-      processFile()
+      //Route 2
+      //just upload the file, if the application was submitted ok, but there was an upload error.
+      if (formValues.ApplicantId && isUploadError && !props.isSubContractor) {
+        processFile()
+      }
     }
   }
 
@@ -378,17 +391,37 @@ const ApplicationForm: FC<Props> = props => {
         </div>
       )}
       <div>
+        <label htmlFor={'HoneyPot'}>
+          What is {first} + {second}?
+        </label>
+        <p id={'honeypotHint'} className="hint">
+          Answer question to confirm you are not a robot
+        </p>
+        <TextInput
+          type={'text'}
+          id={'HoneyPot'}
+          value={HoneyPot}
+          required={true}
+          onChange={handleChange}
+          ref={(element: HTMLInputElement) => (fieldsRef.current[6] = element)}
+          tabIndex={props.tabIndex}
+          disabled={isLoading}
+          ariaDescribedBy={'honeypotHint'}
+        />
+      </div>
+      <div>
         <CheckboxInput
           label={'I accept the terms and conditions'}
           id={'Terms'}
           value={formValues.Terms}
           required={true}
           callback={handleChange}
-          ref={(element: HTMLInputElement) => (fieldsRef.current[6] = element)}
+          ref={(element: HTMLInputElement) => (fieldsRef.current[7] = element)}
           tabIndex={props.tabIndex}
           disabled={isLoading}
         />
       </div>
+
       <Button
         type="submit"
         label={isLoading ? 'Sending' : props.buttonLabel}

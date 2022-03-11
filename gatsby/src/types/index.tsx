@@ -163,4 +163,5 @@ export interface ApplicantData {
   DocumentName?: string
   FileRef?: File | null
   CV?: string
+  HoneyPot?: string
 }
