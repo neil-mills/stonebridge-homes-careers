@@ -209,6 +209,7 @@ const ApplicationForm: FC<Props> = props => {
           } else {
             setIsLoading(false)
             setIsError('Your application has been submitted successfully')
+            setFormValues({ ...defaultValues })
           }
         } else {
           //post application failed
