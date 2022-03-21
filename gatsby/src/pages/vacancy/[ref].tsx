@@ -73,7 +73,8 @@ const SingleVacancyPage: FC<Props> = ({ className }) => {
     const getVacancy = async () => {
       let VacancyReference = ''
       if (typeof window !== 'undefined') {
-        const path = window.location.href.split('/')
+        const href = window.location.href.split('?')[0]
+        const path = href.split('/')
         VacancyReference = path[path.length - 1].toUpperCase()
         setTimeout(() => {
           window.scrollTo(0, 0)
