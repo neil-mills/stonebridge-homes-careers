@@ -3,7 +3,7 @@ import Section from '../components/Section'
 import { Link, graphql } from 'gatsby'
 import ArticlesBlock from '../components/ArticlesBlock'
 import { ArticleType } from '../types'
-import articlesData from '../data/articles'
+const browser = typeof window !== 'undefined' && window
 
 interface Props {
   data: {
@@ -15,7 +15,7 @@ interface Props {
 }
 const FourOFour: FC<Props> = ({ data }) => {
   console.log(data)
-  return (
+  return browser ? (
     <>
       <Section as={'div'} marginTop={false} marginBottom={true}>
         <h1>Page not found</h1>
@@ -32,7 +32,7 @@ const FourOFour: FC<Props> = ({ data }) => {
         carousel={true}
       />
     </>
-  )
+  ) : null
 }
 
 export const query = graphql`
