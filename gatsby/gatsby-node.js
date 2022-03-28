@@ -187,10 +187,12 @@ const sitePages = async ({ graphql, actions }) => {
     })
   })
 }
-export const sourceNodes = async params => {
+const sourceNodes = async params => {
   //fetch list of vacancies and source them into gatsby api
   await Promise.all([fetchVacanciesAndTurnIntoNodes(params)])
 }
-export const createPages = async params => {
+const createPages = async params => {
   await Promise.all([sitePages(params)])
 }
+
+module.exports = { sourceNodes, createPages }
