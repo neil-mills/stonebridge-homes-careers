@@ -95,6 +95,7 @@ export interface ArticleType {
   categories?: CategoryType[]
   animateOnLoad?: boolean
   showImage?: boolean
+  currentArticle?: string | null
   articleSectionType?: Array<
     TextBlockType | ImageAndTextBlockType | ParallaxImageBlockType
   >

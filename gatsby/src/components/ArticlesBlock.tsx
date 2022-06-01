@@ -5,7 +5,6 @@ import React, {
   useLayoutEffect,
   useRef,
   useEffect,
-  useState,
 } from 'react'
 import styled, { css } from 'styled-components'
 import {
@@ -21,7 +20,6 @@ import ArticlesGrid from './ArticlesGrid'
 import Button from './Button'
 import { ArticleType, CategoryType } from '../types'
 import AppContext from '../context/AppContext'
-import { navigate } from 'gatsby'
 
 const StyledArticles = styled.section<{ showCategories: boolean }>`
   ${GutterPaddingTop}
@@ -39,16 +37,6 @@ const StyledArticles = styled.section<{ showCategories: boolean }>`
 const StyledArticlesWrapper = styled.div<{ showCategories: boolean }>`
   ${({ showCategories }) => showCategories && GutterPaddingRight}
 `
-const StyledButtonWrapper = styled.div<{ showCategories: boolean }>`
-  display: flex;
-  justify-content: center;
-  ${({ showCategories }) =>
-    showCategories
-      ? GutterPaddingRight
-      : css`
-          margin-right: 0;
-        `}
-`
 
 interface WrapperProps {
   showCategories: boolean
@@ -57,11 +45,6 @@ const ArticlesWrapper: FC<WrapperProps> = ({ children, showCategories }) => (
   <StyledArticlesWrapper showCategories={showCategories}>
     {children}
   </StyledArticlesWrapper>
-)
-const ButtonWrapper: FC<WrapperProps> = ({ children, showCategories }) => (
-  <StyledButtonWrapper showCategories={showCategories}>
-    {children}
-  </StyledButtonWrapper>
 )
 
 interface ArticlesProps {
@@ -77,7 +60,8 @@ interface ArticlesProps {
   buttonLabel?: string
   buttonLink?: string
   carousel?: boolean
-  currentPageCxt?: number
+  currentPageCxt?: number | null
+  currentArticle?: string | null
   className?: string
   isPaginated?: boolean
   dataSource?: string
@@ -92,15 +76,14 @@ const Articles: FC<ArticlesProps> = ({
   showArticles = 'latest',
   selectedArticles = [],
   articles = [],
+  currentArticle = null,
   showCategories = false,
   categories = [],
   buttonLabel = '',
   buttonLink = '',
   carousel = false,
   className = '',
-  // currentPageCxt = null,
   categoryIdCxt = null,
-  // dataSource = '',
 }) => {
   const { pageTabIndex, categoryId, setCategoryId } = useContext(AppContext)
 
@@ -113,9 +96,7 @@ const Articles: FC<ArticlesProps> = ({
     let filtered: ArticleType[] =
       showArticles === 'selected' ? selectedArticles : articles
     const catId = !categoryId && categoryIdCxt ? categoryIdCxt : categoryId
-    // if (catId && setCategoryId) setCategoryId(catId)
     if (showCategories) {
-      //filter by category if set
       if (catId !== null && catId.length) {
         filtered = articles.filter(({ categories }) =>
           categories
@@ -139,15 +120,6 @@ const Articles: FC<ArticlesProps> = ({
     }
 
     return filtered
-  }
-
-  const showMore = () => {
-    navigate('/our-community/page/3')
-    // if (setCurrentPage) {
-    //   console.log('show more')
-    //   setCurrentPage(prevState => prevState + 1)
-    // }
-    // setFilteredArticles([...filteredArticles, filteredArticles[0]])
   }
 
   const scrollY = useMemo(() => {
@@ -191,20 +163,11 @@ const Articles: FC<ArticlesProps> = ({
           <ArticlesGrid
             carousel={carousel}
             articles={getFilteredArticles()}
+            currentArticle={currentArticle}
             ref={gridRef}
           />
         </SectionInner>
       </ArticlesWrapper>
-
-      {/* <ButtonWrapper showCategories={showCategories}>
-        <Button
-          label={'Load more'}
-          link={'/'}
-          secondary={true}
-          tabIndex={pageTabIndex}
-          callback={showMore}
-        />
-      </ButtonWrapper> */}
 
       {buttonLabel && buttonLink && (
         <SectionInner>

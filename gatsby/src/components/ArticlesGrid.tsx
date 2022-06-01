@@ -82,10 +82,11 @@ interface ArticlesGridProps {
   carousel?: boolean
   articles: ArticleType[]
   perPage?: number
+  currentArticle?: string | null
 }
 
 export const ArticlesGrid = React.forwardRef<HTMLDivElement, ArticlesGridProps>(
-  ({ carousel = false, articles = [] }, ref) => {
+  ({ carousel = false, articles = [], currentArticle = null }, ref) => {
     const trackRef = useRef<HTMLDivElement | null>(null)
     const articleRefs = useRef<HTMLElement[]>([])
     const [articleWidth, setArticleWidth] = useState(0)
@@ -189,6 +190,7 @@ export const ArticlesGrid = React.forwardRef<HTMLDivElement, ArticlesGridProps>(
                 slug={article.slug}
                 animateOnLoad={!carousel}
                 width={carousel ? `${articleWidth}px` : 'auto'}
+                currentArticle={currentArticle}
               />
             ))}
           </Track>

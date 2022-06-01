@@ -127,6 +127,15 @@ const sitePages = async ({ graphql, actions }) => {
           }
         }
       }
+      people: allSanityPerson {
+        nodes {
+          id
+          title
+          slug {
+            current
+          }
+        }
+      }
     }
   `)
 
@@ -157,6 +166,18 @@ const sitePages = async ({ graphql, actions }) => {
         categoryId: [id],
         categories,
         title: 'Our community',
+      },
+    })
+  })
+
+  data.people.nodes.forEach(person => {
+    console.log(person.title)
+    actions.createPage({
+      path: `/working-with-us/people/${person.slug.current}`,
+      component: pageTemplate,
+      context: {
+        title: 'Working with us',
+        personSlug: person.slug.current,
       },
     })
   })

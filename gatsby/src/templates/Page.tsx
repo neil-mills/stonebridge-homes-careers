@@ -21,6 +21,7 @@ interface Props {
     slug: string
     skip: number
     currentPage?: number
+    personSlug?: string
     pageSize: number
     categoryId: string[] | null
     categories: CategoryType[]
@@ -28,7 +29,7 @@ interface Props {
 }
 
 const PageTemplate: FC<Props> = ({ data, pageContext }) => {
-  const { categories, categoryId, currentPage = null } = pageContext
+  const { categories, categoryId, currentPage = null, personSlug } = pageContext
   useEffect(() => {
     if (typeof window !== 'undefined') {
       setTimeout(() => {
@@ -110,6 +111,9 @@ const PageTemplate: FC<Props> = ({ data, pageContext }) => {
                 buttonLink={contentType[0].buttonLink}
                 carousel={contentType[0].carousel}
                 currentPageCxt={currentPage}
+                currentArticle={
+                  contentType[0].dataSource === 'people' ? personSlug : null
+                }
                 isPaginated={contentType[0].isPaginated}
               />
             )
