@@ -60,7 +60,7 @@ const SingleArticlePage: FC<Props> = ({ data, className }): JSX.Element => {
 
   const [isLoaded] = useLazyLoadImages({
     ref: imageRef,
-    srcSet: data.article.image.asset.fluid.srcSet,
+    srcSet: data?.article?.image?.asset?.fluid?.srcSet,
     options: {
       threshold: 0,
       rootMargin: '0px',
