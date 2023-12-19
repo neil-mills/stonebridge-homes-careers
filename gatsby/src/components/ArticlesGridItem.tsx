@@ -195,7 +195,7 @@ const ArticleGridItem = forwardRef<HTMLElement, ArticleType>((props, ref) => {
   const [imageY, setImageY] = useState(50)
   const [isLoaded] = useLazyLoadImages({
     ref: imageRef,
-    srcSet: image.asset.fluid.srcSet,
+    srcSet: image?.asset?.fluid?.srcSet,
   })
 
   useEffect(() => {
@@ -206,7 +206,7 @@ const ArticleGridItem = forwardRef<HTMLElement, ArticleType>((props, ref) => {
       console.log(`open ${slug.current}`)
       setVideoSrc(videoUrl)
     }
-    if (image.crop) {
+    if (image?.crop) {
       const { top, bottom } = image.crop
       setImageY(Math.ceil(top * 100 + bottom * 100))
     }
@@ -227,7 +227,7 @@ const ArticleGridItem = forwardRef<HTMLElement, ArticleType>((props, ref) => {
         clearTimeout()
       }
     }
-  }, [isLoaded, image.asset.fluid.srcSet])
+  }, [isLoaded, image?.asset?.fluid?.srcSet])
 
   return (
     <ArticleItemStyles
