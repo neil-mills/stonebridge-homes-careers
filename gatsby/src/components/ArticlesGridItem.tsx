@@ -215,10 +215,10 @@ const ArticleGridItem = forwardRef<HTMLElement, ArticleType>((props, ref) => {
   useEffect(() => {
     if (isLoaded) {
       if (image.asset.fluid.srcSet) {
-        setSrcSet(image?.asset?.fluid?.srcSet)
+        setSrcSet(image.asset.fluid.srcSet)
       }
       if (image.asset.fluid.src) {
-        setSrc(image?.asset?.fluid?.src)
+        setSrc(image.asset.fluid.src)
       }
       setTimeout(() => {
         setAnimate(true)
@@ -227,7 +227,7 @@ const ArticleGridItem = forwardRef<HTMLElement, ArticleType>((props, ref) => {
         clearTimeout()
       }
     }
-  }, [isLoaded, image?.asset?.fluid?.srcSet])
+  }, [isLoaded, image.asset.fluid.srcSet])
 
   return (
     <ArticleItemStyles
