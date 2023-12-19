@@ -195,7 +195,7 @@ const ArticleGridItem = forwardRef<HTMLElement, ArticleType>((props, ref) => {
   const [imageY, setImageY] = useState(50)
   const [isLoaded] = useLazyLoadImages({
     ref: imageRef,
-    srcSet: image.asset.fluid.srcSet,
+    srcSet: image?.asset?.fluid?.srcSet,
   })
 
   useEffect(() => {
